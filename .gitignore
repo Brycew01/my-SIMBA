@@ -1,0 +1,8 @@
+venv
+*.bit
+*.bin
+*.hwh
+*.o
+librover.a
+rover/rover
+test/main
