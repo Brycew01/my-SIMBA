@@ -1,7 +1,7 @@
 venv
-*.bit
+# *.bit
 *.bin
-*.hwh
+# *.hwh
 *.o
 librover.a
 rover/rover
