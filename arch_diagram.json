@@ -1,0 +1,1283 @@
+{
+  "format": "kiro-session-export-v1",
+  "metadata": {
+    "session_id": "5721b4e0-80f4-4922-ad70-23a5345b5cfa",
+    "cwd": "/home/bwang56/my-SIMBA",
+    "created_at": "2026-05-08T23:37:32.467965089Z",
+    "updated_at": "2026-05-09T00:41:28.536055183Z",
+    "title": "look thorugh this code and give me a summary. Also it might be missing a driver or two",
+    "imported_from": "/home/bwang56/my-SIMBA/arch_diagram.json",
+    "session_state": {
+      "version": "v1",
+      "conversation_metadata": {
+        "user_turn_metadatas": [
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 3221760022
+            },
+            "result": {
+              "Ok": {
+                "id": "52e8aeba-ab1a-40f0-94f5-a99b392ceddf",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "Here's a summary of the codebase:\n\n---\n\n**Overview**\n\nThis is embedded C/C++ firmware for the SIMBA rover, targeting a Xilinx Kria FPGA board. It drives a 6-wheeled rover with 4 steering motors, using an IMU for closed-loop heading correction.\n\n---\n\n**Architecture**\n\n- `Main.c` — Entry point. Initializes all subsystems, then runs a control loop at ~3Hz (333ms delay) that: reads the IMU, applies heading correction, checks for stalls/unintended motion, and handles terrain warnings.\n- `rover.c/h` — High-level rover API: `rover_forward`, `rover_reverse`, `rover_stop`, `rover_pointTurn_CW/CCW`, steering control, and a 1ms ISR-driven PID loop via `SIGALRM`.\n- `motor.c/h` — Low-level `MotorController` struct that reads/writes MMIO registers directly to the FPGA motor IP cores.\n- `servo.c/h` — Wraps `MotorController` with a `PIDController` for position/speed control.\n- `pid.c/h` — Generic PID controller with integrator clamping and derivative filtering.\n- `steering_motor.c/h` — State machine for calibrating steering motors (finds left/right limits, centers).\n- `mmio.c/h` — Thin wrapper around `/dev/mem` + `mmap` for FPGA register access.\n- `bmi270_port.c/h` — BMI270 IMU driver port for the Kria's AXI I2C peripheral.\n- `imu_correction.c/h` — Reads IMU, runs an ESKF (Error-State Kalman Filter), detects stalls/tilts/unintended motion, and applies yaw correction to keep the rover driving straight.\n- `ESKF.cpp/h` + `kalman_wrapper.cpp/h` — C++ ESKF implementation wrapped for C linkage.\n\n---\n\n**Potentially Missing Drivers**\n\nLooking at the includes and MMIO address map in `rover.h`, a few things stand out:\n\n1. **`bmi2.h` / `bmi270.h`** — These are Bosch's official sensor API headers (used throughout `bmi270_port.h`, `imu_correction.h`). There's no `bmi2.c` or `bmi270.c` in the `rover/` directory. These are likely expected to come from the [Bosch BMI270 sensor API](https://github.com/boschsensortec/BMI270_SensorAPI) but are not present in the repo.\n\n2. **`utilities.h`** is present but there's no corresponding `utilities.c` — likely missing or the functions are header-only.\n\n3. The arm motors (`MOTOR_WRIST`, `MOTOR_BASE`, `MOTOR_ELBOW`, `MOTOR_CLAW`) are defined in `rover.h` but have no driver or control code anywhere — those are completely unimplemented.\n\nThe most critical missing piece is the **Bosch BMI270 sensor API** (`bmi2.c`, `bmi270.c`, and their headers). Without those, the project won't compile. Do you have those files, or should I help you integrate them?"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778283493
+                }
+              }
+            },
+            "message_ids": [
+              "c16fef2a-55cd-4a1b-a714-a107c9e2514f",
+              "71ab84b0-64a8-4ded-8682-bf7ffc1dbe6e",
+              "1e0861c0-d3c7-4a5d-80dc-36bb45b9ae2c",
+              "726fa65d-591b-4cc0-a7b6-d00e0db367e3",
+              "04d7efb7-34eb-422f-bbea-4c7e51513805",
+              "2e294fed-322e-4b29-bc77-cedb41e50724",
+              "3cc9d1b7-9de5-40ff-9476-e3a411324fe0",
+              "2a0f13e8-57c8-4b3d-96ac-5006ff782d9f"
+            ],
+            "total_request_count": 4,
+            "number_of_cycles": 3,
+            "builtin_tool_uses": 3,
+            "turn_duration": {
+              "secs": 27,
+              "nanos": 430939708
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-08T23:38:13.631343448Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 3.3920002,
+            "metering_usage": [
+              {
+                "value": 0.041117624543946935,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.09418940265339966,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.1274473303482587,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.17334825771144277,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 2469498776
+            },
+            "result": {
+              "Ok": {
+                "id": "abca1fb9-aff2-4dd7-b830-3488673de3e6",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "This is a C++ **function template declaration** (partial — it's missing the function name and body).\n\nBreaking it down:\n\n- `template <typename precision, typename Derived>` — declares two generic type parameters:\n  - `precision` — intended to be a floating-point type like `float` or `double`\n  - `Derived` — typically an Eigen matrix/expression type\n\n- `Eigen::Matrix<precision, 3, 3>` — the **return type**: a 3×3 matrix using the `precision` scalar type (e.g., `Eigen::Matrix<float, 3, 3>` = a 3×3 float matrix, also known as `Eigen::Matrix3f`)\n\nSo the full signature would look something like:\n\n```cpp\ntemplate <typename precision, typename Derived>\nEigen::Matrix<precision, 3, 3> skew_symmetric(const Eigen::MatrixBase<Derived>& v) {\n    // returns a 3x3 skew-symmetric matrix from a 3-vector\n}\n```\n\nThe `Derived` template parameter on the input lets it accept any Eigen expression (not just a concrete matrix type) without unnecessary copies — this is the standard Eigen pattern using `Eigen::MatrixBase<Derived>`.\n\nIn your ESKF code specifically, this pattern is used for things like converting a 3D vector into a skew-symmetric matrix for cross-product operations in the filter's Jacobians."
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778283805
+                }
+              }
+            },
+            "message_ids": [
+              "1b0358e8-a625-461f-bdb8-2b325d7951e7",
+              "c97c7c60-a0c6-48d7-a1d2-9d5780a02cd7"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 7,
+              "nanos": 423801781
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-08T23:43:25.790305455Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 3.439,
+            "metering_usage": [
+              {
+                "value": 0.14495923333333335,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 2681358153
+            },
+            "result": {
+              "Ok": {
+                "id": "86b4caed-40d6-412d-ac73-ae42545e07b3",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "Yes, I can see it. That's a clean architecture diagram of the full IMU data path. It matches what I saw in the code:\n\n- **rover.c ↔ imu_correction.c** — the movement/correction feedback loop in `Main.c`\n- **ESKF** — the `ESKF.cpp` / `kalman_wrapper` sitting under `imu_correction`\n- **mmap() I2C driver** — `bmi270_port.c` writing directly to AXI IIC registers via `/dev/mem`\n- **FPGA PL** — the AXI IIC soft IP, loaded via the bitstream in `bitstream/`\n- **BMI270** — the physical sensor on the I2C bus\n\nOne thing worth adding to the diagram: the **motor control path** is a parallel branch that doesn't go through the IMU stack at all — it goes `rover.c → servo.c → motor.c → mmio.c → /dev/mem → FPGA motor IP cores`. The IMU correction only feeds back into rover.c to nudge motor speeds, it doesn't sit in the motor path directly."
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778284145
+                }
+              }
+            },
+            "message_ids": [
+              "125ee0f6-aae5-462c-a749-2d094e4159d3",
+              "c1d210e4-84e4-4d0e-b76d-d9119d6094cb"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 6,
+              "nanos": 820833780
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-08T23:49:05.715503953Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 3.5126,
+            "metering_usage": [
+              {
+                "value": 0.13933592023217248,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 3767744849
+            },
+            "result": {
+              "Ok": {
+                "id": "f53745d6-da27-4be1-a3e2-37d4456f0f52",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "```\n+------------------+\n| User Terminal    |\n| SSH / Serial I/O |\n+--------+---------+\n         |\n         v\n+------------------------------------------------------------------+\n| Linux Userspace Application                                      |\n|------------------------------------------------------------------|\n|                                                                  |\n|   +-------------------+       +----------------------------+    |\n|   |     Main.c        |       |     imu_correction.c       |    |\n|   |   Control Loop    +<----->|  Stall / Terrain / Heading |    |\n|   +--------+----------+       +-------------+--------------+    |\n|            |                                |                    |\n|            |                                v                    |\n|            |                  +----------------------------+    |\n|            |                  |    ESKF / Kalman Filter    |    |\n|            |                  |  Roll / Pitch / Yaw Est.   |    |\n|            |                  +----------------------------+    |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     rover.c       |                                         |\n|   | Movement Control  |                                         |\n|   +--------+----------+                                         |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     servo.c       |                                         |\n|   |   PID Controller  |                                         |\n|   +--------+----------+                                         |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     motor.c       |                                         |\n|   | MotorController   |                                         |\n|   +--------+----------+                                         |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     mmio.c        |                                         |\n|   | /dev/mem mmap()   |                                         |\n|   +--------+----------+                                         |\n|                                                                  |\n+------------------------------------------------------------------+\n         |                              |\n         v                              v\n+-------------------+      +----------------------------+\n| FPGA PL           |      | FPGA PL                    |\n| AXI Motor IP      |      | AXI IIC Soft IP Core       |\n| Cores (x10)       |      | Loaded via xmutil loadapp  |\n+--------+----------+      +-------------+--------------+\n         |                               |\n         v                               v\n+-------------------+      +----------------------------+\n| Drive / Steer     |      |       I2C Bus              |\n| Motors            |      |  (SDA / SCL)               |\n+-------------------+      +-------------+--------------+\n                                          |\n                                          v\n                            +----------------------------+\n                            |        BMI270 IMU          |\n                            |  Accel | Gyro | Biases     |\n                            +----------------------------+\n```\n\nThe two FPGA paths (motor IP cores and AXI IIC) are separate IP blocks in the same bitstream — `rover.h` shows their base addresses are all in the `0x8000_0000` range."
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778284324
+                }
+              }
+            },
+            "message_ids": [
+              "de4c2586-5e8a-46bc-964d-8ffaecef9227",
+              "f765908b-fe32-4e5d-bbf7-3dee5b30c4ec"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 10,
+              "nanos": 863654420
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-08T23:52:04.190850241Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 3.6027,
+            "metering_usage": [
+              {
+                "value": 0.15149615704809286,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 3946314238
+            },
+            "result": {
+              "Ok": {
+                "id": "4e729e28-1762-4072-afb4-fd0164bd6da9",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "Here's every box mapped to exact lines:\n\n**Main.c — Control Loop**\n- `main()` starts at line 76\n- `/dev/mem` open: line 80\n- IMU mmap: line 86\n- Main `while` loop: line 133 — calls `imu_correction_update`, terrain check, stall check, `imu_correction_apply`\n\n**imu_correction.c**\n- `imu_correction_update()`, `imu_correction_apply()`, `imu_correction_check_motion()` — all in `rover/imu_correction.c`\n- Header interface: `rover/imu_correction.h` lines 1–60\n\n**ESKF / Kalman Filter**\n- C++ implementation: `rover/ESKF.cpp`\n- C wrapper: `rover/kalman_wrapper.cpp` + `rover/kalman_wrapper.h`\n- Called from `imu_correction.c` via `kalman_init()` / `kalman_update()`\n\n**rover.c — Movement Control**\n- `rover_forward()`: line ~220\n- `rover_stop()`: line ~195\n- `rover_pointTurn_CW/CCW()`: line ~230–245\n\n**servo.c — PID Controller**\n- `Servo_init()` with PID gains (Kp=15, Ki=30, Kd=2): lines 12–38\n- `Servo_update()` — reads encoder, runs PID, writes duty cycle: lines 50–70\n\n**motor.c — MotorController**\n- `MotorController_write()` — packs bits into MMIO register: lines 40–44\n- `MotorController_read()` — reads encoder counts from `mmio+2`: line 48\n\n**mmio.c — /dev/mem mmap**\n- `mmio_init()` — opens `/dev/mem`, calls `mmap()`: lines 3–20\n\n**FPGA Motor IP base addresses**\n- `rover/rover.h` lines 8–30 — all `0x8000_0000` range addresses\n\n**AXI IIC base address**\n- `rover/bmi270_port.h` line 10: `#define AXI_IIC_BASE 0x800e0000`\n- IIC init: `rover/bmi270_port.c` → `axi_iic_init()`\n\n**BMI270 IMU**\n- Init: `Main.c` line ~100 `bmi270_kria_init()`\n- Read: `bmi270_port.c` → `bmi270_kria_read_ag()`"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778284408
+                }
+              }
+            },
+            "message_ids": [
+              "957752a5-8143-4769-8859-d302819ddab5",
+              "3e77a6fc-1678-4e31-834b-bd764c9f1cba",
+              "436a4630-02cf-4006-8a04-137735e445c1",
+              "c75d6a7c-8829-4447-8065-24ddcc97b0d0"
+            ],
+            "total_request_count": 2,
+            "number_of_cycles": 1,
+            "builtin_tool_uses": 1,
+            "turn_duration": {
+              "secs": 16,
+              "nanos": 299706436
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-08T23:53:28.171188901Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 3.836,
+            "metering_usage": [
+              {
+                "value": 0.09517489419568824,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.15674956600331671,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 1579192037
+            },
+            "result": {
+              "Ok": {
+                "id": "16650baa-6f01-47f3-a5a6-0f4ed8fd1a27",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "Sure. I'll go layer by layer top to bottom.\n\n---\n\n**User Terminal**\n\nYou SSH into the Kria board and run the compiled `rover` binary. That's the only entry point — there's no RTOS, no kernel driver, just a plain Linux process.\n\n---\n\n**Main.c — Control Loop**\n\nThis is the brain. It runs a `while` loop at ~3Hz (333ms sleep). Each iteration:\n1. Reads the IMU via `imu_correction_update()`\n2. Checks if the rover is tilting dangerously (`is_critical` / `is_warning`)\n3. Checks if the rover stalled or is moving when it shouldn't (`check_motion`)\n4. Applies a yaw correction to the motors (`imu_correction_apply`)\n\nIt also handles `SIGINT` (Ctrl+C) to cleanly stop the rover.\n\n---\n\n**rover.c — Movement Control**\n\nProvides the high-level movement commands: `rover_forward`, `rover_stop`, `rover_pointTurn_CW`, etc. These just call `motor_set_speed()` on each of the 6 wheel motors with the right sign (left wheels spin opposite to right wheels to go straight).\n\nIt also runs a **1ms ISR** via `SIGALRM` that calls `Servo_update()` on every motor — this is the real-time control loop running underneath the 3Hz main loop.\n\n---\n\n**imu_correction.c ↔ Main.c**\n\nThese two are tightly coupled. `imu_correction` doesn't move the rover directly — it reads the IMU, computes the current heading error, and tells `Main.c` what's wrong (stall, tilt, fault). `Main.c` then decides what to do (stop, correct, continue). The actual correction in `imu_correction_apply()` nudges individual wheel speeds to counteract yaw drift.\n\n---\n\n**ESKF / Kalman Filter**\n\nThe Error-State Kalman Filter fuses accelerometer + gyroscope data to estimate roll, pitch, and yaw. Raw IMU data is noisy — the ESKF smooths it and gives reliable orientation angles. Written in C++ (`ESKF.cpp`) and wrapped for C via `kalman_wrapper.cpp` so the rest of the C codebase can call `kalman_init()` and `kalman_update()`.\n\n---\n\n**servo.c — PID Controller**\n\nEach motor has a `Servo` struct containing a `MotorController` (hardware) and a `PIDController` (software). Every 1ms the ISR calls `Servo_update()` which:\n1. Reads the encoder count from hardware\n2. Feeds it into the PID (setpoint vs. current position)\n3. Writes the resulting duty cycle + direction back to hardware\n\nThis is what makes motors hold a target speed or position precisely.\n\n---\n\n**motor.c — MotorController**\n\nThe lowest software layer. It packs control signals (duty cycle, direction, enable, encoder clear) into a single 32-bit word and writes it to an MMIO register. It also reads back the 16-bit encoder count from `mmio+2` (the next register offset).\n\n---\n\n**mmio.c — /dev/mem mmap**\n\nLinux doesn't let userspace touch hardware registers directly. `mmio_init()` works around this by opening `/dev/mem` and calling `mmap()` to map a physical FPGA register address into the process's virtual address space. After that, reading/writing the motor is just a pointer dereference.\n\n---\n\n**FPGA Programmable Logic — Motor IP Cores**\n\nThe FPGA has 10+ custom motor controller IP blocks, each mapped to a unique base address (`0x80000000` through `0x800D0000`). Each IP core handles PWM generation and encoder counting in hardware. The CPU just writes a duty cycle and reads back counts.\n\n---\n\n**FPGA Programmable Logic — AXI IIC Core**\n\nA separate soft IP block on the FPGA that implements I2C in hardware. Mapped at `0x800E0000`. The `bmi270_port.c` driver writes directly to its TX FIFO, CR, and SR registers to send I2C transactions — no Linux I2C kernel driver involved at all.\n\n---\n\n**BMI270 IMU**\n\nThe physical sensor on the I2C bus at address `0x68`. Contains a 3-axis accelerometer and 3-axis gyroscope. The Bosch sensor API handles register-level communication; `bmi270_port.c` provides the hardware-specific read/write callbacks that the Bosch API calls into.\n\n---\n\nThe key architectural insight is that there are **two parallel real-time loops**:\n- The **1ms SIGALRM ISR** → servo PID → motor PWM (tight hardware control)\n- The **333ms main loop** → IMU read → Kalman filter → heading correction (slower sensor fusion)\n\nThey share state through the `Servo` structs — the main loop adjusts setpoints, the ISR executes them."
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778285142
+                }
+              }
+            },
+            "message_ids": [
+              "78b61b6b-5005-4d8d-9d7f-305cd884c059",
+              "9b6539c6-6980-4589-bc85-eac363bdb000"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 25,
+              "nanos": 449921174
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-09T00:05:42.801947199Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 3.9666998,
+            "metering_usage": [
+              {
+                "value": 0.2530313467661692,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 861039810
+            },
+            "result": {
+              "Ok": {
+                "id": "16387244-2e56-4e61-8277-9dab70a6b857",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "Not quite. The diagram I drew shows the **software layer hierarchy** (what calls what), but the arrows don't accurately represent **data flow direction**. Here's what's actually happening:\n\n---\n\n**IMU data path — bottom up:**\n```\nBMI270 → AXI IIC → bmi270_port.c → imu_correction.c → ESKF → imu_correction.c → Main.c\n```\nData flows *upward* — the sensor produces it, the filter refines it, Main.c consumes it.\n\n---\n\n**Motor command path — top down:**\n```\nMain.c → rover.c → motor_set_speed() → Servo.setpoint\n                                            ↓ (every 1ms via ISR)\n                                        Servo_update() → motor.c → mmio.c → FPGA Motor IP → Physical Motor\n```\nCommands flow *downward* — Main.c decides, hardware executes.\n\n---\n\n**Encoder feedback — bottom up (inside the ISR):**\n```\nPhysical Motor encoder → FPGA Motor IP → motor.c (MotorController_read) → servo.c (counts) → PID → duty cycle written back\n```\nThis is a **closed loop** entirely within the 1ms ISR — Main.c never sees raw encoder data.\n\n---\n\n**Correction feedback loop:**\n```\nIMU yaw error (imu_correction.c) → nudges motor setpoints in rover.c → motors correct heading\n```\nThis is the cross-connection between the two sides of the diagram — the IMU path feeds back into the motor path.\n\n---\n\nSo a more accurate representation is two loops with a bridge:\n\n```\n         +--[ IMU Loop ]------------------+\n         |  BMI270 → ESKF → imu_correction|\n         |                    |           |\n         |            heading error       |\n         |                    |           |\n         +--[ Motor Loop ]----v-----------+\n            Main.c → rover.c → Servo.setpoint\n                                    ↑↓  (1ms ISR)\n                              motor.c ↔ FPGA ↔ Physical Motors\n```\n\nThe diagram I drew earlier was correct as a **dependency/call graph**, but not as a **data flow diagram**. Want me to redraw it with proper directional arrows?"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778285881
+                }
+              }
+            },
+            "message_ids": [
+              "0de454b9-df56-4bd8-a822-974c8e790c82",
+              "bd62650e-b407-4fab-b60e-acf970ef50c9"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 12,
+              "nanos": 478494441
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-09T00:18:01.061560424Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 4.0337996,
+            "metering_usage": [
+              {
+                "value": 0.18581073946932003,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 3992438680
+            },
+            "result": {
+              "Ok": {
+                "id": "10e73ad2-3b4e-4296-841e-a89825cc27eb",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "```\n                        +------------------+\n                        |  User Terminal   |\n                        |  SSH / Serial    |\n                        +--------+---------+\n                                 |\n                            start/stop\n                                 |\n                                 v\n                        +--------+---------+\n                        |     Main.c       |\n                        |  Control Loop    |\n                        |    (~3Hz)        |\n                        +--+----------+---+\n                           |          ^\n               commands    |          |  fault/stall/\n               (forward,   |          |  terrain alerts\n                stop...)   |          |\n                           v          |\n+------------------+    +--+----------+---+       +-------------------+\n|   rover.c        |<-->|imu_correction.c |<------| ESKF / Kalman     |\n| motor_set_speed()|    | heading error   |       | Roll/Pitch/Yaw    |\n| sets Servo       |    | stall detection |       | (ESKF.cpp)        |\n| .setpoint        |    +----------------+       +-------------------+\n+--------+---------+             ^                        ^\n         |                       |                        |\n  setpoint                  IMU sensor               IMU sensor\n  written                    data                     data\n         |                       |                        |\n         | (1ms ISR)             |                        |\n         v                       |                        |\n+--------+---------+             |                        |\n|    servo.c       |             |                        |\n|  PID Controller  |             |                        |\n|  reads encoder   |             |                        |\n|  writes duty cyc.|             |                        |\n+--------+---------+             |                        |\n         |                       |                        |\n         v                       |                        |\n+--------+---------+             |                        |\n|    motor.c       |             |                        |\n| packs 32-bit reg |             |                        |\n| reads encoder    |             |                        |\n+--------+---------+             |                        |\n         |                       |                        |\n         v                       |                        |\n+--------+---------+             |                        |\n|    mmio.c        |             |                        |\n| /dev/mem mmap()  |             |                        |\n+--+------------+--+             |                        |\n   |            |                |                        |\n   v            v                v                        |\n+------+  +-----+----------+  +-+--------------------+   |\n| FPGA |  | FPGA           |  | FPGA                 |   |\n| Motor|  | Motor IP Cores |  | AXI IIC Soft IP      |   |\n| PWM  |  | Encoder Count  |  | 0x800E0000           |   |\n+--+---+  +------+---------+  +-----------+----------+   |\n   |             |                         |              |\n   v             | encoder                 | I2C          |\n+--+---+         | feedback                | (SDA/SCL)    |\n|Drive |         | (bottom up)             v              |\n|Motors|         |              +----------+----------+   |\n+------+         |              |     BMI270 IMU      |   |\n                 |              | Accel | Gyro |Biases+---+\n                 |              +---------------------+\n                 |\n                 +---> servo.c (counts fed into PID)\n```\n\nThe key flows to read:\n\n- **Left column** (top-down): commands flow down from Main.c → rover.c → servo.c → motor.c → mmio.c → FPGA → motors\n- **Right column** (bottom-up): IMU data flows up from BMI270 → AXI IIC → bmi270_port → ESKF → imu_correction → Main.c\n- **Encoder feedback** (bottom-up, left side): encoder counts flow back up from FPGA → motor.c → servo.c PID — this loop is entirely within the 1ms ISR\n- **Bridge**: `imu_correction.c` crosses both columns — it receives IMU data and nudges `rover.c` motor setpoints to correct heading drift"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778285937
+                }
+              }
+            },
+            "message_ids": [
+              "e0c8c749-6321-46d8-87f6-469bf3d29e6e",
+              "6b31c815-8cd5-4b14-83b3-f8522a7a5791"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 17,
+              "nanos": 475250310
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-09T00:18:57.815021723Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 4.1467,
+            "metering_usage": [
+              {
+                "value": 0.1891326625207297,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 3992083272
+            },
+            "result": {
+              "Ok": {
+                "id": "90857b65-270c-46c5-8b39-ba1fe331f2e8",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "I'll go through every labeled box and arrow in the diagram:\n\n---\n\n**Boxes**\n\n**User Terminal / SSH / Serial**\nYou, sitting at a computer, SSHed into the Kria board. You type `./rover` to start the program and Ctrl+C to stop it.\n\n**Main.c — Control Loop (~3Hz)**\nThe top-level program. Runs a `while` loop that wakes up every 333ms to check IMU status and decide if the rover needs to correct itself, stop, or keep going. It's the decision-maker.\n\n**imu_correction.c — heading error / stall detection**\nConsumes the Kalman filter output and answers three questions: Is the rover tilting dangerously? Has it stalled (motors spinning but not moving)? Is it drifting off its intended heading? Reports these back to Main.c as flags.\n\n**ESKF / Kalman — Roll/Pitch/Yaw (ESKF.cpp)**\nTakes raw noisy accelerometer + gyroscope numbers and produces smooth, reliable orientation angles (roll, pitch, yaw). The \"error-state\" part means it tracks small corrections to the estimate rather than the full state, which is more numerically stable.\n\n**rover.c — motor_set_speed() / sets Servo.setpoint**\nTranslates high-level commands like \"go forward at speed 128\" into individual per-motor speed targets. It knows the rover geometry — e.g. left wheels spin opposite direction to right wheels to go straight.\n\n**servo.c — PID Controller / reads encoder / writes duty cycle**\nRuns every 1ms via the ISR. For each motor: reads how far the encoder has moved, compares it to the target setpoint, runs PID math to compute the correction, and writes a duty cycle (0–255) back to the motor hardware.\n\n**motor.c — packs 32-bit reg / reads encoder**\nThe raw hardware interface. Packs all control signals (duty cycle, direction, enable, encoder clear) into a single 32-bit integer and writes it to one memory address. Reads the encoder count back from the next memory address.\n\n**mmio.c — /dev/mem mmap()**\nThe bridge between software and hardware. Maps physical FPGA register addresses into the process's virtual memory so that motor.c can just do `*mmio = value` to talk to hardware.\n\n**FPGA Motor PWM / Motor IP Cores / Encoder Count**\nCustom hardware blocks inside the FPGA. They receive the duty cycle and generate the actual PWM signal that drives the motor. They also count encoder pulses from the motor shaft and store the count in a register for motor.c to read back.\n\n**FPGA AXI IIC Soft IP — 0x800E0000**\nA hardware I2C controller implemented inside the FPGA. bmi270_port.c writes bytes into its TX FIFO register and it handles the actual I2C signaling on the wire. The address `0x800E0000` is where it's mapped in physical memory.\n\n**Drive Motors**\nThe physical DC motors that move the wheels. Receive PWM signals from the FPGA and spin accordingly.\n\n**BMI270 IMU — Accel / Gyro / Biases**\nThe physical inertial measurement unit chip on the I2C bus at address `0x68`. Contains a 3-axis accelerometer (measures linear acceleration / gravity direction) and a 3-axis gyroscope (measures rotation rate). Biases are calibration offsets stored on the chip.\n\n---\n\n**Arrows**\n\n**start/stop** — you launching or Ctrl+C-ing the binary\n\n**commands (forward, stop...)** — Main.c calling `rover_forward()`, `rover_stop()` etc. in rover.c\n\n**fault/stall/terrain alerts** — imu_correction.c returning error flags back up to Main.c\n\n**heading error nudge** — imu_correction.c calling into rover.c to slightly adjust individual wheel speeds to correct yaw drift\n\n**IMU sensor data** — raw accelerometer + gyroscope readings flowing up from bmi270_port into ESKF and imu_correction\n\n**setpoint written** — rover.c writing a target position/speed into each Servo struct, which the 1ms ISR then executes\n\n**1ms ISR** — the `SIGALRM` timer firing every millisecond, triggering servo.c to run PID on every motor\n\n**encoder feedback (bottom up)** — the physical motor shaft turning, the FPGA counting the pulses, motor.c reading that count, servo.c using it as the PID measurement input\n\n**I2C (SDA/SCL)** — the two-wire serial bus connecting the FPGA's IIC core to the BMI270 chip"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778287288
+                }
+              }
+            },
+            "message_ids": [
+              "32c48695-f9ed-4ce3-a645-fc1b986ce59e",
+              "9028a929-3497-44c4-86d2-95a018f04831"
+            ],
+            "total_request_count": 1,
+            "number_of_cycles": 0,
+            "builtin_tool_uses": 0,
+            "turn_duration": {
+              "secs": 24,
+              "nanos": 484552751
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-09T00:41:28.529290352Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 4.2691,
+            "metering_usage": [
+              {
+                "value": 0.25343669585406303,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          }
+        ],
+        "user_turn_start_request": null,
+        "last_request": null
+      },
+      "rts_model_state": {
+        "conversation_id": "5721b4e0-80f4-4922-ad70-23a5345b5cfa",
+        "model_info": {
+          "model_name": "auto",
+          "description": "Models chosen by task for optimal usage and consistent quality",
+          "model_id": "auto",
+          "context_window_tokens": 1000000,
+          "rate_multiplier": 1.0,
+          "rate_unit": "Credit"
+        },
+        "context_usage_percentage": 4.2691
+      },
+      "permissions": {
+        "filesystem": {
+          "allowed_read_paths": [
+            "/home/bwang56/my-SIMBA"
+          ],
+          "allowed_write_paths": [],
+          "denied_read_paths": [],
+          "denied_write_paths": []
+        },
+        "trusted_tools": [],
+        "denied_tools": [],
+        "allowed_commands": []
+      },
+      "agent_name": "kiro_default"
+    }
+  },
+  "log_entries": [
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "98282567-61c3-4893-ac97-0962b2961029",
+        "content": [
+          {
+            "kind": "text",
+            "data": "look thorugh this code and give me a summary. Also it might be missing a driver or two"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778283466
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "71ab84b0-64a8-4ded-8682-bf7ffc1dbe6e",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_Z1tFn7cBxu1VDW9uCG6rGo",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Explore the project structure",
+                "operations": [
+                  {
+                    "mode": "Directory",
+                    "path": "/home/bwang56/my-SIMBA",
+                    "depth": 3
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "78c68ac1-3ef2-4639-9df9-3c937db80b8f",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_Z1tFn7cBxu1VDW9uCG6rGo",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "User id: 1000\ndrwxr-xr-x 8 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git\n-rw-r--r-- 1 1000 1000 62812 May 08 22:33 /home/bwang56/my-SIMBA/new.txt\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/rover\n-rw-r--r-- 1 1000 1000 59 May 08 22:33 /home/bwang56/my-SIMBA/README.md\n-rw-r--r-- 1 1000 1000 5819 May 08 22:33 /home/bwang56/my-SIMBA/README\n-rw-r--r-- 1 1000 1000 64 May 08 22:33 /home/bwang56/my-SIMBA/.gitignore\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:15 /home/bwang56/my-SIMBA/test\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:13 /home/bwang56/my-SIMBA/bitstream\n-rw-r--r-- 1 1000 1000 674 May 07 08:12 /home/bwang56/my-SIMBA/.pre-commit-config.yaml\n-rwxr-xr-x 1 1000 1000 158 May 07 08:12 /home/bwang56/my-SIMBA/setup.sh\n-rw-r--r-- 1 1000 1000 14 May 08 22:34 /home/bwang56/my-SIMBA/.git/COMMIT_EDITMSG\n-rw-r--r-- 1 1000 1000 3200 May 08 22:34 /home/bwang56/my-SIMBA/.git/index\ndrwxr-xr-x 47 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects\n-rw-r--r-- 1 1000 1000 96 May 08 22:33 /home/bwang56/my-SIMBA/.git/FETCH_HEAD\n-rw-r--r-- 1 1000 1000 41 May 08 22:33 /home/bwang56/my-SIMBA/.git/ORIG_HEAD\n-rw-r--r-- 1 1000 1000 294 May 07 08:10 /home/bwang56/my-SIMBA/.git/config\n-rw-r--r-- 1 1000 1000 112 May 07 08:10 /home/bwang56/my-SIMBA/.git/packed-refs\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs\ndrwxr-xr-x 5 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs\n-rw-r--r-- 1 1000 1000 21 May 07 08:10 /home/bwang56/my-SIMBA/.git/HEAD\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/info\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks\n-rw-r--r-- 1 1000 1000 73 May 07 08:10 /home/bwang56/my-SIMBA/.git/description\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/branches\n-rw-r--r-- 1 1000 1000 5053 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.c\n-rw-r--r-- 1 1000 1000 589 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.cpp\n-rw-r--r-- 1 1000 1000 1345 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.h\n-rw-r--r-- 1 1000 1000 16023 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.c\n-rw-r--r-- 1 1000 1000 286 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.h\n-rw-r--r-- 1 1000 1000 900 May 08 22:33 /home/bwang56/my-SIMBA/rover/utilities.h\n-rw-r--r-- 1 1000 1000 852 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.h\n-rw-r--r-- 1 1000 1000 5120 May 08 22:33 /home/bwang56/my-SIMBA/rover/Main.c\n-rw-r--r-- 1 1000 1000 3842 May 08 22:33 /home/bwang56/my-SIMBA/rover/Quaternion.h\n-rw-r--r-- 1 1000 1000 1580 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.h\n-rw-r--r-- 1 1000 1000 7999 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.cpp\n-rwxr-xr-x 1 1000 1000 681 May 07 08:16 /home/bwang56/my-SIMBA/rover/Makefile\n-rwxr-xr-x 1 1000 1000 503 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.h\n-rwxr-xr-x 1 1000 1000 3097 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.h\n-rwxr-xr-x 1 1000 1000 43776 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover\n-rwxr-xr-x 1 1000 1000 7979 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.c\n-rwxr-xr-x 1 1000 1000 800 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.h\n-rwxr-xr-x 1 1000 1000 696 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.h\n-rwxr-xr-x 1 1000 1000 14138 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.c\n-rwxr-xr-x 1 1000 1000 1866 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.c\n-rwxr-xr-x 1 1000 1000 1371 May 07 08:12 /home/bwang56/my-SIMBA/rover/plot.py\n-rwxr-xr-x 1 1000 1000 726 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.c\n-rwxr-xr-x 1 1000 1000 735 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.h\n-rwxr-xr-x 1 1000 1000 357 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.h\n-rw-r--r-- 1 1000 1000 78816 May 07 08:12 /home/bwang56/my-SIMBA/rover/librover.a\n-rwxr-xr-x 1 1000 1000 1195 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.c\n-rwxr-xr-x 1 1000 1000 1590 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.c\n-rw-r--r-- 1 1000 1000 23150 May 07 08:12 /home/bwang56/my-SIMBA/test/out.txt\n-rw-r--r-- 1 1000 1000 155 May 07 08:12 /home/bwang56/my-SIMBA/test/Makefile\n-rwxr-xr-x 1 1000 1000 48096 May 07 08:12 /home/bwang56/my-SIMBA/test/main\n-rw-r--r-- 1 1000 1000 1136 May 07 08:12 /home/bwang56/my-SIMBA/test/main.c\n-rwxr-xr-x 1 1000 1000 76 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/load.py\n-rwxr-xr-x 1 1000 1000 828632 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.hwh\n-rwxr-xr-x 1 1000 1000 7797811 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.bit\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/14\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/ea\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/9b\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/4e\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/22\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c5\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6a\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3a\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/1f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/f1\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/b0\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/ae\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/58\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/8d\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/c7\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/fd\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/97\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/info\n-rw-r--r-- 1 1000 1000 654 May 08 22:34 /home/bwang56/my-SIMBA/.git/logs/HEAD\ndrwxr-xr-x 4 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/remotes\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/tags\n-rw-r--r-- 1 1000 1000 240 May 07 08:10 /home/bwang56/my-SIMBA/.git/info/exclude\n-rwxr-xr-x 1 1000 1000 896 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/commit-msg.sample\n-rwxr-xr-x 1 1000 1000 416 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-merge-commit.sample\n-rwxr-xr-x 1 1000 1000 189 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/post-update.sample\n-rwxr-xr-x 1 1000 1000 1374 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-push.sample\n-rwxr-xr-x 1 1000 1000 4898 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-rebase.sample\n-rwxr-xr-x 1 1000 1000 3650 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/update.sample\n-rwxr-xr-x 1 1000 1000 2308 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/sendemail-validate.sample\n-rwxr-xr-x 1 1000 1000 544 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-receive.sample\n-rwxr-xr-x 1 1000 1000 424 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-applypatch.sample\n-rwxr-xr-x 1 1000 1000 2783 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/push-to-checkout.sample\n-rwxr-xr-x 1 1000 1000 478 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/applypatch-msg.sample\n-rwxr-xr-x 1 1000 1000 1492 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/prepare-commit-msg.sample\n-rwxr-xr-x 1 1000 1000 4726 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/fsmonitor-watchman.sample\n-rwxr-xr-x 1 1000 1000 1643 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-commit.sample\n-r--r--r-- 1 1000 1000 319 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/14/7d45029d2cc988f21fa4fb7155ff5ca359b178\n-r--r--r-- 1 1000 1000 123 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c/cc79f7f462a58f8889119b960c34a73bcba9fe\n-r--r--r-- 1 1000 1000 162 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/ea/693e217dacf11722b521d83c72ac6a455a0a0e\n-r--r--r-- 1 1000 1000 65 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0/34387a1e43c7fcbe19bb2860eda0bead815ea6\n-r--r--r-- 1 1000 1000 67385 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b/afdeca106f1b4dc9b97138951d168997b46559\n-r--r--r-- 1 1000 1000 415 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/6b/14001825e88fc22941b4da7538fded87a408eb\n-r--r--r-- 1 1000 1000 201527 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c/ef177c37dacea5a99a7cf7648876ca2b1b5339\n-r--r--r-- 1 1000 1000 3610 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/9b/6dda044412f609364e082d8bcc7cbafa27da7f\n-r--r--r-- 1 1000 1000 541 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/4e/fb27cbcc7690b7ce461a8d84542453ba516da2\n-r--r--r-- 1 1000 1000 318 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f/ee5567df7f7ec640574a0ab28c6ee39a7c3110\n-r--r--r-- 1 1000 1000 357 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8/396bab1912f26d1be495992358cff7a9d05dc0\n-r--r--r-- 1 1000 1000 1200 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0/f991512d8430ffb627ef44f7eb2121563defd6\n-r--r--r-- 1 1000 1000 280 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/22/c00319db0c64f345167e6ae40eb323ce33baa8\n-r--r--r-- 1 1000 1000 159 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95/0bd132c3d578359953e77cb818c4a0837ec6e4\n-r--r--r-- 1 1000 1000 618 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c5/15101ec4384d13baa98490d8bb74a35b041288\n-r--r--r-- 1 1000 1000 1758 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24/7e1b65e06aae462dd232229ca08f62244aa179\n-r--r--r-- 1 1000 1000 771 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d/4b32dde50e5087e808278249d3c26afb6d5a9a\n-r--r--r-- 1 1000 1000 408 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20/c1879c4eb9e7ef5c1d47832d0a05f86728f878\n-r--r--r-- 1 1000 1000 155 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6a/fa66b3cb5ebdb8473a59a5f9223f65b79121a5\n-r--r--r-- 1 1000 1000 18502 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3a/e3da6d593358d60df7f791e96b409319ccb18b\n-r--r--r-- 1 1000 1000 1937 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f/55d56b96a0912d885be217885402819e041a02\n-r--r--r-- 1 1000 1000 338 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/3f/8dde8bd3668445bdfeb140aca0a7a31a8f548f\n-r--r--r-- 1 1000 1000 2522 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/1f/34ad8530b51c7b647fb6d29bcd00ad705f074f\n-r--r--r-- 1 1000 1000 52 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f/fb3509601c04251bf040398b8a97bb5241d76a\n-r--r--r-- 1 1000 1000 287 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/f1/9a764cb5def2cfb7e3d00d30001866911d3892\n-r--r--r-- 1 1000 1000 115 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19/f5f29f0e45cdf93f1c00458c614a5d4f8ace79\n-r--r--r-- 1 1000 1000 642 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/19/7babc6f77d7d35c4fc84a4a9cbdb07b85d8349\n-r--r--r-- 1 1000 1000 155 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/b0/c90361b23f5d534b4cfb3faa9900d94c2fafad\n-r--r--r-- 1 1000 1000 3874 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29/58ff6222721fd15d4d16baf9343d11a6c85260\n-r--r--r-- 1 1000 1000 541 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/ae/5e0a97cee830f2edb73ab37fcf5b8e053b3a15\n-r--r--r-- 1 1000 1000 63 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd/b2340cf5decca43f77c0a5b9d81d36d59d206e\n-r--r--r-- 1 1000 1000 404 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/b384d59e499444955932ec9e6ffb109dc1cad9\n-r--r--r-- 1 1000 1000 123 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/17364f474da8fde06ece5d7fa16ec652ba59b6\n-r--r--r-- 1 1000 1000 362 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9/ec0e9335b18a4ce36550ce8a9bc47ae182244e\n-r--r--r-- 1 1000 1000 1160 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/58/14d75570e80dc58b7361f4943cb5ea6d5d6794\n-r--r--r-- 1 1000 1000 346 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/8d/7000843d6181d58750b7a139cd1b2b7f26793f\n-r--r--r-- 1 1000 1000 358 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/c7/2627d6450e0436fdbcd6662986aaec64dc44bf\n-r--r--r-- 1 1000 1000 562 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/e007bae173fb27e4e14c88c87e941d9a951f20\n-r--r--r-- 1 1000 1000 84 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/f7a2bc3d79380fdbeb17e0e632a253796b98dd\n-r--r--r-- 1 1000 1000 687 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09/164588361c4ed31ece0c16289b59bc92c31327\n-r--r--r-- 1 1000 1000 453 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4/5733bc43d23be288006c6551015588418cc1b4\n-r--r--r-- 1 1000 1000 69 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/fd/3c1076cefafe5619b26cd5a9d5222ebbeb1f9e\n-r--r--r-- 1 1000 1000 366 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34/46d001b7ac77cece12afd66a256f878c4a4826\n-r--r--r-- 1 1000 1000 1689 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/97/f1de43a6ba648a8945d1cb1597134e76b618f5\n-r--r--r-- 1 1000 1000 2284 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/603940d49ab8e4ada5500872c2398217c9c94f\n-r--r--r-- 1 1000 1000 492 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/f548bfd63859c9a31ab38737d9625ebc54b958\n-r--r--r-- 1 1000 1000 201 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77/a8859a95a7941bce5b58bad38929236ad43084\n-r--r--r-- 1 1000 1000 108 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28/02506cf677c32e36045c1fc9868de38441f6af\n-r--r--r-- 1 1000 1000 279 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87/5cf4e0f88b44c73ba349235eb6db4432ac9168\n-r--r--r-- 1 1000 1000 1156 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.idx\n-r--r--r-- 1 1000 1000 917 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.pack\n-r--r--r-- 1 1000 1000 64 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.rev\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/remotes\n-rw-r--r-- 1 1000 1000 41 May 08 22:34 /home/bwang56/my-SIMBA/.git/refs/heads/main\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/refs/remotes/origin"
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_Z1tFn7cBxu1VDW9uCG6rGo": {
+            "tool": {
+              "tool_use_purpose": "Explore the project structure",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Directory",
+                        "path": "/home/bwang56/my-SIMBA",
+                        "depth": 3,
+                        "exclude_patterns": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Text": "User id: 1000\ndrwxr-xr-x 8 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git\n-rw-r--r-- 1 1000 1000 62812 May 08 22:33 /home/bwang56/my-SIMBA/new.txt\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/rover\n-rw-r--r-- 1 1000 1000 59 May 08 22:33 /home/bwang56/my-SIMBA/README.md\n-rw-r--r-- 1 1000 1000 5819 May 08 22:33 /home/bwang56/my-SIMBA/README\n-rw-r--r-- 1 1000 1000 64 May 08 22:33 /home/bwang56/my-SIMBA/.gitignore\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:15 /home/bwang56/my-SIMBA/test\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:13 /home/bwang56/my-SIMBA/bitstream\n-rw-r--r-- 1 1000 1000 674 May 07 08:12 /home/bwang56/my-SIMBA/.pre-commit-config.yaml\n-rwxr-xr-x 1 1000 1000 158 May 07 08:12 /home/bwang56/my-SIMBA/setup.sh\n-rw-r--r-- 1 1000 1000 14 May 08 22:34 /home/bwang56/my-SIMBA/.git/COMMIT_EDITMSG\n-rw-r--r-- 1 1000 1000 3200 May 08 22:34 /home/bwang56/my-SIMBA/.git/index\ndrwxr-xr-x 47 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects\n-rw-r--r-- 1 1000 1000 96 May 08 22:33 /home/bwang56/my-SIMBA/.git/FETCH_HEAD\n-rw-r--r-- 1 1000 1000 41 May 08 22:33 /home/bwang56/my-SIMBA/.git/ORIG_HEAD\n-rw-r--r-- 1 1000 1000 294 May 07 08:10 /home/bwang56/my-SIMBA/.git/config\n-rw-r--r-- 1 1000 1000 112 May 07 08:10 /home/bwang56/my-SIMBA/.git/packed-refs\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs\ndrwxr-xr-x 5 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs\n-rw-r--r-- 1 1000 1000 21 May 07 08:10 /home/bwang56/my-SIMBA/.git/HEAD\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/info\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks\n-rw-r--r-- 1 1000 1000 73 May 07 08:10 /home/bwang56/my-SIMBA/.git/description\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/branches\n-rw-r--r-- 1 1000 1000 5053 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.c\n-rw-r--r-- 1 1000 1000 589 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.cpp\n-rw-r--r-- 1 1000 1000 1345 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.h\n-rw-r--r-- 1 1000 1000 16023 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.c\n-rw-r--r-- 1 1000 1000 286 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.h\n-rw-r--r-- 1 1000 1000 900 May 08 22:33 /home/bwang56/my-SIMBA/rover/utilities.h\n-rw-r--r-- 1 1000 1000 852 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.h\n-rw-r--r-- 1 1000 1000 5120 May 08 22:33 /home/bwang56/my-SIMBA/rover/Main.c\n-rw-r--r-- 1 1000 1000 3842 May 08 22:33 /home/bwang56/my-SIMBA/rover/Quaternion.h\n-rw-r--r-- 1 1000 1000 1580 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.h\n-rw-r--r-- 1 1000 1000 7999 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.cpp\n-rwxr-xr-x 1 1000 1000 681 May 07 08:16 /home/bwang56/my-SIMBA/rover/Makefile\n-rwxr-xr-x 1 1000 1000 503 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.h\n-rwxr-xr-x 1 1000 1000 3097 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.h\n-rwxr-xr-x 1 1000 1000 43776 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover\n-rwxr-xr-x 1 1000 1000 7979 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.c\n-rwxr-xr-x 1 1000 1000 800 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.h\n-rwxr-xr-x 1 1000 1000 696 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.h\n-rwxr-xr-x 1 1000 1000 14138 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.c\n-rwxr-xr-x 1 1000 1000 1866 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.c\n-rwxr-xr-x 1 1000 1000 1371 May 07 08:12 /home/bwang56/my-SIMBA/rover/plot.py\n-rwxr-xr-x 1 1000 1000 726 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.c\n-rwxr-xr-x 1 1000 1000 735 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.h\n-rwxr-xr-x 1 1000 1000 357 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.h\n-rw-r--r-- 1 1000 1000 78816 May 07 08:12 /home/bwang56/my-SIMBA/rover/librover.a\n-rwxr-xr-x 1 1000 1000 1195 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.c\n-rwxr-xr-x 1 1000 1000 1590 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.c\n-rw-r--r-- 1 1000 1000 23150 May 07 08:12 /home/bwang56/my-SIMBA/test/out.txt\n-rw-r--r-- 1 1000 1000 155 May 07 08:12 /home/bwang56/my-SIMBA/test/Makefile\n-rwxr-xr-x 1 1000 1000 48096 May 07 08:12 /home/bwang56/my-SIMBA/test/main\n-rw-r--r-- 1 1000 1000 1136 May 07 08:12 /home/bwang56/my-SIMBA/test/main.c\n-rwxr-xr-x 1 1000 1000 76 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/load.py\n-rwxr-xr-x 1 1000 1000 828632 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.hwh\n-rwxr-xr-x 1 1000 1000 7797811 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.bit\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/14\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/ea\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/9b\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/4e\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/22\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c5\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6a\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3a\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/1f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/f1\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/b0\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/ae\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/58\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/8d\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/c7\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/fd\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/97\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/info\n-rw-r--r-- 1 1000 1000 654 May 08 22:34 /home/bwang56/my-SIMBA/.git/logs/HEAD\ndrwxr-xr-x 4 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/remotes\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/tags\n-rw-r--r-- 1 1000 1000 240 May 07 08:10 /home/bwang56/my-SIMBA/.git/info/exclude\n-rwxr-xr-x 1 1000 1000 896 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/commit-msg.sample\n-rwxr-xr-x 1 1000 1000 416 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-merge-commit.sample\n-rwxr-xr-x 1 1000 1000 189 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/post-update.sample\n-rwxr-xr-x 1 1000 1000 1374 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-push.sample\n-rwxr-xr-x 1 1000 1000 4898 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-rebase.sample\n-rwxr-xr-x 1 1000 1000 3650 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/update.sample\n-rwxr-xr-x 1 1000 1000 2308 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/sendemail-validate.sample\n-rwxr-xr-x 1 1000 1000 544 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-receive.sample\n-rwxr-xr-x 1 1000 1000 424 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-applypatch.sample\n-rwxr-xr-x 1 1000 1000 2783 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/push-to-checkout.sample\n-rwxr-xr-x 1 1000 1000 478 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/applypatch-msg.sample\n-rwxr-xr-x 1 1000 1000 1492 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/prepare-commit-msg.sample\n-rwxr-xr-x 1 1000 1000 4726 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/fsmonitor-watchman.sample\n-rwxr-xr-x 1 1000 1000 1643 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-commit.sample\n-r--r--r-- 1 1000 1000 319 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/14/7d45029d2cc988f21fa4fb7155ff5ca359b178\n-r--r--r-- 1 1000 1000 123 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c/cc79f7f462a58f8889119b960c34a73bcba9fe\n-r--r--r-- 1 1000 1000 162 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/ea/693e217dacf11722b521d83c72ac6a455a0a0e\n-r--r--r-- 1 1000 1000 65 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0/34387a1e43c7fcbe19bb2860eda0bead815ea6\n-r--r--r-- 1 1000 1000 67385 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b/afdeca106f1b4dc9b97138951d168997b46559\n-r--r--r-- 1 1000 1000 415 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/6b/14001825e88fc22941b4da7538fded87a408eb\n-r--r--r-- 1 1000 1000 201527 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c/ef177c37dacea5a99a7cf7648876ca2b1b5339\n-r--r--r-- 1 1000 1000 3610 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/9b/6dda044412f609364e082d8bcc7cbafa27da7f\n-r--r--r-- 1 1000 1000 541 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/4e/fb27cbcc7690b7ce461a8d84542453ba516da2\n-r--r--r-- 1 1000 1000 318 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f/ee5567df7f7ec640574a0ab28c6ee39a7c3110\n-r--r--r-- 1 1000 1000 357 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8/396bab1912f26d1be495992358cff7a9d05dc0\n-r--r--r-- 1 1000 1000 1200 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0/f991512d8430ffb627ef44f7eb2121563defd6\n-r--r--r-- 1 1000 1000 280 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/22/c00319db0c64f345167e6ae40eb323ce33baa8\n-r--r--r-- 1 1000 1000 159 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95/0bd132c3d578359953e77cb818c4a0837ec6e4\n-r--r--r-- 1 1000 1000 618 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c5/15101ec4384d13baa98490d8bb74a35b041288\n-r--r--r-- 1 1000 1000 1758 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24/7e1b65e06aae462dd232229ca08f62244aa179\n-r--r--r-- 1 1000 1000 771 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d/4b32dde50e5087e808278249d3c26afb6d5a9a\n-r--r--r-- 1 1000 1000 408 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20/c1879c4eb9e7ef5c1d47832d0a05f86728f878\n-r--r--r-- 1 1000 1000 155 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6a/fa66b3cb5ebdb8473a59a5f9223f65b79121a5\n-r--r--r-- 1 1000 1000 18502 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3a/e3da6d593358d60df7f791e96b409319ccb18b\n-r--r--r-- 1 1000 1000 1937 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f/55d56b96a0912d885be217885402819e041a02\n-r--r--r-- 1 1000 1000 338 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/3f/8dde8bd3668445bdfeb140aca0a7a31a8f548f\n-r--r--r-- 1 1000 1000 2522 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/1f/34ad8530b51c7b647fb6d29bcd00ad705f074f\n-r--r--r-- 1 1000 1000 52 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f/fb3509601c04251bf040398b8a97bb5241d76a\n-r--r--r-- 1 1000 1000 287 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/f1/9a764cb5def2cfb7e3d00d30001866911d3892\n-r--r--r-- 1 1000 1000 115 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19/f5f29f0e45cdf93f1c00458c614a5d4f8ace79\n-r--r--r-- 1 1000 1000 642 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/19/7babc6f77d7d35c4fc84a4a9cbdb07b85d8349\n-r--r--r-- 1 1000 1000 155 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/b0/c90361b23f5d534b4cfb3faa9900d94c2fafad\n-r--r--r-- 1 1000 1000 3874 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29/58ff6222721fd15d4d16baf9343d11a6c85260\n-r--r--r-- 1 1000 1000 541 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/ae/5e0a97cee830f2edb73ab37fcf5b8e053b3a15\n-r--r--r-- 1 1000 1000 63 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd/b2340cf5decca43f77c0a5b9d81d36d59d206e\n-r--r--r-- 1 1000 1000 404 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/b384d59e499444955932ec9e6ffb109dc1cad9\n-r--r--r-- 1 1000 1000 123 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/17364f474da8fde06ece5d7fa16ec652ba59b6\n-r--r--r-- 1 1000 1000 362 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9/ec0e9335b18a4ce36550ce8a9bc47ae182244e\n-r--r--r-- 1 1000 1000 1160 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/58/14d75570e80dc58b7361f4943cb5ea6d5d6794\n-r--r--r-- 1 1000 1000 346 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/8d/7000843d6181d58750b7a139cd1b2b7f26793f\n-r--r--r-- 1 1000 1000 358 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/c7/2627d6450e0436fdbcd6662986aaec64dc44bf\n-r--r--r-- 1 1000 1000 562 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/e007bae173fb27e4e14c88c87e941d9a951f20\n-r--r--r-- 1 1000 1000 84 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/f7a2bc3d79380fdbeb17e0e632a253796b98dd\n-r--r--r-- 1 1000 1000 687 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09/164588361c4ed31ece0c16289b59bc92c31327\n-r--r--r-- 1 1000 1000 453 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4/5733bc43d23be288006c6551015588418cc1b4\n-r--r--r-- 1 1000 1000 69 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/fd/3c1076cefafe5619b26cd5a9d5222ebbeb1f9e\n-r--r--r-- 1 1000 1000 366 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34/46d001b7ac77cece12afd66a256f878c4a4826\n-r--r--r-- 1 1000 1000 1689 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/97/f1de43a6ba648a8945d1cb1597134e76b618f5\n-r--r--r-- 1 1000 1000 2284 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/603940d49ab8e4ada5500872c2398217c9c94f\n-r--r--r-- 1 1000 1000 492 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/f548bfd63859c9a31ab38737d9625ebc54b958\n-r--r--r-- 1 1000 1000 201 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77/a8859a95a7941bce5b58bad38929236ad43084\n-r--r--r-- 1 1000 1000 108 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28/02506cf677c32e36045c1fc9868de38441f6af\n-r--r--r-- 1 1000 1000 279 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87/5cf4e0f88b44c73ba349235eb6db4432ac9168\n-r--r--r-- 1 1000 1000 1156 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.idx\n-r--r--r-- 1 1000 1000 917 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.pack\n-r--r--r-- 1 1000 1000 64 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.rev\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/remotes\n-rw-r--r-- 1 1000 1000 41 May 08 22:34 /home/bwang56/my-SIMBA/.git/refs/heads/main\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/refs/remotes/origin"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "726fa65d-591b-4cc0-a7b6-d00e0db367e3",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_sOpD0byryo19UMdgkzUXfc",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Read the main source files",
+                "operations": [
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/Main.c"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/rover.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/rover.c"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/motor.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/motor.c"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "7bae9e1e-569e-4dcd-8a50-da391b44a9d4",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_sOpD0byryo19UMdgkzUXfc",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "// TEST MMIO GPIO CONTROL\n#include <math.h>\n#include <signal.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <unistd.h>\n#include <fcntl.h>\n#include <sys/mman.h>\n#include <unistd.h>\n\n\n#include \"rover.h\"\n#include \"servo.h\"\n#include \"imu_correction.h\"\n#include \"kalman_wrapper.h\"\n#include \"bmi270_port.h\"\n\n\n// globals\n#define DEFAULT_MOTOR_SPEED 128\nstatic bool done = false;\n\n\nvoid sigint_handler(int signum) {\n  (void)signum;\n  printf(\"SIGINT caught\\n\");\n  done = true;\n}\n\n\n\n\n// ------------- added some wrapper functions for simba movement ------------------------\nstatic void simba_forward(int speed){\n \n  imu_correction_set_motor_state(true);\n  imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n  rover_forward(speed);\n}\n\n\n// static void simba_reverse(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n//   rover_reverse(speed);\n// }\n\n\nstatic void simba_stop(void){\n\n\n  imu_correction_set_motor_state(false);\n  imu_correction_clear_heading_reference();\n  rover_stop();\n}\n\n\n// static void simba_point_turn_cw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CW(speed);\n// }\n\n\n// static void simba_point_turn_ccw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CCW(speed);\n// }\n// --------------------------------------------------------------------------\n\n\nint main() {\n  // Configure signal handler\n  signal(SIGINT, sigint_handler);\n\n\n  // opening the fd and checking for error\n  int fd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n  if (fd < 0) {\n      perror(\"open /dev/mem\");\n      return 1;\n  }\n\n\n  // base address in memory of the IMU\n  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);\n\n\n  // checking the return type    \n  if (iic_base == MAP_FAILED) {\n      perror(\"mmap\");\n      return 1;\n  }\n\n\n  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)\n  struct bmi2_dev dev = {0};    // bosch device struct\n\n\n  // resets and then enables\n  axi_iic_init();\n\n\n  // IMU init\n  int8_t rslt = bmi270_kria_init(&ctx, &dev);\n  if (rslt != BMI2_OK){\n    printf(\"BMI270 init failed: %d\\n\", rslt);\n    return 1;\n  }\n  printf(\"BMI270 init result: %d\\n\", rslt);\n\n\n\n\n  // Initialize rover\n  if (rover_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n  if (isr_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n\n\n  // initialize KF\n  struct bmi2_sens_axes_data acc, gyr;\n  rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);\n  if (rslt == BMI2_OK){\n    float ax = (float)(acc.x / (32768.0f / 4.0f));\n    float ay = (float)(acc.y / (32768.0f / 4.0f));\n    float az = (float)(acc.z / (32768.0f / 4.0f));\n    kalman_init(ax, ay, -az);\n  }\n  else {\n    printf(\"Initial IMU KF read failed\\n\");\n    return 1;\n  }\n  // initialize IMU correction system\n  if (imu_correction_init(&dev) != 0){\n    printf(\"IMU correction init failed\\n\");\n    return 1;\n  }\n\n\n  // testing\n  // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, 1000);\n  //rover_move_x(10000, 128);\n\n\n  printf(\"All systems have passed initialization!\\n\");\n\n\n  // start moving forward at the default speed\n  simba_forward(DEFAULT_MOTOR_SPEED);\n\n\n  // infinite loop\n  while (done == false) {\n\n\n    // apply imu correction\n    int update_result = imu_correction_update(&dev);\n\n\n    // if there is an error in the return from imu_correction_update()\n    if (update_result != 0){\n      if (imu_correction_is_fault()){\n        printf(\"There is a fault, stopping\\n\");\n        simba_stop();\n        done = true;\n        continue;\n      }\n    }\n\n\n    // check terrain. If there is an issue, handle it\n    if (imu_correction_is_critical() || imu_correction_is_warning()){\n      imu_correction_handle_terrain(imu_correction_get_map());\n    }\n\n\n    // want to check motion\n    int check_motion_res = imu_correction_check_motion();\n    if (check_motion_res != 0){\n     \n      // check stalled flag\n      if (imu_correction_is_stall()){\n        printf(\"Stall has been detected, attempting to correct\\n\");\n        // recovery is already being corrected in imu_correction_check_motion()\n        simba_forward(DEFAULT_MOTOR_SPEED);\n      }\n\n\n      // check unintended motion flag\n      if (imu_correction_is_unintended_motion()){\n        printf(\"Unintended motion has been detected, going to stop rover\\n\");\n        done = true;\n        continue;\n      }\n    }\n\n\n    // apply correction and then wait 333ms\n    imu_correction_apply();\n    bmi270_delay_us(333000, NULL);\n  }\n\n\n  // want to stop the rover after while loop\n  simba_stop();\n\n\n  // unmap the iic and close the fd\n  munmap((void*)iic_base, MAP_SIZE);\n  close(fd);\n\n\n  // Close Rover\n  if (rover_close() != 0) {\n    printf(\"failed to close rover\\n\");\n    return -1;\n  }\n\n\n  return 0;\n}"
+                },
+                {
+                  "kind": "text",
+                  "data": "// Rover Control API\n#ifndef ROVER_H\n#define ROVER_H\n\n/** include to make accessible in library */\n#include \"mmio.h\"\n#include \"motor.h\"\n\n#include <stdlib.h>\n/* Define the Rover's Motors */\n#define MOTOR_REAR_RIGHT_STEER (0x80000000)\n#define RRS (MOTOR_REAR_RIGHT_STEER)\n#define MOTOR_REAR_RIGHT_WHEEL 0x80010000\n#define RRW (MOTOR_REAR_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_RIGHT_STEER 0x80020000\n#define FRS (MOTOR_FRONT_RIGHT_STEER)\n#define MOTOR_FRONT_RIGHT_WHEEL 0x80030000\n#define FRW (MOTOR_FRONT_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_LEFT_STEER 0x80040000\n#define FLS (MOTOR_FRONT_LEFT_STEER)\n#define MOTOR_FRONT_LEFT_WHEEL 0x80050000\n#define FLW (MOTOR_FRONT_LEFT_WHEEL)\n\n#define MOTOR_REAR_LEFT_STEER 0x80060000\n#define RLS (MOTOR_REAR_LEFT_STEER)\n#define MOTOR_REAR_LEFT_WHEEL 0x80070000\n#define RLW (MOTOR_REAR_LEFT_WHEEL)\n\n#define MOTOR_MIDDLE_LEFT_WHEEL 0x80080000\n#define MLW (MOTOR_MIDDLE_LEFT_WHEEL)\n#define MOTOR_MIDDLE_RIGHT_WHEEL 0x80090000\n#define MRW (MOTOR_MIDDLE_RIGHT_WHEEL)\n\n#define MOTOR_WRIST 0x800A0000\n#define MOTOR_BASE 0x800B0000\n#define MOTOR_ELBOW 0x800C0000\n#define MOTOR_CLAW 0x800D0000\n\n#define WATCHDOG_REG 0x80100000\n\n#define ROVER_ROTATE_CLOCKWISE 0\n#define ROVER_ROTATE_COUNTER 1\n\n/*\n#define MOTOR_15 0x800E0000\n#define MOTOR_16 0x800F0000\n#define MOTOR_17 0x80100000\n*/\n\n#define MAX_STEERING_TICKS      300\n\n/* For Motion*/\n#define WHEEL_DIAMETER 124     /* mm diameter of the wheel*/\n/*this is for the 6 wheel motors*/\n#define TICKS_PER_REV_6 12                /*ticks per revolution*/\n#define GEAR_RATIO_6 116\n/*this is for the 4 rotating motors*/\n#define TICKS_PER_REV_4 40                /*ticks per revolution*/\n#define GEAR_RATIO_4 172\n\n#define ROVER_RADIUS (241) /* the radius of the rover for rotation */\n\ntypedef enum {\n    ROVER_CALIBRATE_WAITING,\n    ROVER_CALIBRATE_FR,\n    ROVER_CALIBRATE_RR,\n    ROVER_CALIBRATE_FL,\n    ROVER_CALIBRATE_RL,\n    ROVER_CALIBRATE_READY\n} rover_state_t;\n\n/* API functions */\n// Initializes the rover. Return 0 on success, nonzero on failure\nint rover_init();\nint rover_close();\n// calibration\nvoid rover_calibrate();\nint rover_is_calibrated();\n// Sets the target motor speed and runs it. Return 0 on success, nonzero on\n// failur\nint motor_set_speed(off_t motor_addr, int speed);\nint64_t motor_get_position(off_t motor_addr);\n// Rover control. Return 0 on success, nonzero on failure\n/* Convert encoder ticks to distance\n * long ticks: the number of encoder ticks\n * Return the distance in mm\n **/\nlong ticks_to_distance(long ticks);\nint distance_to_ticks(int distance);\nint rover_move_x(int distance, double speed);\n//int rover_rotate(int dir, int angle);\nvoid rover_stop();\nvoid rover_forward(int speed);\nvoid rover_reverse(int speed);\n\nvoid rover_pointTurn_CW(int speed);\nvoid rover_pointTurn_CCW(int speed);\n\nvoid rover_steer_forward();\nvoid rover_steer_right(int angle);\nvoid rover_steer_left(int angle);\nvoid rover_steer_point();\n\n// Return a status that if the rover is currently moving or not\nint check_rover_done();\n/* for isr */\nint isr_init();\nvoid rover_isr();\nint isr_attach_function(void (*fun)());\n\n#endif"
+                },
+                {
+                  "kind": "text",
+                  "data": "// Rover Control API\n#include \"rover.h\"\n#include \"mmio.h\"\n#include \"servo.h\"\n#include \"steering_motor.h\"\n#include \"pid.h\"\n\n#include <math.h>\n#include <signal.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <sys/time.h>\n#include <unistd.h>\n\n#define NUM_MOTORS 15\n#define ISR_DELAY 1000          // in usec, DO NOT CHANGE, effects PID\n#define DEFAULT_MOTOR_SPEED 128 // in encoder positions per second\n#define ISR_MAX_FUNCS 10 // maximum number of functions to be attached to isr\n\n/** Functions not exposed in header */\nvoid isr(int signum __attribute__((unused)));\n\n// TODO: try making static to put in rover.h\nServo servos[NUM_MOTORS];\nvolatile unsigned int *watchdog_flag;\nstatic rover_state_t rover_state;\n\n// should move this to rover.h\nstatic steering_motor_t steer_FR;\nstatic steering_motor_t steer_RR;\nstatic steering_motor_t steer_FL;\nstatic steering_motor_t steer_RL;\n/** isr globals */\nvoid (*isr_functions[ISR_MAX_FUNCS])(); // Array of ISR function pointers:\nunsigned isr_num_functions;\n\n/* API functions */\n/* Sets the target motor speed.\n * off_t motor_addr: the motor address defined in rover.h\n * int64_t speed: the speed to set the motor in encoder positions per second\n * Return 0 on success, nonzero on failure\n **/\nint motor_set_speed(off_t motor_addr, int speed) {\n  // given the speed in counts/second, calculate how many counts per isr run\n  // double counts_per_second = (double)speed * (double)(ISR_DELAY)*1e-6;\n  // find the servo that is associated with the motor_addr\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    if (motor_addr == servos[i].motor.addr) {\n      // servos[i].speed = counts_per_second;\n      //  set max speed\n      servos[i].pid.outputLimitMin = -speed;\n      servos[i].pid.outputLimitMax = speed;\n      // set the distance\n      //servos[i].setpoint = 100000;\n      servos[i].speed_controlled = true;\n      return 0;\n    }\n  }\n  return -1;\n}\n\n/* Get the current position of the motor\n * Sets the target motor speed.\n * off_t motor_addr: the motor address defined in rover.h\n * Return the current position of the motor in encoder counts\n **/\nint64_t motor_get_position(off_t motor_addr) {\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    if (motor_addr == servos[i].motor.addr) {\n      return servos[i].counts;\n    }\n  }\n  return -1;\n}\n\n/* Convert encoder ticks to distance\n * long ticks: the number of encoder ticks\n * Return the distance in mm\n **/\nlong ticks_to_distance(long ticks){\n    long distance = (ticks / TICKS_PER_REV_6) * (WHEEL_DIAMETER * M_PI / GEAR_RATIO_6);\n    return distance;\n}\n\n/* Convert distance to encoder ticks\n * long distance: the distance in mm\n * Return the number of encoder ticks\n **/\nint distance_to_ticks(int distance){\n    return (distance * TICKS_PER_REV_6) / (WHEEL_DIAMETER * M_PI / GEAR_RATIO_6);\n}\n\n/* Moves the rover forward some distance in +x and backwards in -x distance\n * int dist: the distance to move in mm\n * double speed: the speed to move. should be between 0-255.\n * returns 0 on success, otherwise the number of motors that failed to be\n *updated (side effect) the motor speed stays in effect if the servos are\n *controlled again.\n **/\nint rover_move_x(int dist, double speed) {\n  long dist_tics = distance_to_ticks(dist);\n  int count = 6;\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    case MOTOR_REAR_RIGHT_WHEEL:\n    case MOTOR_FRONT_RIGHT_WHEEL:\n    case MOTOR_MIDDLE_RIGHT_WHEEL:\n      // set max speed\n      servos[i].pid.outputLimitMin = -speed;\n      servos[i].pid.outputLimitMax = speed;\n      // set the distance\n      servos[i].setpoint = servos[i].counts - dist_tics;\n      count--;\n      break;\n    // inverted motors.\n    case MOTOR_REAR_LEFT_WHEEL:\n    case MOTOR_FRONT_LEFT_WHEEL:\n    case MOTOR_MIDDLE_LEFT_WHEEL:\n      // set max speed\n      servos[i].pid.outputLimitMin = -speed;\n      servos[i].pid.outputLimitMax = speed;\n      // set the distance\n      servos[i].setpoint = servos[i].counts + dist_tics;\n      count--;\n      break;\n    default:\n      break;\n    }\n  }\n  return count;\n}\n\n/*  Return a status that if the rover is currently moving or not.\n * return 1 if done, 0 if any motor is still moving\n * FIXME: will not work because motors are busted!!!\n **/\nint check_rover_done() {\n  /* buffer size for encoder positions */\n  int buffer = 2;\n  /* for steering motors */\n  int64_t current_FR = motor_get_position(steer_FR.servo->motor.addr);\n  int64_t current_FL = motor_get_position(steer_FL.servo->motor.addr);\n  int64_t current_RR = motor_get_position(steer_RR.servo->motor.addr);\n  int64_t current_RL = motor_get_position(steer_RL.servo->motor.addr);\n  \n  if (current_FR < steer_FR.target - buffer || current_FR > steer_FR.target + buffer ) {\n\t  //printf(\"steer_FR target: %d, current FR: %ld\\n\", steer_FR.target, current_FR);\n\t  return 0;\n  }\n  if (current_FL < steer_FL.target - buffer || current_FL > steer_FL.target + buffer ) {\n\t  //printf(\"steer_FL target: %d, current FL: %ld\\n\", steer_FL.target, current_FL);\n\t  return 0;\n  }\n  if (current_RR < steer_RR.target - buffer || current_RR > steer_RR.target + buffer ) {\n\t  //printf(\"steer_RR target: %d, current RR: %ld\\n\", steer_RR.target, current_RR);\n\t  return 0;\n  }\n  if (current_RL < steer_RL.target - buffer || current_RL > steer_RL.target + buffer ) {\n\t  //printf(\"steer_RL target: %d, current RL: %ld\\n\", steer_RL.target, current_RL);\n\t  return 0;\n  }\n  \n  /* for wheels */ \n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    \tcase MOTOR_REAR_RIGHT_WHEEL:\n    \tcase MOTOR_FRONT_RIGHT_WHEEL:\n    \tcase MOTOR_MIDDLE_RIGHT_WHEEL:\n    \t//TODO: fix bad encoder case MOTOR_REAR_LEFT_WHEEL:\n    \tcase MOTOR_FRONT_LEFT_WHEEL:\n    \tcase MOTOR_MIDDLE_LEFT_WHEEL:\n      \t    if (servos[i].counts < (long)(servos[i].setpoint) - buffer || servos[i].counts > (long)(servos[i].setpoint) + buffer ) {\n\t\t    //printf(\"servo %d, counts: %ld, setpoint: %ld\\n\", i, servos[i].counts, (long)(servos[i].setpoint));\n\t\t    return 0;\n\t    }\n\tbreak;\n    default:\n      break;\n    }\n  }\n  return 1;\n}\n\n/* UNTESTED */\nvoid rover_update_steering() {\n  steering_motor_handle_state(&steer_FR);\n  steering_motor_handle_state(&steer_RR);\n  steering_motor_handle_state(&steer_FL);\n  steering_motor_handle_state(&steer_RL);\n}\n\n/* UNTESTED */\nvoid rover_stop() {\n  \n  /*motor_set_speed(FRW, 0);\n  motor_set_speed(RRW, 0);\n  motor_set_speed(FLW, 0);\n  motor_set_speed(RLW, 0);\n  motor_set_speed(MRW, 0);\n  motor_set_speed(MLW, 0);\n  */\n  /* clear setpoints from set_speed */\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    \tcase MOTOR_REAR_RIGHT_WHEEL:\n    \tcase MOTOR_FRONT_RIGHT_WHEEL:\n    \tcase MOTOR_MIDDLE_RIGHT_WHEEL:\n    \t//servos[i].setpoint = servos[i].counts;\t\n\tmotor_set_speed(servos[i].motor.addr, 128);\n\tservos[i].speed_controlled = false;\n\tservos[i].setpoint = servos[i].counts - 10;\n\tServo_update(&(servos[i]));\n\tbreak;\n\tcase MOTOR_REAR_LEFT_WHEEL:\n    \tcase MOTOR_FRONT_LEFT_WHEEL:\n    \tcase MOTOR_MIDDLE_LEFT_WHEEL:\n\t//servos[i].setpoint = servos[i].counts;\t\n\tmotor_set_speed(servos[i].motor.addr, 128);\n\tservos[i].speed_controlled = false;\n\tservos[i].setpoint = servos[i].counts - 10;\n\tServo_update(&(servos[i]));\n\tbreak;\n    default:\n      break;\n    }\n  }\n \n}\n\n/* UNTESTED */\nvoid rover_forward(int speed) {\n  motor_set_speed(FRW, -speed);\n  motor_set_speed(MRW, -speed);\n  motor_set_speed(RRW, -speed);\n  motor_set_speed(FLW, speed);\n  motor_set_speed(MLW, speed);\n  motor_set_speed(RLW, speed);\n}\n\n/* UNTESTED */\nvoid rover_reverse(int speed) {\n  motor_set_speed(FRW, speed);\n  motor_set_speed(MRW, speed);\n  motor_set_speed(RRW, speed);\n  motor_set_speed(FLW, -speed);\n  motor_set_speed(MLW, -speed);\n  motor_set_speed(RLW, -speed);\n}\n\n/* UNTESTED */\nvoid rover_pointTurn_CW(int speed) {\n  motor_set_speed(FRW, speed);\n  motor_set_speed(MRW, speed);\n  motor_set_speed(RRW, speed);\n  motor_set_speed(FLW, speed);\n  motor_set_speed(MLW, speed);\n  motor_set_speed(RLW, speed);\n}\n\n/* UNTESTED */\nvoid rover_pointTurn_CCW(int speed) {\n  motor_set_speed(FRW, -speed);\n  motor_set_speed(MRW, -speed);\n  motor_set_speed(RRW, -speed);\n  motor_set_speed(FLW, -speed);\n  motor_set_speed(MLW, -speed);\n  motor_set_speed(RLW, -speed);\n}\n\n/* UNTESTED */\nvoid rover_steer_forward() {\n  steer_FR.target = steer_FR.center_pos + 0;\n  steer_FL.target = steer_FL.center_pos + 0;\n  steer_RR.target = steer_RR.center_pos + 0;\n  steer_RL.target = steer_RL.center_pos + 0;\n}\n\n/* UNTESTED */\nvoid rover_steer_right(int angle) {\n  if (angle > MAX_STEERING_TICKS)\n    angle = MAX_STEERING_TICKS;\n  if (angle < -MAX_STEERING_TICKS)\n    angle = -MAX_STEERING_TICKS;\n  steer_FR.target = steer_FR.center_pos + angle;\n  steer_RR.target = steer_RR.center_pos - angle;\n  steer_FL.target = steer_FL.center_pos + angle;\n  steer_RL.target = steer_RL.center_pos - angle;\n}\n\n/* UNTESTED */\nvoid rover_steer_left(int angle) {\n  if (angle > MAX_STEERING_TICKS)\n    angle = MAX_STEERING_TICKS;\n  if (angle < -MAX_STEERING_TICKS)\n    angle = -MAX_STEERING_TICKS;\n  steer_FR.target = steer_FR.center_pos - angle;\n  steer_RR.target = steer_RR.center_pos + angle;\n  steer_FL.target = steer_FL.center_pos - angle;\n  steer_RL.target = steer_RL.center_pos + angle;\n}\n\n/* UNTESTED */\nvoid rover_steer_point() {\n  steer_FR.target = steer_FR.center_pos - MAX_STEERING_TICKS;\n  steer_RR.target = steer_RR.center_pos + MAX_STEERING_TICKS;\n  steer_FL.target = steer_FL.center_pos + MAX_STEERING_TICKS;\n  steer_RL.target = steer_RL.center_pos - MAX_STEERING_TICKS;\n}\n\nint isr_init() {\n  struct sigaction sa;\n  struct itimerval timer;\n\n  // Install the ISR\n  sa.sa_handler = (void *)isr;\n  sigemptyset(&sa.sa_mask);\n  sa.sa_flags = 0;\n  sigaction(SIGALRM, &sa, NULL);\n\n  // Set the timer to trigger every 1ms\n  timer.it_interval.tv_sec = 0;\n  timer.it_interval.tv_usec = ISR_DELAY;\n  timer.it_value.tv_sec = 0;\n  timer.it_value.tv_usec = ISR_DELAY;\n  setitimer(ITIMER_REAL, &timer, NULL);\n\n  // Handle watchdog\n  watchdog_flag = mmio_init((off_t)WATCHDOG_REG);\n\n  return 0;\n}\n\n// PID Control\nvoid isr(int signum __attribute__((unused))) {\n  // Handle watchdog\n  *(watchdog_flag) = *(watchdog_flag) ? 0 : 1;\n\n  // handle calibration, only one motor for now\n  for (unsigned i = 0; i < isr_num_functions; i++) {\n    isr_functions[i]();\n  }\n}\n\nvoid rover_isr() {\n  // Update servos\n  if (rover_is_calibrated() == false)\n    rover_calibrate();\n\n  // Update the steering\n  rover_update_steering();\n\n  // Update servos\n  for (int i = 0; i < 10; i++)\n    Servo_update(&servos[i]);\n}\n\nint isr_attach_function(void (*fun)()) {\n  if (isr_num_functions == ISR_MAX_FUNCS) {\n    fprintf(stderr, \"Cannot attach any more functions\\n\");\n    return 1; // cannot attach any more functions\n  }\n  isr_functions[isr_num_functions++] = fun;\n  return 0;\n}\n\n/**\n * @brief the rover.\n * @return 0 on success, nonzero on failure\n */\nint rover_init() {\n  // define servos and motors\n  off_t motor_addrs[NUM_MOTORS] = {\n      MOTOR_REAR_LEFT_WHEEL,   MOTOR_REAR_RIGHT_WHEEL,\n      MOTOR_MIDDLE_LEFT_WHEEL, MOTOR_MIDDLE_RIGHT_WHEEL,\n      MOTOR_FRONT_LEFT_WHEEL,  MOTOR_FRONT_RIGHT_WHEEL,\n      MOTOR_FRONT_LEFT_STEER,  MOTOR_FRONT_RIGHT_STEER,\n      MOTOR_REAR_LEFT_STEER,   MOTOR_REAR_RIGHT_STEER,\n      //... more unused motors\n  };\n\n  // setup servos\n  for (int i = 0; i < 10; i++) {\n    // initializing servos\n    if (Servo_init(&servos[i], motor_addrs[i], false) != 0) {\n      printf(\"failed to initialize servo%d\\n\", i);\n      return -1;\n    }\n  }\n\n  // handle calibration\n  uint8_t count = 4;\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    case MOTOR_FRONT_LEFT_STEER:\n      steer_FL.servo = &servos[i];\n      steer_FL.state = STATE_INITIALIZE;\n      count--;\n      break;\n    case MOTOR_FRONT_RIGHT_STEER:\n      steer_FR.servo = &servos[i];\n      steer_FR.state = STATE_INITIALIZE;\n      count--;\n      break;\n    case MOTOR_REAR_LEFT_STEER:\n      steer_RL.servo = &servos[i];\n      steer_RL.state = STATE_INITIALIZE;\n      count--;\n      break;\n    case MOTOR_REAR_RIGHT_STEER:\n      steer_RR.servo = &servos[i];\n      steer_RR.state = STATE_INITIALIZE;\n      count--;\n      break;\n    default:\n      break;\n    }\n  }\n  if (count != 0) {\n    printf(\"failed to initialize steering motors\\n\");\n    return -1;\n  }\n\n  // check if all motors are initialized\n  steering_motor_handle_state(&steer_FR);\n  steering_motor_handle_state(&steer_RR);\n  steering_motor_handle_state(&steer_FL);\n  steering_motor_handle_state(&steer_RL);\n\n  // initialize calibration\n  rover_state = ROVER_CALIBRATE_WAITING;\n\n  if (isr_attach_function(rover_isr) != 0) {\n    fprintf(stderr, \"Failed to attach rover_isr\\n\");\n    return 1;\n  }\n  return 0;\n}\n\nint rover_rotate(int dir, int angle) {\n  if (angle > 90 || angle < -90) {\n    printf(\"Invalid turn angle\\n\");\n  } else {\n    printf(\"Rover rotating to target angle %d and dir %d\\n\", angle, dir);\n  }\n  return 0;\n}\n\nint rover_is_calibrated() { return rover_state == ROVER_CALIBRATE_READY; }\n\n/**\n * @brief Calibrates every motor iteratively\n * @return 0 on success, nonzero on failure\n */\nvoid rover_calibrate() {\n  switch (rover_state) {\n  case ROVER_CALIBRATE_WAITING:\n    calibrate(&steer_FR);\n    rover_state = ROVER_CALIBRATE_FR;\n    break;\n  case ROVER_CALIBRATE_FR:\n    if (steering_motor_handle_state(&steer_FR)) {\n      calibrate(&steer_RR);\n      rover_state = ROVER_CALIBRATE_RR;\n    }\n    break;\n  case ROVER_CALIBRATE_RR:\n    if (steering_motor_handle_state(&steer_RR)) {\n      calibrate(&steer_FL);\n      rover_state = ROVER_CALIBRATE_FL;\n    }\n    break;\n  case ROVER_CALIBRATE_FL:\n    if (steering_motor_handle_state(&steer_FL)) {\n      calibrate(&steer_RL);\n      rover_state = ROVER_CALIBRATE_RL;\n    }\n    break;\n  case ROVER_CALIBRATE_RL:\n    if (steering_motor_handle_state(&steer_RL)) {\n      // rover_steer_forward();\n      rover_state = ROVER_CALIBRATE_READY;\n    }\n    break;\n  case ROVER_CALIBRATE_READY:\n    break;\n  default:\n    break;\n  }\n}\n\n/**\n * @brief Closes out all the motor connections\n * @return 0 on success, nonzero on failure\n */\nint rover_close() {\n  for (int i = 0; i < 10; i++) {\n    Servo_close(&servos[i]);\n  }\n  return 0;\n}"
+                },
+                {
+                  "kind": "text",
+                  "data": "#ifndef MOTOR_H\n#define MOTOR_H\n\n#include <aio.h>\n#include <stdint.h>\n\ntypedef struct {\n\n  // MMIO\n  volatile unsigned int *mmio;\n  // ADDR - defined for each motor in rover.h\n  off_t addr;\n\n  // GPIO Output Control Signals\n  uint8_t duty_cycle;  // 8 bits\n  uint8_t clk_divisor; // 3 bits\n  uint8_t dir;         // 1 bit\n  uint8_t en_motor;    // 1 bit\n  uint8_t clear_enc;   // 1 bit\n  uint8_t en_enc;      // 1 bit\n\n  // GPIO Input Control Signals\n  int16_t counts; // 16 bits\n\n} MotorController;\n\nint MotorController_init(MotorController *motor, off_t mmio_address);\nvoid MotorController_close(MotorController *motor);\n\nvoid MotorController_write(MotorController *motor);\nvoid MotorController_read(MotorController *motor);\n\n#endif"
+                },
+                {
+                  "kind": "text",
+                  "data": "#include <aio.h>\n\n#include \"mmio.h\"\n#include \"motor.h\"\n\nint MotorController_init(MotorController *motor, off_t mmio_address) {\n  // Initialize MMIO\n  volatile unsigned int *mmio = mmio_init(mmio_address);\n\n  if (!mmio_is_valid(mmio))\n    return -1;\n\n  // Initialize motor controller\n  motor->mmio = mmio;\n  motor->addr = mmio_address;\n  motor->duty_cycle = 0;\n  motor->clk_divisor = 2;\n  motor->dir = 1;\n  motor->en_motor = 1;\n  motor->clear_enc = 1;\n  motor->en_enc = 1;\n\n  // Clear encoder counter\n  MotorController_write(motor);\n  motor->clear_enc = 0;\n  MotorController_write(motor);\n\n  return 0;\n}\n\nvoid MotorController_close(MotorController *motor) {\n  // Disable motor controller\n  motor->en_motor = 0;\n  motor->en_enc = 0;\n  MotorController_write(motor);\n\n  // Release MMIO\n  close_mem(motor->mmio);\n}\n\nvoid MotorController_write(MotorController *motor) {\n  // Write to MMIO\n  *(motor->mmio) = motor->duty_cycle + (motor->clk_divisor << 8) +\n                   (motor->dir << 11) + (motor->en_motor << 12) +\n                   (motor->clear_enc << 13) + (motor->en_enc << 14);\n}\n\nvoid MotorController_read(MotorController *motor) {\n  // Read MMIO\n  motor->counts = *(motor->mmio + 2);\n}"
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_sOpD0byryo19UMdgkzUXfc": {
+            "tool": {
+              "tool_use_purpose": "Read the main source files",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/Main.c",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/rover.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/rover.c",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/motor.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/motor.c",
+                        "limit": null,
+                        "offset": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Text": "// TEST MMIO GPIO CONTROL\n#include <math.h>\n#include <signal.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <unistd.h>\n#include <fcntl.h>\n#include <sys/mman.h>\n#include <unistd.h>\n\n\n#include \"rover.h\"\n#include \"servo.h\"\n#include \"imu_correction.h\"\n#include \"kalman_wrapper.h\"\n#include \"bmi270_port.h\"\n\n\n// globals\n#define DEFAULT_MOTOR_SPEED 128\nstatic bool done = false;\n\n\nvoid sigint_handler(int signum) {\n  (void)signum;\n  printf(\"SIGINT caught\\n\");\n  done = true;\n}\n\n\n\n\n// ------------- added some wrapper functions for simba movement ------------------------\nstatic void simba_forward(int speed){\n \n  imu_correction_set_motor_state(true);\n  imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n  rover_forward(speed);\n}\n\n\n// static void simba_reverse(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n//   rover_reverse(speed);\n// }\n\n\nstatic void simba_stop(void){\n\n\n  imu_correction_set_motor_state(false);\n  imu_correction_clear_heading_reference();\n  rover_stop();\n}\n\n\n// static void simba_point_turn_cw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CW(speed);\n// }\n\n\n// static void simba_point_turn_ccw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CCW(speed);\n// }\n// --------------------------------------------------------------------------\n\n\nint main() {\n  // Configure signal handler\n  signal(SIGINT, sigint_handler);\n\n\n  // opening the fd and checking for error\n  int fd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n  if (fd < 0) {\n      perror(\"open /dev/mem\");\n      return 1;\n  }\n\n\n  // base address in memory of the IMU\n  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);\n\n\n  // checking the return type    \n  if (iic_base == MAP_FAILED) {\n      perror(\"mmap\");\n      return 1;\n  }\n\n\n  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)\n  struct bmi2_dev dev = {0};    // bosch device struct\n\n\n  // resets and then enables\n  axi_iic_init();\n\n\n  // IMU init\n  int8_t rslt = bmi270_kria_init(&ctx, &dev);\n  if (rslt != BMI2_OK){\n    printf(\"BMI270 init failed: %d\\n\", rslt);\n    return 1;\n  }\n  printf(\"BMI270 init result: %d\\n\", rslt);\n\n\n\n\n  // Initialize rover\n  if (rover_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n  if (isr_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n\n\n  // initialize KF\n  struct bmi2_sens_axes_data acc, gyr;\n  rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);\n  if (rslt == BMI2_OK){\n    float ax = (float)(acc.x / (32768.0f / 4.0f));\n    float ay = (float)(acc.y / (32768.0f / 4.0f));\n    float az = (float)(acc.z / (32768.0f / 4.0f));\n    kalman_init(ax, ay, -az);\n  }\n  else {\n    printf(\"Initial IMU KF read failed\\n\");\n    return 1;\n  }\n  // initialize IMU correction system\n  if (imu_correction_init(&dev) != 0){\n    printf(\"IMU correction init failed\\n\");\n    return 1;\n  }\n\n\n  // testing\n  // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, 1000);\n  //rover_move_x(10000, 128);\n\n\n  printf(\"All systems have passed initialization!\\n\");\n\n\n  // start moving forward at the default speed\n  simba_forward(DEFAULT_MOTOR_SPEED);\n\n\n  // infinite loop\n  while (done == false) {\n\n\n    // apply imu correction\n    int update_result = imu_correction_update(&dev);\n\n\n    // if there is an error in the return from imu_correction_update()\n    if (update_result != 0){\n      if (imu_correction_is_fault()){\n        printf(\"There is a fault, stopping\\n\");\n        simba_stop();\n        done = true;\n        continue;\n      }\n    }\n\n\n    // check terrain. If there is an issue, handle it\n    if (imu_correction_is_critical() || imu_correction_is_warning()){\n      imu_correction_handle_terrain(imu_correction_get_map());\n    }\n\n\n    // want to check motion\n    int check_motion_res = imu_correction_check_motion();\n    if (check_motion_res != 0){\n     \n      // check stalled flag\n      if (imu_correction_is_stall()){\n        printf(\"Stall has been detected, attempting to correct\\n\");\n        // recovery is already being corrected in imu_correction_check_motion()\n        simba_forward(DEFAULT_MOTOR_SPEED);\n      }\n\n\n      // check unintended motion flag\n      if (imu_correction_is_unintended_motion()){\n        printf(\"Unintended motion has been detected, going to stop rover\\n\");\n        done = true;\n        continue;\n      }\n    }\n\n\n    // apply correction and then wait 333ms\n    imu_correction_apply();\n    bmi270_delay_us(333000, NULL);\n  }\n\n\n  // want to stop the rover after while loop\n  simba_stop();\n\n\n  // unmap the iic and close the fd\n  munmap((void*)iic_base, MAP_SIZE);\n  close(fd);\n\n\n  // Close Rover\n  if (rover_close() != 0) {\n    printf(\"failed to close rover\\n\");\n    return -1;\n  }\n\n\n  return 0;\n}"
+                  },
+                  {
+                    "Text": "// Rover Control API\n#ifndef ROVER_H\n#define ROVER_H\n\n/** include to make accessible in library */\n#include \"mmio.h\"\n#include \"motor.h\"\n\n#include <stdlib.h>\n/* Define the Rover's Motors */\n#define MOTOR_REAR_RIGHT_STEER (0x80000000)\n#define RRS (MOTOR_REAR_RIGHT_STEER)\n#define MOTOR_REAR_RIGHT_WHEEL 0x80010000\n#define RRW (MOTOR_REAR_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_RIGHT_STEER 0x80020000\n#define FRS (MOTOR_FRONT_RIGHT_STEER)\n#define MOTOR_FRONT_RIGHT_WHEEL 0x80030000\n#define FRW (MOTOR_FRONT_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_LEFT_STEER 0x80040000\n#define FLS (MOTOR_FRONT_LEFT_STEER)\n#define MOTOR_FRONT_LEFT_WHEEL 0x80050000\n#define FLW (MOTOR_FRONT_LEFT_WHEEL)\n\n#define MOTOR_REAR_LEFT_STEER 0x80060000\n#define RLS (MOTOR_REAR_LEFT_STEER)\n#define MOTOR_REAR_LEFT_WHEEL 0x80070000\n#define RLW (MOTOR_REAR_LEFT_WHEEL)\n\n#define MOTOR_MIDDLE_LEFT_WHEEL 0x80080000\n#define MLW (MOTOR_MIDDLE_LEFT_WHEEL)\n#define MOTOR_MIDDLE_RIGHT_WHEEL 0x80090000\n#define MRW (MOTOR_MIDDLE_RIGHT_WHEEL)\n\n#define MOTOR_WRIST 0x800A0000\n#define MOTOR_BASE 0x800B0000\n#define MOTOR_ELBOW 0x800C0000\n#define MOTOR_CLAW 0x800D0000\n\n#define WATCHDOG_REG 0x80100000\n\n#define ROVER_ROTATE_CLOCKWISE 0\n#define ROVER_ROTATE_COUNTER 1\n\n/*\n#define MOTOR_15 0x800E0000\n#define MOTOR_16 0x800F0000\n#define MOTOR_17 0x80100000\n*/\n\n#define MAX_STEERING_TICKS      300\n\n/* For Motion*/\n#define WHEEL_DIAMETER 124     /* mm diameter of the wheel*/\n/*this is for the 6 wheel motors*/\n#define TICKS_PER_REV_6 12                /*ticks per revolution*/\n#define GEAR_RATIO_6 116\n/*this is for the 4 rotating motors*/\n#define TICKS_PER_REV_4 40                /*ticks per revolution*/\n#define GEAR_RATIO_4 172\n\n#define ROVER_RADIUS (241) /* the radius of the rover for rotation */\n\ntypedef enum {\n    ROVER_CALIBRATE_WAITING,\n    ROVER_CALIBRATE_FR,\n    ROVER_CALIBRATE_RR,\n    ROVER_CALIBRATE_FL,\n    ROVER_CALIBRATE_RL,\n    ROVER_CALIBRATE_READY\n} rover_state_t;\n\n/* API functions */\n// Initializes the rover. Return 0 on success, nonzero on failure\nint rover_init();\nint rover_close();\n// calibration\nvoid rover_calibrate();\nint rover_is_calibrated();\n// Sets the target motor speed and runs it. Return 0 on success, nonzero on\n// failur\nint motor_set_speed(off_t motor_addr, int speed);\nint64_t motor_get_position(off_t motor_addr);\n// Rover control. Return 0 on success, nonzero on failure\n/* Convert encoder ticks to distance\n * long ticks: the number of encoder ticks\n * Return the distance in mm\n **/\nlong ticks_to_distance(long ticks);\nint distance_to_ticks(int distance);\nint rover_move_x(int distance, double speed);\n//int rover_rotate(int dir, int angle);\nvoid rover_stop();\nvoid rover_forward(int speed);\nvoid rover_reverse(int speed);\n\nvoid rover_pointTurn_CW(int speed);\nvoid rover_pointTurn_CCW(int speed);\n\nvoid rover_steer_forward();\nvoid rover_steer_right(int angle);\nvoid rover_steer_left(int angle);\nvoid rover_steer_point();\n\n// Return a status that if the rover is currently moving or not\nint check_rover_done();\n/* for isr */\nint isr_init();\nvoid rover_isr();\nint isr_attach_function(void (*fun)());\n\n#endif"
+                  },
+                  {
+                    "Text": "// Rover Control API\n#include \"rover.h\"\n#include \"mmio.h\"\n#include \"servo.h\"\n#include \"steering_motor.h\"\n#include \"pid.h\"\n\n#include <math.h>\n#include <signal.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <sys/time.h>\n#include <unistd.h>\n\n#define NUM_MOTORS 15\n#define ISR_DELAY 1000          // in usec, DO NOT CHANGE, effects PID\n#define DEFAULT_MOTOR_SPEED 128 // in encoder positions per second\n#define ISR_MAX_FUNCS 10 // maximum number of functions to be attached to isr\n\n/** Functions not exposed in header */\nvoid isr(int signum __attribute__((unused)));\n\n// TODO: try making static to put in rover.h\nServo servos[NUM_MOTORS];\nvolatile unsigned int *watchdog_flag;\nstatic rover_state_t rover_state;\n\n// should move this to rover.h\nstatic steering_motor_t steer_FR;\nstatic steering_motor_t steer_RR;\nstatic steering_motor_t steer_FL;\nstatic steering_motor_t steer_RL;\n/** isr globals */\nvoid (*isr_functions[ISR_MAX_FUNCS])(); // Array of ISR function pointers:\nunsigned isr_num_functions;\n\n/* API functions */\n/* Sets the target motor speed.\n * off_t motor_addr: the motor address defined in rover.h\n * int64_t speed: the speed to set the motor in encoder positions per second\n * Return 0 on success, nonzero on failure\n **/\nint motor_set_speed(off_t motor_addr, int speed) {\n  // given the speed in counts/second, calculate how many counts per isr run\n  // double counts_per_second = (double)speed * (double)(ISR_DELAY)*1e-6;\n  // find the servo that is associated with the motor_addr\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    if (motor_addr == servos[i].motor.addr) {\n      // servos[i].speed = counts_per_second;\n      //  set max speed\n      servos[i].pid.outputLimitMin = -speed;\n      servos[i].pid.outputLimitMax = speed;\n      // set the distance\n      //servos[i].setpoint = 100000;\n      servos[i].speed_controlled = true;\n      return 0;\n    }\n  }\n  return -1;\n}\n\n/* Get the current position of the motor\n * Sets the target motor speed.\n * off_t motor_addr: the motor address defined in rover.h\n * Return the current position of the motor in encoder counts\n **/\nint64_t motor_get_position(off_t motor_addr) {\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    if (motor_addr == servos[i].motor.addr) {\n      return servos[i].counts;\n    }\n  }\n  return -1;\n}\n\n/* Convert encoder ticks to distance\n * long ticks: the number of encoder ticks\n * Return the distance in mm\n **/\nlong ticks_to_distance(long ticks){\n    long distance = (ticks / TICKS_PER_REV_6) * (WHEEL_DIAMETER * M_PI / GEAR_RATIO_6);\n    return distance;\n}\n\n/* Convert distance to encoder ticks\n * long distance: the distance in mm\n * Return the number of encoder ticks\n **/\nint distance_to_ticks(int distance){\n    return (distance * TICKS_PER_REV_6) / (WHEEL_DIAMETER * M_PI / GEAR_RATIO_6);\n}\n\n/* Moves the rover forward some distance in +x and backwards in -x distance\n * int dist: the distance to move in mm\n * double speed: the speed to move. should be between 0-255.\n * returns 0 on success, otherwise the number of motors that failed to be\n *updated (side effect) the motor speed stays in effect if the servos are\n *controlled again.\n **/\nint rover_move_x(int dist, double speed) {\n  long dist_tics = distance_to_ticks(dist);\n  int count = 6;\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    case MOTOR_REAR_RIGHT_WHEEL:\n    case MOTOR_FRONT_RIGHT_WHEEL:\n    case MOTOR_MIDDLE_RIGHT_WHEEL:\n      // set max speed\n      servos[i].pid.outputLimitMin = -speed;\n      servos[i].pid.outputLimitMax = speed;\n      // set the distance\n      servos[i].setpoint = servos[i].counts - dist_tics;\n      count--;\n      break;\n    // inverted motors.\n    case MOTOR_REAR_LEFT_WHEEL:\n    case MOTOR_FRONT_LEFT_WHEEL:\n    case MOTOR_MIDDLE_LEFT_WHEEL:\n      // set max speed\n      servos[i].pid.outputLimitMin = -speed;\n      servos[i].pid.outputLimitMax = speed;\n      // set the distance\n      servos[i].setpoint = servos[i].counts + dist_tics;\n      count--;\n      break;\n    default:\n      break;\n    }\n  }\n  return count;\n}\n\n/*  Return a status that if the rover is currently moving or not.\n * return 1 if done, 0 if any motor is still moving\n * FIXME: will not work because motors are busted!!!\n **/\nint check_rover_done() {\n  /* buffer size for encoder positions */\n  int buffer = 2;\n  /* for steering motors */\n  int64_t current_FR = motor_get_position(steer_FR.servo->motor.addr);\n  int64_t current_FL = motor_get_position(steer_FL.servo->motor.addr);\n  int64_t current_RR = motor_get_position(steer_RR.servo->motor.addr);\n  int64_t current_RL = motor_get_position(steer_RL.servo->motor.addr);\n  \n  if (current_FR < steer_FR.target - buffer || current_FR > steer_FR.target + buffer ) {\n\t  //printf(\"steer_FR target: %d, current FR: %ld\\n\", steer_FR.target, current_FR);\n\t  return 0;\n  }\n  if (current_FL < steer_FL.target - buffer || current_FL > steer_FL.target + buffer ) {\n\t  //printf(\"steer_FL target: %d, current FL: %ld\\n\", steer_FL.target, current_FL);\n\t  return 0;\n  }\n  if (current_RR < steer_RR.target - buffer || current_RR > steer_RR.target + buffer ) {\n\t  //printf(\"steer_RR target: %d, current RR: %ld\\n\", steer_RR.target, current_RR);\n\t  return 0;\n  }\n  if (current_RL < steer_RL.target - buffer || current_RL > steer_RL.target + buffer ) {\n\t  //printf(\"steer_RL target: %d, current RL: %ld\\n\", steer_RL.target, current_RL);\n\t  return 0;\n  }\n  \n  /* for wheels */ \n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    \tcase MOTOR_REAR_RIGHT_WHEEL:\n    \tcase MOTOR_FRONT_RIGHT_WHEEL:\n    \tcase MOTOR_MIDDLE_RIGHT_WHEEL:\n    \t//TODO: fix bad encoder case MOTOR_REAR_LEFT_WHEEL:\n    \tcase MOTOR_FRONT_LEFT_WHEEL:\n    \tcase MOTOR_MIDDLE_LEFT_WHEEL:\n      \t    if (servos[i].counts < (long)(servos[i].setpoint) - buffer || servos[i].counts > (long)(servos[i].setpoint) + buffer ) {\n\t\t    //printf(\"servo %d, counts: %ld, setpoint: %ld\\n\", i, servos[i].counts, (long)(servos[i].setpoint));\n\t\t    return 0;\n\t    }\n\tbreak;\n    default:\n      break;\n    }\n  }\n  return 1;\n}\n\n/* UNTESTED */\nvoid rover_update_steering() {\n  steering_motor_handle_state(&steer_FR);\n  steering_motor_handle_state(&steer_RR);\n  steering_motor_handle_state(&steer_FL);\n  steering_motor_handle_state(&steer_RL);\n}\n\n/* UNTESTED */\nvoid rover_stop() {\n  \n  /*motor_set_speed(FRW, 0);\n  motor_set_speed(RRW, 0);\n  motor_set_speed(FLW, 0);\n  motor_set_speed(RLW, 0);\n  motor_set_speed(MRW, 0);\n  motor_set_speed(MLW, 0);\n  */\n  /* clear setpoints from set_speed */\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    \tcase MOTOR_REAR_RIGHT_WHEEL:\n    \tcase MOTOR_FRONT_RIGHT_WHEEL:\n    \tcase MOTOR_MIDDLE_RIGHT_WHEEL:\n    \t//servos[i].setpoint = servos[i].counts;\t\n\tmotor_set_speed(servos[i].motor.addr, 128);\n\tservos[i].speed_controlled = false;\n\tservos[i].setpoint = servos[i].counts - 10;\n\tServo_update(&(servos[i]));\n\tbreak;\n\tcase MOTOR_REAR_LEFT_WHEEL:\n    \tcase MOTOR_FRONT_LEFT_WHEEL:\n    \tcase MOTOR_MIDDLE_LEFT_WHEEL:\n\t//servos[i].setpoint = servos[i].counts;\t\n\tmotor_set_speed(servos[i].motor.addr, 128);\n\tservos[i].speed_controlled = false;\n\tservos[i].setpoint = servos[i].counts - 10;\n\tServo_update(&(servos[i]));\n\tbreak;\n    default:\n      break;\n    }\n  }\n \n}\n\n/* UNTESTED */\nvoid rover_forward(int speed) {\n  motor_set_speed(FRW, -speed);\n  motor_set_speed(MRW, -speed);\n  motor_set_speed(RRW, -speed);\n  motor_set_speed(FLW, speed);\n  motor_set_speed(MLW, speed);\n  motor_set_speed(RLW, speed);\n}\n\n/* UNTESTED */\nvoid rover_reverse(int speed) {\n  motor_set_speed(FRW, speed);\n  motor_set_speed(MRW, speed);\n  motor_set_speed(RRW, speed);\n  motor_set_speed(FLW, -speed);\n  motor_set_speed(MLW, -speed);\n  motor_set_speed(RLW, -speed);\n}\n\n/* UNTESTED */\nvoid rover_pointTurn_CW(int speed) {\n  motor_set_speed(FRW, speed);\n  motor_set_speed(MRW, speed);\n  motor_set_speed(RRW, speed);\n  motor_set_speed(FLW, speed);\n  motor_set_speed(MLW, speed);\n  motor_set_speed(RLW, speed);\n}\n\n/* UNTESTED */\nvoid rover_pointTurn_CCW(int speed) {\n  motor_set_speed(FRW, -speed);\n  motor_set_speed(MRW, -speed);\n  motor_set_speed(RRW, -speed);\n  motor_set_speed(FLW, -speed);\n  motor_set_speed(MLW, -speed);\n  motor_set_speed(RLW, -speed);\n}\n\n/* UNTESTED */\nvoid rover_steer_forward() {\n  steer_FR.target = steer_FR.center_pos + 0;\n  steer_FL.target = steer_FL.center_pos + 0;\n  steer_RR.target = steer_RR.center_pos + 0;\n  steer_RL.target = steer_RL.center_pos + 0;\n}\n\n/* UNTESTED */\nvoid rover_steer_right(int angle) {\n  if (angle > MAX_STEERING_TICKS)\n    angle = MAX_STEERING_TICKS;\n  if (angle < -MAX_STEERING_TICKS)\n    angle = -MAX_STEERING_TICKS;\n  steer_FR.target = steer_FR.center_pos + angle;\n  steer_RR.target = steer_RR.center_pos - angle;\n  steer_FL.target = steer_FL.center_pos + angle;\n  steer_RL.target = steer_RL.center_pos - angle;\n}\n\n/* UNTESTED */\nvoid rover_steer_left(int angle) {\n  if (angle > MAX_STEERING_TICKS)\n    angle = MAX_STEERING_TICKS;\n  if (angle < -MAX_STEERING_TICKS)\n    angle = -MAX_STEERING_TICKS;\n  steer_FR.target = steer_FR.center_pos - angle;\n  steer_RR.target = steer_RR.center_pos + angle;\n  steer_FL.target = steer_FL.center_pos - angle;\n  steer_RL.target = steer_RL.center_pos + angle;\n}\n\n/* UNTESTED */\nvoid rover_steer_point() {\n  steer_FR.target = steer_FR.center_pos - MAX_STEERING_TICKS;\n  steer_RR.target = steer_RR.center_pos + MAX_STEERING_TICKS;\n  steer_FL.target = steer_FL.center_pos + MAX_STEERING_TICKS;\n  steer_RL.target = steer_RL.center_pos - MAX_STEERING_TICKS;\n}\n\nint isr_init() {\n  struct sigaction sa;\n  struct itimerval timer;\n\n  // Install the ISR\n  sa.sa_handler = (void *)isr;\n  sigemptyset(&sa.sa_mask);\n  sa.sa_flags = 0;\n  sigaction(SIGALRM, &sa, NULL);\n\n  // Set the timer to trigger every 1ms\n  timer.it_interval.tv_sec = 0;\n  timer.it_interval.tv_usec = ISR_DELAY;\n  timer.it_value.tv_sec = 0;\n  timer.it_value.tv_usec = ISR_DELAY;\n  setitimer(ITIMER_REAL, &timer, NULL);\n\n  // Handle watchdog\n  watchdog_flag = mmio_init((off_t)WATCHDOG_REG);\n\n  return 0;\n}\n\n// PID Control\nvoid isr(int signum __attribute__((unused))) {\n  // Handle watchdog\n  *(watchdog_flag) = *(watchdog_flag) ? 0 : 1;\n\n  // handle calibration, only one motor for now\n  for (unsigned i = 0; i < isr_num_functions; i++) {\n    isr_functions[i]();\n  }\n}\n\nvoid rover_isr() {\n  // Update servos\n  if (rover_is_calibrated() == false)\n    rover_calibrate();\n\n  // Update the steering\n  rover_update_steering();\n\n  // Update servos\n  for (int i = 0; i < 10; i++)\n    Servo_update(&servos[i]);\n}\n\nint isr_attach_function(void (*fun)()) {\n  if (isr_num_functions == ISR_MAX_FUNCS) {\n    fprintf(stderr, \"Cannot attach any more functions\\n\");\n    return 1; // cannot attach any more functions\n  }\n  isr_functions[isr_num_functions++] = fun;\n  return 0;\n}\n\n/**\n * @brief the rover.\n * @return 0 on success, nonzero on failure\n */\nint rover_init() {\n  // define servos and motors\n  off_t motor_addrs[NUM_MOTORS] = {\n      MOTOR_REAR_LEFT_WHEEL,   MOTOR_REAR_RIGHT_WHEEL,\n      MOTOR_MIDDLE_LEFT_WHEEL, MOTOR_MIDDLE_RIGHT_WHEEL,\n      MOTOR_FRONT_LEFT_WHEEL,  MOTOR_FRONT_RIGHT_WHEEL,\n      MOTOR_FRONT_LEFT_STEER,  MOTOR_FRONT_RIGHT_STEER,\n      MOTOR_REAR_LEFT_STEER,   MOTOR_REAR_RIGHT_STEER,\n      //... more unused motors\n  };\n\n  // setup servos\n  for (int i = 0; i < 10; i++) {\n    // initializing servos\n    if (Servo_init(&servos[i], motor_addrs[i], false) != 0) {\n      printf(\"failed to initialize servo%d\\n\", i);\n      return -1;\n    }\n  }\n\n  // handle calibration\n  uint8_t count = 4;\n  for (int i = 0; i < NUM_MOTORS; i++) {\n    switch (servos[i].motor.addr) {\n    case MOTOR_FRONT_LEFT_STEER:\n      steer_FL.servo = &servos[i];\n      steer_FL.state = STATE_INITIALIZE;\n      count--;\n      break;\n    case MOTOR_FRONT_RIGHT_STEER:\n      steer_FR.servo = &servos[i];\n      steer_FR.state = STATE_INITIALIZE;\n      count--;\n      break;\n    case MOTOR_REAR_LEFT_STEER:\n      steer_RL.servo = &servos[i];\n      steer_RL.state = STATE_INITIALIZE;\n      count--;\n      break;\n    case MOTOR_REAR_RIGHT_STEER:\n      steer_RR.servo = &servos[i];\n      steer_RR.state = STATE_INITIALIZE;\n      count--;\n      break;\n    default:\n      break;\n    }\n  }\n  if (count != 0) {\n    printf(\"failed to initialize steering motors\\n\");\n    return -1;\n  }\n\n  // check if all motors are initialized\n  steering_motor_handle_state(&steer_FR);\n  steering_motor_handle_state(&steer_RR);\n  steering_motor_handle_state(&steer_FL);\n  steering_motor_handle_state(&steer_RL);\n\n  // initialize calibration\n  rover_state = ROVER_CALIBRATE_WAITING;\n\n  if (isr_attach_function(rover_isr) != 0) {\n    fprintf(stderr, \"Failed to attach rover_isr\\n\");\n    return 1;\n  }\n  return 0;\n}\n\nint rover_rotate(int dir, int angle) {\n  if (angle > 90 || angle < -90) {\n    printf(\"Invalid turn angle\\n\");\n  } else {\n    printf(\"Rover rotating to target angle %d and dir %d\\n\", angle, dir);\n  }\n  return 0;\n}\n\nint rover_is_calibrated() { return rover_state == ROVER_CALIBRATE_READY; }\n\n/**\n * @brief Calibrates every motor iteratively\n * @return 0 on success, nonzero on failure\n */\nvoid rover_calibrate() {\n  switch (rover_state) {\n  case ROVER_CALIBRATE_WAITING:\n    calibrate(&steer_FR);\n    rover_state = ROVER_CALIBRATE_FR;\n    break;\n  case ROVER_CALIBRATE_FR:\n    if (steering_motor_handle_state(&steer_FR)) {\n      calibrate(&steer_RR);\n      rover_state = ROVER_CALIBRATE_RR;\n    }\n    break;\n  case ROVER_CALIBRATE_RR:\n    if (steering_motor_handle_state(&steer_RR)) {\n      calibrate(&steer_FL);\n      rover_state = ROVER_CALIBRATE_FL;\n    }\n    break;\n  case ROVER_CALIBRATE_FL:\n    if (steering_motor_handle_state(&steer_FL)) {\n      calibrate(&steer_RL);\n      rover_state = ROVER_CALIBRATE_RL;\n    }\n    break;\n  case ROVER_CALIBRATE_RL:\n    if (steering_motor_handle_state(&steer_RL)) {\n      // rover_steer_forward();\n      rover_state = ROVER_CALIBRATE_READY;\n    }\n    break;\n  case ROVER_CALIBRATE_READY:\n    break;\n  default:\n    break;\n  }\n}\n\n/**\n * @brief Closes out all the motor connections\n * @return 0 on success, nonzero on failure\n */\nint rover_close() {\n  for (int i = 0; i < 10; i++) {\n    Servo_close(&servos[i]);\n  }\n  return 0;\n}"
+                  },
+                  {
+                    "Text": "#ifndef MOTOR_H\n#define MOTOR_H\n\n#include <aio.h>\n#include <stdint.h>\n\ntypedef struct {\n\n  // MMIO\n  volatile unsigned int *mmio;\n  // ADDR - defined for each motor in rover.h\n  off_t addr;\n\n  // GPIO Output Control Signals\n  uint8_t duty_cycle;  // 8 bits\n  uint8_t clk_divisor; // 3 bits\n  uint8_t dir;         // 1 bit\n  uint8_t en_motor;    // 1 bit\n  uint8_t clear_enc;   // 1 bit\n  uint8_t en_enc;      // 1 bit\n\n  // GPIO Input Control Signals\n  int16_t counts; // 16 bits\n\n} MotorController;\n\nint MotorController_init(MotorController *motor, off_t mmio_address);\nvoid MotorController_close(MotorController *motor);\n\nvoid MotorController_write(MotorController *motor);\nvoid MotorController_read(MotorController *motor);\n\n#endif"
+                  },
+                  {
+                    "Text": "#include <aio.h>\n\n#include \"mmio.h\"\n#include \"motor.h\"\n\nint MotorController_init(MotorController *motor, off_t mmio_address) {\n  // Initialize MMIO\n  volatile unsigned int *mmio = mmio_init(mmio_address);\n\n  if (!mmio_is_valid(mmio))\n    return -1;\n\n  // Initialize motor controller\n  motor->mmio = mmio;\n  motor->addr = mmio_address;\n  motor->duty_cycle = 0;\n  motor->clk_divisor = 2;\n  motor->dir = 1;\n  motor->en_motor = 1;\n  motor->clear_enc = 1;\n  motor->en_enc = 1;\n\n  // Clear encoder counter\n  MotorController_write(motor);\n  motor->clear_enc = 0;\n  MotorController_write(motor);\n\n  return 0;\n}\n\nvoid MotorController_close(MotorController *motor) {\n  // Disable motor controller\n  motor->en_motor = 0;\n  motor->en_enc = 0;\n  MotorController_write(motor);\n\n  // Release MMIO\n  close_mem(motor->mmio);\n}\n\nvoid MotorController_write(MotorController *motor) {\n  // Write to MMIO\n  *(motor->mmio) = motor->duty_cycle + (motor->clk_divisor << 8) +\n                   (motor->dir << 11) + (motor->en_motor << 12) +\n                   (motor->clear_enc << 13) + (motor->en_enc << 14);\n}\n\nvoid MotorController_read(MotorController *motor) {\n  // Read MMIO\n  motor->counts = *(motor->mmio + 2);\n}"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "2e294fed-322e-4b29-bc77-cedb41e50724",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_8TPCuc0H9V3SyOZCGqDhnG",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Read remaining key files",
+                "operations": [
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/imu_correction.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/bmi270_port.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/mmio.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/servo.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/steering_motor.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/pid.h"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "cafec6d0-8583-47d3-8e3c-d925c0b4807f",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_8TPCuc0H9V3SyOZCGqDhnG",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "#ifndef IMU_CORRECTION_H\n#define IMU_CORRECTION_H\n\n#include <stdbool.h>\n#include <stdint.h>\n\n#include \"bmi270_port.h\"\n#include \"kalman_wrapper.h\"\n#include \"bmi2.h\"\n#include \"bmi270.h\"\n\n\n// ------------------------ Kalman Movement Implementation ---------------------------\ntypedef enum {\n    STOPPED,\n    SLOW,\n    MED,\n    FAST\n} SPEED;\n\ntypedef enum {\n    NONE,\n    LOW,\n    MODERATE,\n    HIGH\n} TILT_ANGLE;\n\ntypedef enum {\n    PITCH_DEADZONE,\n    FORWARDS,\n    BACKWARDS\n} PITCH_DIRECTION;\n\ntypedef enum {\n    ROLL_DEADZONE,\n    LEFT,\n    RIGHT\n} ROLL_DIRECTION;\n\ntypedef struct {\n    TILT_ANGLE tilt;\n    SPEED motion_speed;\n    PITCH_DIRECTION pitch_dir;\n    ROLL_DIRECTION roll_dir;\n    float tilt_angle_deg;\n} mapping_t;\n// -------------------------------------------------------------------\n\n// getter functions\nbool imu_correction_is_fault(void);\nbool imu_correction_is_critical(void);\nbool imu_correction_is_warning(void);\nbool imu_correction_is_stall(void);\nbool imu_correction_is_unintended_motion(void);\nconst mapping_t* imu_correction_get_map(void);\n\n// init and update\nint imu_correction_init(struct bmi2_dev* dev);\nint imu_correction_update(struct bmi2_dev* dev);\n\n// heading reference management\nvoid imu_correction_set_heading_reference(void);\nvoid imu_correction_clear_heading_reference(void);\n\n// motor state\nvoid imu_correction_set_motor_state(bool running);\n\n// terrain handler\nint imu_correction_handle_terrain(const mapping_t* map);\n\n// motion check\nint imu_correction_check_motion(void);\n\n// correction application\nint imu_correction_apply(void);\n\n#endif"
+                },
+                {
+                  "kind": "text",
+                  "data": "#pragma once\n\n\n#include <errno.h>\n#include \"bmi2.h\"\n#include \"bmi270.h\"\n#include <time.h>\n\n\n// defines\n#define AXI_IIC_BASE 0x800e0000\n#define MAP_SIZE     0x10000\n\n#define REG_SOFTR    0x40\n#define REG_CR       0x100\n#define REG_SR       0x104\n#define REG_TX_FIFO  0x108\n#define REG_RX_FIFO  0x10C\n\nextern volatile uint32_t *iic_base;\n\ntypedef struct {\n    uint8_t port;\n    uint8_t addr;\n} bmi270_i2c_ctx_t;\n\n\nint8_t bmi270_kria_init(bmi270_i2c_ctx_t *ctx, struct bmi2_dev *dev);\nint8_t bmi270_kria_read_ag(struct bmi2_dev *dev, struct bmi2_sens_axes_data *acc, struct bmi2_sens_axes_data *gyr);\n\nvoid bmi270_read_reg(uint8_t reg, uint8_t addr, uint8_t *data, uint32_t data_len);\nvoid bmi270_write_reg(uint8_t addr, uint8_t reg, const uint8_t *data, uint32_t data_len);\nvoid bmi270_delay_us(uint32_t period, void* intf_ptr);\nvoid axi_iic_init(void);"
+                },
+                {
+                  "kind": "text",
+                  "data": "#ifndef ROVERCORE_MMIO_H\n#define ROVERCORE_MMIO_H\n\n#include <fcntl.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <sys/mman.h>\n#include <unistd.h>\n\n// Function prototypes\nvolatile unsigned int *mmio_init(off_t iomem_address);\n\nvoid close_mem(volatile unsigned int *mmio);\n\nuint8_t mmio_is_valid(volatile unsigned int *mmio);\n\n#endif"
+                },
+                {
+                  "kind": "text",
+                  "data": "#ifndef SERVO_H\n#define SERVO_H\n\n#include <aio.h>\n#include <stdbool.h>\n#include <stdint.h>\n\n#include \"motor.h\"\n#include \"pid.h\"\n\ntypedef struct {\n  // Motor\n  MotorController motor;\n\n  // PID\n  PIDController pid;\n\n  // Control Variables\n  double setpoint;\n  int64_t counts;\n  int16_t prevCounts;\n  bool inverted;\n  double speed;\n  bool speed_controlled;\n} Servo;\n\nint Servo_init(Servo *servo, off_t mmio_address, bool inverted);\nvoid Servo_close(Servo *servo);\n\nvoid Servo_update(Servo *servo);\n\n#endif"
+                },
+                {
+                  "kind": "text",
+                  "data": "#ifndef C_STEERING_MOTOR_H\n#define C_STEERING_MOTOR_H\n\n#include <stdint.h>\n#include <stdio.h>\n#include \"servo.h\"\n\n#define CALIBRATION_SPEED 100//was 30\n\n typedef enum {\n    STATE_INITIALIZE,\n    STATE_WAITING,\n    STATE_CALIBRATION_LEFT,\n    STATE_CALIBRATION_RIGHT,\n    STATE_CALIBRATION_CENTER,\n    STATE_READY\n} state_t;\n\ntypedef struct {\n    // legacy\n    uint8_t index;\n    // replaces index\n    Servo* servo;\n    long left_pos;\n    long right_pos;\n    long center_pos;\n    int target;\n    state_t state;  // current state of the motor\n} steering_motor_t;\n\n\nvoid calibrate (steering_motor_t *s_motor);\nint steering_motor_handle_state(steering_motor_t *s_motor);\n\n#endif //C_STEERING_MOTOR_H"
+                },
+                {
+                  "kind": "text",
+                  "data": "#ifndef PID_H\n#define PID_H\n\n// inspired from: https://github.com/pms67/PID/blob/master/PID.h\n\ntypedef struct {\n  /* Controller gains */\n  double Kp;\n  double Ki;\n  double Kd;\n\n  /* Derivative low-pass filter time constant */\n  double tau;\n\n  /* Output limits */\n  double outputLimitMin;\n  double outputLimitMax;\n\n  /* Integrator limits */\n  double integratorLimitMin;\n  double integratorLimitMax;\n\n  /* Sample time (seconds) */\n  double sampleTime;\n\n  /* Controller memory */\n  double integrator;\n  double prevError;\n\n  double differentiator;\n  double prevMeasurement;\n\n  /* Controller output */\n  double output;\n\n} PIDController;\n\nvoid PIDController_init(PIDController *pid);\ndouble PIDController_update(PIDController *pid, double setPoint,\n                            double measurement);\n\n#endif"
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_8TPCuc0H9V3SyOZCGqDhnG": {
+            "tool": {
+              "tool_use_purpose": "Read remaining key files",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/imu_correction.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/bmi270_port.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/mmio.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/servo.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/steering_motor.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/pid.h",
+                        "limit": null,
+                        "offset": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Text": "#ifndef IMU_CORRECTION_H\n#define IMU_CORRECTION_H\n\n#include <stdbool.h>\n#include <stdint.h>\n\n#include \"bmi270_port.h\"\n#include \"kalman_wrapper.h\"\n#include \"bmi2.h\"\n#include \"bmi270.h\"\n\n\n// ------------------------ Kalman Movement Implementation ---------------------------\ntypedef enum {\n    STOPPED,\n    SLOW,\n    MED,\n    FAST\n} SPEED;\n\ntypedef enum {\n    NONE,\n    LOW,\n    MODERATE,\n    HIGH\n} TILT_ANGLE;\n\ntypedef enum {\n    PITCH_DEADZONE,\n    FORWARDS,\n    BACKWARDS\n} PITCH_DIRECTION;\n\ntypedef enum {\n    ROLL_DEADZONE,\n    LEFT,\n    RIGHT\n} ROLL_DIRECTION;\n\ntypedef struct {\n    TILT_ANGLE tilt;\n    SPEED motion_speed;\n    PITCH_DIRECTION pitch_dir;\n    ROLL_DIRECTION roll_dir;\n    float tilt_angle_deg;\n} mapping_t;\n// -------------------------------------------------------------------\n\n// getter functions\nbool imu_correction_is_fault(void);\nbool imu_correction_is_critical(void);\nbool imu_correction_is_warning(void);\nbool imu_correction_is_stall(void);\nbool imu_correction_is_unintended_motion(void);\nconst mapping_t* imu_correction_get_map(void);\n\n// init and update\nint imu_correction_init(struct bmi2_dev* dev);\nint imu_correction_update(struct bmi2_dev* dev);\n\n// heading reference management\nvoid imu_correction_set_heading_reference(void);\nvoid imu_correction_clear_heading_reference(void);\n\n// motor state\nvoid imu_correction_set_motor_state(bool running);\n\n// terrain handler\nint imu_correction_handle_terrain(const mapping_t* map);\n\n// motion check\nint imu_correction_check_motion(void);\n\n// correction application\nint imu_correction_apply(void);\n\n#endif"
+                  },
+                  {
+                    "Text": "#pragma once\n\n\n#include <errno.h>\n#include \"bmi2.h\"\n#include \"bmi270.h\"\n#include <time.h>\n\n\n// defines\n#define AXI_IIC_BASE 0x800e0000\n#define MAP_SIZE     0x10000\n\n#define REG_SOFTR    0x40\n#define REG_CR       0x100\n#define REG_SR       0x104\n#define REG_TX_FIFO  0x108\n#define REG_RX_FIFO  0x10C\n\nextern volatile uint32_t *iic_base;\n\ntypedef struct {\n    uint8_t port;\n    uint8_t addr;\n} bmi270_i2c_ctx_t;\n\n\nint8_t bmi270_kria_init(bmi270_i2c_ctx_t *ctx, struct bmi2_dev *dev);\nint8_t bmi270_kria_read_ag(struct bmi2_dev *dev, struct bmi2_sens_axes_data *acc, struct bmi2_sens_axes_data *gyr);\n\nvoid bmi270_read_reg(uint8_t reg, uint8_t addr, uint8_t *data, uint32_t data_len);\nvoid bmi270_write_reg(uint8_t addr, uint8_t reg, const uint8_t *data, uint32_t data_len);\nvoid bmi270_delay_us(uint32_t period, void* intf_ptr);\nvoid axi_iic_init(void);"
+                  },
+                  {
+                    "Text": "#ifndef ROVERCORE_MMIO_H\n#define ROVERCORE_MMIO_H\n\n#include <fcntl.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <sys/mman.h>\n#include <unistd.h>\n\n// Function prototypes\nvolatile unsigned int *mmio_init(off_t iomem_address);\n\nvoid close_mem(volatile unsigned int *mmio);\n\nuint8_t mmio_is_valid(volatile unsigned int *mmio);\n\n#endif"
+                  },
+                  {
+                    "Text": "#ifndef SERVO_H\n#define SERVO_H\n\n#include <aio.h>\n#include <stdbool.h>\n#include <stdint.h>\n\n#include \"motor.h\"\n#include \"pid.h\"\n\ntypedef struct {\n  // Motor\n  MotorController motor;\n\n  // PID\n  PIDController pid;\n\n  // Control Variables\n  double setpoint;\n  int64_t counts;\n  int16_t prevCounts;\n  bool inverted;\n  double speed;\n  bool speed_controlled;\n} Servo;\n\nint Servo_init(Servo *servo, off_t mmio_address, bool inverted);\nvoid Servo_close(Servo *servo);\n\nvoid Servo_update(Servo *servo);\n\n#endif"
+                  },
+                  {
+                    "Text": "#ifndef C_STEERING_MOTOR_H\n#define C_STEERING_MOTOR_H\n\n#include <stdint.h>\n#include <stdio.h>\n#include \"servo.h\"\n\n#define CALIBRATION_SPEED 100//was 30\n\n typedef enum {\n    STATE_INITIALIZE,\n    STATE_WAITING,\n    STATE_CALIBRATION_LEFT,\n    STATE_CALIBRATION_RIGHT,\n    STATE_CALIBRATION_CENTER,\n    STATE_READY\n} state_t;\n\ntypedef struct {\n    // legacy\n    uint8_t index;\n    // replaces index\n    Servo* servo;\n    long left_pos;\n    long right_pos;\n    long center_pos;\n    int target;\n    state_t state;  // current state of the motor\n} steering_motor_t;\n\n\nvoid calibrate (steering_motor_t *s_motor);\nint steering_motor_handle_state(steering_motor_t *s_motor);\n\n#endif //C_STEERING_MOTOR_H"
+                  },
+                  {
+                    "Text": "#ifndef PID_H\n#define PID_H\n\n// inspired from: https://github.com/pms67/PID/blob/master/PID.h\n\ntypedef struct {\n  /* Controller gains */\n  double Kp;\n  double Ki;\n  double Kd;\n\n  /* Derivative low-pass filter time constant */\n  double tau;\n\n  /* Output limits */\n  double outputLimitMin;\n  double outputLimitMax;\n\n  /* Integrator limits */\n  double integratorLimitMin;\n  double integratorLimitMax;\n\n  /* Sample time (seconds) */\n  double sampleTime;\n\n  /* Controller memory */\n  double integrator;\n  double prevError;\n\n  double differentiator;\n  double prevMeasurement;\n\n  /* Controller output */\n  double output;\n\n} PIDController;\n\nvoid PIDController_init(PIDController *pid);\ndouble PIDController_update(PIDController *pid, double setPoint,\n                            double measurement);\n\n#endif"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "2a0f13e8-57c8-4b3d-96ac-5006ff782d9f",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Here's a summary of the codebase:\n\n---\n\n**Overview**\n\nThis is embedded C/C++ firmware for the SIMBA rover, targeting a Xilinx Kria FPGA board. It drives a 6-wheeled rover with 4 steering motors, using an IMU for closed-loop heading correction.\n\n---\n\n**Architecture**\n\n- `Main.c` — Entry point. Initializes all subsystems, then runs a control loop at ~3Hz (333ms delay) that: reads the IMU, applies heading correction, checks for stalls/unintended motion, and handles terrain warnings.\n- `rover.c/h` — High-level rover API: `rover_forward`, `rover_reverse`, `rover_stop`, `rover_pointTurn_CW/CCW`, steering control, and a 1ms ISR-driven PID loop via `SIGALRM`.\n- `motor.c/h` — Low-level `MotorController` struct that reads/writes MMIO registers directly to the FPGA motor IP cores.\n- `servo.c/h` — Wraps `MotorController` with a `PIDController` for position/speed control.\n- `pid.c/h` — Generic PID controller with integrator clamping and derivative filtering.\n- `steering_motor.c/h` — State machine for calibrating steering motors (finds left/right limits, centers).\n- `mmio.c/h` — Thin wrapper around `/dev/mem` + `mmap` for FPGA register access.\n- `bmi270_port.c/h` — BMI270 IMU driver port for the Kria's AXI I2C peripheral.\n- `imu_correction.c/h` — Reads IMU, runs an ESKF (Error-State Kalman Filter), detects stalls/tilts/unintended motion, and applies yaw correction to keep the rover driving straight.\n- `ESKF.cpp/h` + `kalman_wrapper.cpp/h` — C++ ESKF implementation wrapped for C linkage.\n\n---\n\n**Potentially Missing Drivers**\n\nLooking at the includes and MMIO address map in `rover.h`, a few things stand out:\n\n1. **`bmi2.h` / `bmi270.h`** — These are Bosch's official sensor API headers (used throughout `bmi270_port.h`, `imu_correction.h`). There's no `bmi2.c` or `bmi270.c` in the `rover/` directory. These are likely expected to come from the [Bosch BMI270 sensor API](https://github.com/boschsensortec/BMI270_SensorAPI) but are not present in the repo.\n\n2. **`utilities.h`** is present but there's no corresponding `utilities.c` — likely missing or the functions are header-only.\n\n3. The arm motors (`MOTOR_WRIST`, `MOTOR_BASE`, `MOTOR_ELBOW`, `MOTOR_CLAW`) are defined in `rover.h` but have no driver or control code anywhere — those are completely unimplemented.\n\nThe most critical missing piece is the **Bosch BMI270 sensor API** (`bmi2.c`, `bmi270.c`, and their headers). Without those, the project won't compile. Do you have those files, or should I help you integrate them?"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "1bb484ea-7ca2-4c7d-80a7-19102c50f92b",
+        "content": [
+          {
+            "kind": "text",
+            "data": "template <typename precision, typename Derived>\nEigen::Matrix<precision, 3, 3> what is this"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778283798
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "c97c7c60-a0c6-48d7-a1d2-9d5780a02cd7",
+        "content": [
+          {
+            "kind": "text",
+            "data": "This is a C++ **function template declaration** (partial — it's missing the function name and body).\n\nBreaking it down:\n\n- `template <typename precision, typename Derived>` — declares two generic type parameters:\n  - `precision` — intended to be a floating-point type like `float` or `double`\n  - `Derived` — typically an Eigen matrix/expression type\n\n- `Eigen::Matrix<precision, 3, 3>` — the **return type**: a 3×3 matrix using the `precision` scalar type (e.g., `Eigen::Matrix<float, 3, 3>` = a 3×3 float matrix, also known as `Eigen::Matrix3f`)\n\nSo the full signature would look something like:\n\n```cpp\ntemplate <typename precision, typename Derived>\nEigen::Matrix<precision, 3, 3> skew_symmetric(const Eigen::MatrixBase<Derived>& v) {\n    // returns a 3x3 skew-symmetric matrix from a 3-vector\n}\n```\n\nThe `Derived` template parameter on the input lets it accept any Eigen expression (not just a concrete matrix type) without unnecessary copies — this is the standard Eigen pattern using `Eigen::MatrixBase<Derived>`.\n\nIn your ESKF code specifically, this pattern is used for things like converting a 3D vector into a skew-symmetric matrix for cross-product operations in the filter's Jacobians."
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "c876264a-5eb5-4164-8b80-9f73503865b4",
+        "content": [
+          {
+            "kind": "text",
+            "data": "+------------------+\n | User Terminal |\n | SSH / Serial I/O |\n +--------+---------+\n |\n v\n+------------------------------------------------------------------+\n| Linux Userspace Application |\n|------------------------------------------------------------------|\n| |\n| +-------------------+ +-------------------------------+ |\n| | rover.c |<----->| imu_correction.c | |\n| | Movement Control | | Stall + Terrain Detection | |\n| +---------+---------+ +---------------+---------------+ |\n| | | |\n| | v |\n| | +---------------------------+ |\n| | | ESKF / Kalman Filter | |\n| | | Roll / Pitch / Yaw Est. | |\n| | +-------------+-------------+ |\n| | | |\n| +-----------------------------------+ |\n| IMU Sensor Data |\n+------------------------------------------------------------------+\n |\n v\n+------------------------------------------------------------------+\n| Userspace mmap() I2C Driver |\n|------------------------------------------------------------------|\n| Direct AXI Register Access via /dev/mem |\n+------------------------------------------------------------------+\n |\n v\n+------------------------------------------------------------------+\n| FPGA Programmable Logic (PL) |\n|------------------------------------------------------------------|\n| AXI IIC Soft IP Core |\n| Loaded by xmutil loadapp |\n+------------------------------------------------------------------+\n |\n I2C Bus (SDA/SCL)\n |\n v\n+------------------------------------------------------------------+\n| BMI270 IMU |\n|------------------------------------------------------------------|\n| Accelerometer | Gyroscope | Calibration Biases |\n+------------------------------------------------------------------+can you see this"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778284138
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "c1d210e4-84e4-4d0e-b76d-d9119d6094cb",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Yes, I can see it. That's a clean architecture diagram of the full IMU data path. It matches what I saw in the code:\n\n- **rover.c ↔ imu_correction.c** — the movement/correction feedback loop in `Main.c`\n- **ESKF** — the `ESKF.cpp` / `kalman_wrapper` sitting under `imu_correction`\n- **mmap() I2C driver** — `bmi270_port.c` writing directly to AXI IIC registers via `/dev/mem`\n- **FPGA PL** — the AXI IIC soft IP, loaded via the bitstream in `bitstream/`\n- **BMI270** — the physical sensor on the I2C bus\n\nOne thing worth adding to the diagram: the **motor control path** is a parallel branch that doesn't go through the IMU stack at all — it goes `rover.c → servo.c → motor.c → mmio.c → /dev/mem → FPGA motor IP cores`. The IMU correction only feeds back into rover.c to nudge motor speeds, it doesn't sit in the motor path directly."
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "9d8ce075-6d20-4942-964d-e4791d72dc08",
+        "content": [
+          {
+            "kind": "text",
+            "data": "can you make a diagram of this"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778284313
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "f765908b-fe32-4e5d-bbf7-3dee5b30c4ec",
+        "content": [
+          {
+            "kind": "text",
+            "data": "```\n+------------------+\n| User Terminal    |\n| SSH / Serial I/O |\n+--------+---------+\n         |\n         v\n+------------------------------------------------------------------+\n| Linux Userspace Application                                      |\n|------------------------------------------------------------------|\n|                                                                  |\n|   +-------------------+       +----------------------------+    |\n|   |     Main.c        |       |     imu_correction.c       |    |\n|   |   Control Loop    +<----->|  Stall / Terrain / Heading |    |\n|   +--------+----------+       +-------------+--------------+    |\n|            |                                |                    |\n|            |                                v                    |\n|            |                  +----------------------------+    |\n|            |                  |    ESKF / Kalman Filter    |    |\n|            |                  |  Roll / Pitch / Yaw Est.   |    |\n|            |                  +----------------------------+    |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     rover.c       |                                         |\n|   | Movement Control  |                                         |\n|   +--------+----------+                                         |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     servo.c       |                                         |\n|   |   PID Controller  |                                         |\n|   +--------+----------+                                         |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     motor.c       |                                         |\n|   | MotorController   |                                         |\n|   +--------+----------+                                         |\n|            |                                                     |\n|            v                                                     |\n|   +-------------------+                                         |\n|   |     mmio.c        |                                         |\n|   | /dev/mem mmap()   |                                         |\n|   +--------+----------+                                         |\n|                                                                  |\n+------------------------------------------------------------------+\n         |                              |\n         v                              v\n+-------------------+      +----------------------------+\n| FPGA PL           |      | FPGA PL                    |\n| AXI Motor IP      |      | AXI IIC Soft IP Core       |\n| Cores (x10)       |      | Loaded via xmutil loadapp  |\n+--------+----------+      +-------------+--------------+\n         |                               |\n         v                               v\n+-------------------+      +----------------------------+\n| Drive / Steer     |      |       I2C Bus              |\n| Motors            |      |  (SDA / SCL)               |\n+-------------------+      +-------------+--------------+\n                                          |\n                                          v\n                            +----------------------------+\n                            |        BMI270 IMU          |\n                            |  Accel | Gyro | Biases     |\n                            +----------------------------+\n```\n\nThe two FPGA paths (motor IP cores and AXI IIC) are separate IP blocks in the same bitstream — `rover.h` shows their base addresses are all in the `0x8000_0000` range."
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "be998697-f3c4-4533-8848-90a84bd01210",
+        "content": [
+          {
+            "kind": "text",
+            "data": "can you point me to the exact lines of code"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778284391
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "3e77a6fc-1678-4e31-834b-bd764c9f1cba",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Here's each box in the diagram mapped to exact code locations:"
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_xd0hx8W3B2QMXXQqPWGs9R",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Get exact line numbers for key code sections",
+                "operations": [
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/Main.c",
+                    "offset": 55,
+                    "limit": 50
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/mmio.c"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/servo.c"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "e2e075eb-cc85-4f78-81e5-00c66c99fdc4",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_xd0hx8W3B2QMXXQqPWGs9R",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "  imu_correction_clear_heading_reference();\n  rover_stop();\n}\n\n\n// static void simba_point_turn_cw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CW(speed);\n// }\n\n\n// static void simba_point_turn_ccw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CCW(speed);\n// }\n// --------------------------------------------------------------------------\n\n\nint main() {\n  // Configure signal handler\n  signal(SIGINT, sigint_handler);\n\n\n  // opening the fd and checking for error\n  int fd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n  if (fd < 0) {\n      perror(\"open /dev/mem\");\n      return 1;\n  }\n\n\n  // base address in memory of the IMU\n  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);\n\n\n  // checking the return type    \n  if (iic_base == MAP_FAILED) {\n      perror(\"mmap\");\n      return 1;\n  }\n\n\n  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)\n  struct bmi2_dev dev = {0};    // bosch device struct"
+                },
+                {
+                  "kind": "text",
+                  "data": "#include \"mmio.h\"\n\nvolatile unsigned int *mmio_init(off_t iomem_address) {\n  // Open the /dev/mem device file\n  int memfd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n\n  // Map the I/O register to the virtual memory space\n  volatile unsigned int *mmio =\n      mmap(NULL, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, memfd,\n           iomem_address);\n\n  // Close the /dev/mem device file\n  close(memfd);\n\n  if (mmio == MAP_FAILED) {\n    perror(\"Failed to mmap\");\n    exit(EXIT_FAILURE);\n  }\n\n  return (volatile unsigned int *)mmio;\n}\n\nvoid close_mem(volatile unsigned int *mmio) {\n  // Unmap the virtual memory\n  munmap((void *)mmio, getpagesize());\n}\n\nuint8_t mmio_is_valid(volatile unsigned int *mmio) { return mmio ? 1 : 0; }"
+                },
+                {
+                  "kind": "text",
+                  "data": "#include <aio.h>\n#include <math.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n\n#include \"motor.h\"\n#include \"pid.h\"\n#include \"servo.h\"\n\nint Servo_init(Servo *servo, off_t mmio_address, bool inverted) {\n  // Initialize motor controller\n  if (MotorController_init(&(servo->motor), mmio_address) != 0) {\n    return -1;\n  }\n\n  // Initialize PID controller\n  (servo->pid).Kp = 15.0;\n  (servo->pid).Ki = 30.0;\n  (servo->pid).Kd = 2.0;\n  (servo->pid).tau = 0.04;\n  (servo->pid).outputLimitMin = -255.0;\n  (servo->pid).outputLimitMax = 255.0;\n  (servo->pid).integratorLimitMin = -20.0;\n  (servo->pid).integratorLimitMax = 20.0;\n  (servo->pid).sampleTime = 0.001; // ISR delay? was 0.005\n  PIDController_init(&(servo->pid));\n\n  // Initialize control variables\n  servo->setpoint = 0;\n  servo->counts = 0;\n  servo->prevCounts = 0;\n  // FIXME: inverted servo motor functionality does not work with pid\n  servo->inverted = inverted;\n  servo->speed = 0;\n  servo->speed_controlled = false;\n  return 0;\n}\n\nvoid Servo_close(Servo *servo) {\n  // Close motor controller\n  MotorController_close(&(servo->motor));\n}\n\nvoid Servo_update(Servo *servo) {\n  // Update counts\n  MotorController_read(&(servo->motor));\n  servo->counts += (servo->motor).counts - servo->prevCounts;\n  servo->prevCounts = (servo->motor).counts;\n\n  // Compute control signal\n  if (servo->speed_controlled) {\n    // Compute control signa\n    PIDController_update(&(servo->pid), (double)servo->counts + 10000, (double)servo->counts);\n  }\n  else {\n    PIDController_update(&(servo->pid), servo->setpoint, (double)servo->counts);\n  }\n\n  // Apply control signal\n  (servo->motor).dir = (servo->pid).output >= 0 ? 0 : 1;\n  if (servo->inverted) {\n    (servo->motor).dir = !(servo->motor).dir;\n  }\n  (servo->motor).duty_cycle = (uint8_t)fabs((servo->pid).output);\n  MotorController_write(&(servo->motor));\n}"
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_xd0hx8W3B2QMXXQqPWGs9R": {
+            "tool": {
+              "tool_use_purpose": "Get exact line numbers for key code sections",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/Main.c",
+                        "limit": 50,
+                        "offset": 55
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/mmio.c",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/servo.c",
+                        "limit": null,
+                        "offset": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Text": "  imu_correction_clear_heading_reference();\n  rover_stop();\n}\n\n\n// static void simba_point_turn_cw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CW(speed);\n// }\n\n\n// static void simba_point_turn_ccw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CCW(speed);\n// }\n// --------------------------------------------------------------------------\n\n\nint main() {\n  // Configure signal handler\n  signal(SIGINT, sigint_handler);\n\n\n  // opening the fd and checking for error\n  int fd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n  if (fd < 0) {\n      perror(\"open /dev/mem\");\n      return 1;\n  }\n\n\n  // base address in memory of the IMU\n  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);\n\n\n  // checking the return type    \n  if (iic_base == MAP_FAILED) {\n      perror(\"mmap\");\n      return 1;\n  }\n\n\n  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)\n  struct bmi2_dev dev = {0};    // bosch device struct"
+                  },
+                  {
+                    "Text": "#include \"mmio.h\"\n\nvolatile unsigned int *mmio_init(off_t iomem_address) {\n  // Open the /dev/mem device file\n  int memfd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n\n  // Map the I/O register to the virtual memory space\n  volatile unsigned int *mmio =\n      mmap(NULL, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, memfd,\n           iomem_address);\n\n  // Close the /dev/mem device file\n  close(memfd);\n\n  if (mmio == MAP_FAILED) {\n    perror(\"Failed to mmap\");\n    exit(EXIT_FAILURE);\n  }\n\n  return (volatile unsigned int *)mmio;\n}\n\nvoid close_mem(volatile unsigned int *mmio) {\n  // Unmap the virtual memory\n  munmap((void *)mmio, getpagesize());\n}\n\nuint8_t mmio_is_valid(volatile unsigned int *mmio) { return mmio ? 1 : 0; }"
+                  },
+                  {
+                    "Text": "#include <aio.h>\n#include <math.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n\n#include \"motor.h\"\n#include \"pid.h\"\n#include \"servo.h\"\n\nint Servo_init(Servo *servo, off_t mmio_address, bool inverted) {\n  // Initialize motor controller\n  if (MotorController_init(&(servo->motor), mmio_address) != 0) {\n    return -1;\n  }\n\n  // Initialize PID controller\n  (servo->pid).Kp = 15.0;\n  (servo->pid).Ki = 30.0;\n  (servo->pid).Kd = 2.0;\n  (servo->pid).tau = 0.04;\n  (servo->pid).outputLimitMin = -255.0;\n  (servo->pid).outputLimitMax = 255.0;\n  (servo->pid).integratorLimitMin = -20.0;\n  (servo->pid).integratorLimitMax = 20.0;\n  (servo->pid).sampleTime = 0.001; // ISR delay? was 0.005\n  PIDController_init(&(servo->pid));\n\n  // Initialize control variables\n  servo->setpoint = 0;\n  servo->counts = 0;\n  servo->prevCounts = 0;\n  // FIXME: inverted servo motor functionality does not work with pid\n  servo->inverted = inverted;\n  servo->speed = 0;\n  servo->speed_controlled = false;\n  return 0;\n}\n\nvoid Servo_close(Servo *servo) {\n  // Close motor controller\n  MotorController_close(&(servo->motor));\n}\n\nvoid Servo_update(Servo *servo) {\n  // Update counts\n  MotorController_read(&(servo->motor));\n  servo->counts += (servo->motor).counts - servo->prevCounts;\n  servo->prevCounts = (servo->motor).counts;\n\n  // Compute control signal\n  if (servo->speed_controlled) {\n    // Compute control signa\n    PIDController_update(&(servo->pid), (double)servo->counts + 10000, (double)servo->counts);\n  }\n  else {\n    PIDController_update(&(servo->pid), servo->setpoint, (double)servo->counts);\n  }\n\n  // Apply control signal\n  (servo->motor).dir = (servo->pid).output >= 0 ? 0 : 1;\n  if (servo->inverted) {\n    (servo->motor).dir = !(servo->motor).dir;\n  }\n  (servo->motor).duty_cycle = (uint8_t)fabs((servo->pid).output);\n  MotorController_write(&(servo->motor));\n}"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "c75d6a7c-8829-4447-8065-24ddcc97b0d0",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Here's every box mapped to exact lines:\n\n**Main.c — Control Loop**\n- `main()` starts at line 76\n- `/dev/mem` open: line 80\n- IMU mmap: line 86\n- Main `while` loop: line 133 — calls `imu_correction_update`, terrain check, stall check, `imu_correction_apply`\n\n**imu_correction.c**\n- `imu_correction_update()`, `imu_correction_apply()`, `imu_correction_check_motion()` — all in `rover/imu_correction.c`\n- Header interface: `rover/imu_correction.h` lines 1–60\n\n**ESKF / Kalman Filter**\n- C++ implementation: `rover/ESKF.cpp`\n- C wrapper: `rover/kalman_wrapper.cpp` + `rover/kalman_wrapper.h`\n- Called from `imu_correction.c` via `kalman_init()` / `kalman_update()`\n\n**rover.c — Movement Control**\n- `rover_forward()`: line ~220\n- `rover_stop()`: line ~195\n- `rover_pointTurn_CW/CCW()`: line ~230–245\n\n**servo.c — PID Controller**\n- `Servo_init()` with PID gains (Kp=15, Ki=30, Kd=2): lines 12–38\n- `Servo_update()` — reads encoder, runs PID, writes duty cycle: lines 50–70\n\n**motor.c — MotorController**\n- `MotorController_write()` — packs bits into MMIO register: lines 40–44\n- `MotorController_read()` — reads encoder counts from `mmio+2`: line 48\n\n**mmio.c — /dev/mem mmap**\n- `mmio_init()` — opens `/dev/mem`, calls `mmap()`: lines 3–20\n\n**FPGA Motor IP base addresses**\n- `rover/rover.h` lines 8–30 — all `0x8000_0000` range addresses\n\n**AXI IIC base address**\n- `rover/bmi270_port.h` line 10: `#define AXI_IIC_BASE 0x800e0000`\n- IIC init: `rover/bmi270_port.c` → `axi_iic_init()`\n\n**BMI270 IMU**\n- Init: `Main.c` line ~100 `bmi270_kria_init()`\n- Read: `bmi270_port.c` → `bmi270_kria_read_ag()`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "a9eb305c-ed5f-4516-8eb9-c716f82b8b30",
+        "content": [
+          {
+            "kind": "text",
+            "data": "can you explain this diagram in more depth"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778285117
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "9b6539c6-6980-4589-bc85-eac363bdb000",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Sure. I'll go layer by layer top to bottom.\n\n---\n\n**User Terminal**\n\nYou SSH into the Kria board and run the compiled `rover` binary. That's the only entry point — there's no RTOS, no kernel driver, just a plain Linux process.\n\n---\n\n**Main.c — Control Loop**\n\nThis is the brain. It runs a `while` loop at ~3Hz (333ms sleep). Each iteration:\n1. Reads the IMU via `imu_correction_update()`\n2. Checks if the rover is tilting dangerously (`is_critical` / `is_warning`)\n3. Checks if the rover stalled or is moving when it shouldn't (`check_motion`)\n4. Applies a yaw correction to the motors (`imu_correction_apply`)\n\nIt also handles `SIGINT` (Ctrl+C) to cleanly stop the rover.\n\n---\n\n**rover.c — Movement Control**\n\nProvides the high-level movement commands: `rover_forward`, `rover_stop`, `rover_pointTurn_CW`, etc. These just call `motor_set_speed()` on each of the 6 wheel motors with the right sign (left wheels spin opposite to right wheels to go straight).\n\nIt also runs a **1ms ISR** via `SIGALRM` that calls `Servo_update()` on every motor — this is the real-time control loop running underneath the 3Hz main loop.\n\n---\n\n**imu_correction.c ↔ Main.c**\n\nThese two are tightly coupled. `imu_correction` doesn't move the rover directly — it reads the IMU, computes the current heading error, and tells `Main.c` what's wrong (stall, tilt, fault). `Main.c` then decides what to do (stop, correct, continue). The actual correction in `imu_correction_apply()` nudges individual wheel speeds to counteract yaw drift.\n\n---\n\n**ESKF / Kalman Filter**\n\nThe Error-State Kalman Filter fuses accelerometer + gyroscope data to estimate roll, pitch, and yaw. Raw IMU data is noisy — the ESKF smooths it and gives reliable orientation angles. Written in C++ (`ESKF.cpp`) and wrapped for C via `kalman_wrapper.cpp` so the rest of the C codebase can call `kalman_init()` and `kalman_update()`.\n\n---\n\n**servo.c — PID Controller**\n\nEach motor has a `Servo` struct containing a `MotorController` (hardware) and a `PIDController` (software). Every 1ms the ISR calls `Servo_update()` which:\n1. Reads the encoder count from hardware\n2. Feeds it into the PID (setpoint vs. current position)\n3. Writes the resulting duty cycle + direction back to hardware\n\nThis is what makes motors hold a target speed or position precisely.\n\n---\n\n**motor.c — MotorController**\n\nThe lowest software layer. It packs control signals (duty cycle, direction, enable, encoder clear) into a single 32-bit word and writes it to an MMIO register. It also reads back the 16-bit encoder count from `mmio+2` (the next register offset).\n\n---\n\n**mmio.c — /dev/mem mmap**\n\nLinux doesn't let userspace touch hardware registers directly. `mmio_init()` works around this by opening `/dev/mem` and calling `mmap()` to map a physical FPGA register address into the process's virtual address space. After that, reading/writing the motor is just a pointer dereference.\n\n---\n\n**FPGA Programmable Logic — Motor IP Cores**\n\nThe FPGA has 10+ custom motor controller IP blocks, each mapped to a unique base address (`0x80000000` through `0x800D0000`). Each IP core handles PWM generation and encoder counting in hardware. The CPU just writes a duty cycle and reads back counts.\n\n---\n\n**FPGA Programmable Logic — AXI IIC Core**\n\nA separate soft IP block on the FPGA that implements I2C in hardware. Mapped at `0x800E0000`. The `bmi270_port.c` driver writes directly to its TX FIFO, CR, and SR registers to send I2C transactions — no Linux I2C kernel driver involved at all.\n\n---\n\n**BMI270 IMU**\n\nThe physical sensor on the I2C bus at address `0x68`. Contains a 3-axis accelerometer and 3-axis gyroscope. The Bosch sensor API handles register-level communication; `bmi270_port.c` provides the hardware-specific read/write callbacks that the Bosch API calls into.\n\n---\n\nThe key architectural insight is that there are **two parallel real-time loops**:\n- The **1ms SIGALRM ISR** → servo PID → motor PWM (tight hardware control)\n- The **333ms main loop** → IMU read → Kalman filter → heading correction (slower sensor fusion)\n\nThey share state through the `Servo` structs — the main loop adjusts setpoints, the ISR executes them."
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "1aef5be4-f990-43c6-9119-f18861599b1d",
+        "content": [
+          {
+            "kind": "text",
+            "data": "and this diagram shows the whole flow of data in the rover with correct arrow orientations?"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778285868
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "bd62650e-b407-4fab-b60e-acf970ef50c9",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Not quite. The diagram I drew shows the **software layer hierarchy** (what calls what), but the arrows don't accurately represent **data flow direction**. Here's what's actually happening:\n\n---\n\n**IMU data path — bottom up:**\n```\nBMI270 → AXI IIC → bmi270_port.c → imu_correction.c → ESKF → imu_correction.c → Main.c\n```\nData flows *upward* — the sensor produces it, the filter refines it, Main.c consumes it.\n\n---\n\n**Motor command path — top down:**\n```\nMain.c → rover.c → motor_set_speed() → Servo.setpoint\n                                            ↓ (every 1ms via ISR)\n                                        Servo_update() → motor.c → mmio.c → FPGA Motor IP → Physical Motor\n```\nCommands flow *downward* — Main.c decides, hardware executes.\n\n---\n\n**Encoder feedback — bottom up (inside the ISR):**\n```\nPhysical Motor encoder → FPGA Motor IP → motor.c (MotorController_read) → servo.c (counts) → PID → duty cycle written back\n```\nThis is a **closed loop** entirely within the 1ms ISR — Main.c never sees raw encoder data.\n\n---\n\n**Correction feedback loop:**\n```\nIMU yaw error (imu_correction.c) → nudges motor setpoints in rover.c → motors correct heading\n```\nThis is the cross-connection between the two sides of the diagram — the IMU path feeds back into the motor path.\n\n---\n\nSo a more accurate representation is two loops with a bridge:\n\n```\n         +--[ IMU Loop ]------------------+\n         |  BMI270 → ESKF → imu_correction|\n         |                    |           |\n         |            heading error       |\n         |                    |           |\n         +--[ Motor Loop ]----v-----------+\n            Main.c → rover.c → Servo.setpoint\n                                    ↑↓  (1ms ISR)\n                              motor.c ↔ FPGA ↔ Physical Motors\n```\n\nThe diagram I drew earlier was correct as a **dependency/call graph**, but not as a **data flow diagram**. Want me to redraw it with proper directional arrows?"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "fcf8637f-4911-492a-81f3-d929521f047a",
+        "content": [
+          {
+            "kind": "text",
+            "data": "can you remake the diagram with all of this in mind"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778285920
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "6b31c815-8cd5-4b14-83b3-f8522a7a5791",
+        "content": [
+          {
+            "kind": "text",
+            "data": "```\n                        +------------------+\n                        |  User Terminal   |\n                        |  SSH / Serial    |\n                        +--------+---------+\n                                 |\n                            start/stop\n                                 |\n                                 v\n                        +--------+---------+\n                        |     Main.c       |\n                        |  Control Loop    |\n                        |    (~3Hz)        |\n                        +--+----------+---+\n                           |          ^\n               commands    |          |  fault/stall/\n               (forward,   |          |  terrain alerts\n                stop...)   |          |\n                           v          |\n+------------------+    +--+----------+---+       +-------------------+\n|   rover.c        |<-->|imu_correction.c |<------| ESKF / Kalman     |\n| motor_set_speed()|    | heading error   |       | Roll/Pitch/Yaw    |\n| sets Servo       |    | stall detection |       | (ESKF.cpp)        |\n| .setpoint        |    +----------------+       +-------------------+\n+--------+---------+             ^                        ^\n         |                       |                        |\n  setpoint                  IMU sensor               IMU sensor\n  written                    data                     data\n         |                       |                        |\n         | (1ms ISR)             |                        |\n         v                       |                        |\n+--------+---------+             |                        |\n|    servo.c       |             |                        |\n|  PID Controller  |             |                        |\n|  reads encoder   |             |                        |\n|  writes duty cyc.|             |                        |\n+--------+---------+             |                        |\n         |                       |                        |\n         v                       |                        |\n+--------+---------+             |                        |\n|    motor.c       |             |                        |\n| packs 32-bit reg |             |                        |\n| reads encoder    |             |                        |\n+--------+---------+             |                        |\n         |                       |                        |\n         v                       |                        |\n+--------+---------+             |                        |\n|    mmio.c        |             |                        |\n| /dev/mem mmap()  |             |                        |\n+--+------------+--+             |                        |\n   |            |                |                        |\n   v            v                v                        |\n+------+  +-----+----------+  +-+--------------------+   |\n| FPGA |  | FPGA           |  | FPGA                 |   |\n| Motor|  | Motor IP Cores |  | AXI IIC Soft IP      |   |\n| PWM  |  | Encoder Count  |  | 0x800E0000           |   |\n+--+---+  +------+---------+  +-----------+----------+   |\n   |             |                         |              |\n   v             | encoder                 | I2C          |\n+--+---+         | feedback                | (SDA/SCL)    |\n|Drive |         | (bottom up)             v              |\n|Motors|         |              +----------+----------+   |\n+------+         |              |     BMI270 IMU      |   |\n                 |              | Accel | Gyro |Biases+---+\n                 |              +---------------------+\n                 |\n                 +---> servo.c (counts fed into PID)\n```\n\nThe key flows to read:\n\n- **Left column** (top-down): commands flow down from Main.c → rover.c → servo.c → motor.c → mmio.c → FPGA → motors\n- **Right column** (bottom-up): IMU data flows up from BMI270 → AXI IIC → bmi270_port → ESKF → imu_correction → Main.c\n- **Encoder feedback** (bottom-up, left side): encoder counts flow back up from FPGA → motor.c → servo.c PID — this loop is entirely within the 1ms ISR\n- **Bridge**: `imu_correction.c` crosses both columns — it receives IMU data and nudges `rover.c` motor setpoints to correct heading drift"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "151db730-8952-46c7-bbad-758b19d194ef",
+        "content": [
+          {
+            "kind": "text",
+            "data": "can you explain what every description in this diagram is"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778287264
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "9028a929-3497-44c4-86d2-95a018f04831",
+        "content": [
+          {
+            "kind": "text",
+            "data": "I'll go through every labeled box and arrow in the diagram:\n\n---\n\n**Boxes**\n\n**User Terminal / SSH / Serial**\nYou, sitting at a computer, SSHed into the Kria board. You type `./rover` to start the program and Ctrl+C to stop it.\n\n**Main.c — Control Loop (~3Hz)**\nThe top-level program. Runs a `while` loop that wakes up every 333ms to check IMU status and decide if the rover needs to correct itself, stop, or keep going. It's the decision-maker.\n\n**imu_correction.c — heading error / stall detection**\nConsumes the Kalman filter output and answers three questions: Is the rover tilting dangerously? Has it stalled (motors spinning but not moving)? Is it drifting off its intended heading? Reports these back to Main.c as flags.\n\n**ESKF / Kalman — Roll/Pitch/Yaw (ESKF.cpp)**\nTakes raw noisy accelerometer + gyroscope numbers and produces smooth, reliable orientation angles (roll, pitch, yaw). The \"error-state\" part means it tracks small corrections to the estimate rather than the full state, which is more numerically stable.\n\n**rover.c — motor_set_speed() / sets Servo.setpoint**\nTranslates high-level commands like \"go forward at speed 128\" into individual per-motor speed targets. It knows the rover geometry — e.g. left wheels spin opposite direction to right wheels to go straight.\n\n**servo.c — PID Controller / reads encoder / writes duty cycle**\nRuns every 1ms via the ISR. For each motor: reads how far the encoder has moved, compares it to the target setpoint, runs PID math to compute the correction, and writes a duty cycle (0–255) back to the motor hardware.\n\n**motor.c — packs 32-bit reg / reads encoder**\nThe raw hardware interface. Packs all control signals (duty cycle, direction, enable, encoder clear) into a single 32-bit integer and writes it to one memory address. Reads the encoder count back from the next memory address.\n\n**mmio.c — /dev/mem mmap()**\nThe bridge between software and hardware. Maps physical FPGA register addresses into the process's virtual memory so that motor.c can just do `*mmio = value` to talk to hardware.\n\n**FPGA Motor PWM / Motor IP Cores / Encoder Count**\nCustom hardware blocks inside the FPGA. They receive the duty cycle and generate the actual PWM signal that drives the motor. They also count encoder pulses from the motor shaft and store the count in a register for motor.c to read back.\n\n**FPGA AXI IIC Soft IP — 0x800E0000**\nA hardware I2C controller implemented inside the FPGA. bmi270_port.c writes bytes into its TX FIFO register and it handles the actual I2C signaling on the wire. The address `0x800E0000` is where it's mapped in physical memory.\n\n**Drive Motors**\nThe physical DC motors that move the wheels. Receive PWM signals from the FPGA and spin accordingly.\n\n**BMI270 IMU — Accel / Gyro / Biases**\nThe physical inertial measurement unit chip on the I2C bus at address `0x68`. Contains a 3-axis accelerometer (measures linear acceleration / gravity direction) and a 3-axis gyroscope (measures rotation rate). Biases are calibration offsets stored on the chip.\n\n---\n\n**Arrows**\n\n**start/stop** — you launching or Ctrl+C-ing the binary\n\n**commands (forward, stop...)** — Main.c calling `rover_forward()`, `rover_stop()` etc. in rover.c\n\n**fault/stall/terrain alerts** — imu_correction.c returning error flags back up to Main.c\n\n**heading error nudge** — imu_correction.c calling into rover.c to slightly adjust individual wheel speeds to correct yaw drift\n\n**IMU sensor data** — raw accelerometer + gyroscope readings flowing up from bmi270_port into ESKF and imu_correction\n\n**setpoint written** — rover.c writing a target position/speed into each Servo struct, which the 1ms ISR then executes\n\n**1ms ISR** — the `SIGALRM` timer firing every millisecond, triggering servo.c to run PID on every motor\n\n**encoder feedback (bottom up)** — the physical motor shaft turning, the FPGA counting the pulses, motor.c reading that count, servo.c using it as the PID measurement input\n\n**I2C (SDA/SCL)** — the two-wire serial bus connecting the FPGA's IIC core to the BMI270 chip"
+          }
+        ]
+      }
+    }
+  ]
+}
