@@ -1,0 +1,173 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.377798",
+   "Default View_TopLeft":"490,-553",
+   "ExpandedHierarchyInLayout":"",
+   "PinnedBlocks":"/zynq_ultra_ps_e_0|/clk_wiz_0|/proc_sys_reset_0|/proc_sys_reset_1|/axi_intc_0|/ps8_0_axi_periph|/axi_iic_0|/motor_controller_0|/motor_controller_1|/motor_controller_2|/motor_controller_3|/motor_controller_4|/motor_controller_5|/motor_controller_6|/motor_controller_7|/motor_controller_8|/motor_controller_9|/motor_controller_10|/motor_controller_11|/motor_controller_12|/motor_controller_13|/axi_gpio_10|",
+   "PinnedPorts":"motor0|encoder0|encoder1|motor1|motor2|encoder2|motor3|encoder3|motor4|encoder4|motor5|encoder5|motor6|encoder6|encoder7|motor7|motor8|encoder8|motor9|encoder9|motor10|encoder10|motor11|encoder11|motor12|encoder12|motor13|encoder13|iic|",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
+#  -string -flagsOSRD
+preplace port iic -pg 1 -lvl 8 -x 3570 -y 480 -defaultsOSRD
+preplace port port-id_user_led1 -pg 1 -lvl 8 -x 3570 -y 2340 -defaultsOSRD
+preplace portBus motor0 -pg 1 -lvl 8 -x 3570 -y -10 -defaultsOSRD
+preplace portBus encoder0 -pg 1 -lvl 8 -x 3570 -y 80 -defaultsOSRD -right
+preplace portBus encoder1 -pg 1 -lvl 0 -x -130 -y 170 -defaultsOSRD
+preplace portBus motor1 -pg 1 -lvl 8 -x 3570 -y 180 -defaultsOSRD
+preplace portBus motor2 -pg 1 -lvl 8 -x 3570 -y 350 -defaultsOSRD
+preplace portBus encoder2 -pg 1 -lvl 0 -x -130 -y 340 -defaultsOSRD
+preplace portBus motor3 -pg 1 -lvl 8 -x 3570 -y 520 -defaultsOSRD
+preplace portBus encoder3 -pg 1 -lvl 0 -x -130 -y 510 -defaultsOSRD
+preplace portBus motor4 -pg 1 -lvl 8 -x 3570 -y 680 -defaultsOSRD
+preplace portBus encoder4 -pg 1 -lvl 0 -x -130 -y 670 -defaultsOSRD
+preplace portBus motor5 -pg 1 -lvl 8 -x 3570 -y 840 -defaultsOSRD
+preplace portBus encoder5 -pg 1 -lvl 0 -x -130 -y 830 -defaultsOSRD
+preplace portBus motor6 -pg 1 -lvl 8 -x 3570 -y 1020 -defaultsOSRD
+preplace portBus encoder6 -pg 1 -lvl 0 -x -130 -y 1010 -defaultsOSRD
+preplace portBus encoder7 -pg 1 -lvl 0 -x -130 -y 1170 -defaultsOSRD
+preplace portBus motor7 -pg 1 -lvl 8 -x 3570 -y 1180 -defaultsOSRD
+preplace portBus motor8 -pg 1 -lvl 8 -x 3570 -y 1340 -defaultsOSRD
+preplace portBus encoder8 -pg 1 -lvl 0 -x -130 -y 1330 -defaultsOSRD
+preplace portBus motor9 -pg 1 -lvl 8 -x 3570 -y 1500 -defaultsOSRD
+preplace portBus encoder9 -pg 1 -lvl 0 -x -130 -y 1490 -defaultsOSRD
+preplace portBus motor10 -pg 1 -lvl 8 -x 3570 -y 1660 -defaultsOSRD
+preplace portBus encoder10 -pg 1 -lvl 0 -x -130 -y 1650 -defaultsOSRD
+preplace portBus motor11 -pg 1 -lvl 8 -x 3570 -y 1820 -defaultsOSRD
+preplace portBus encoder11 -pg 1 -lvl 0 -x -130 -y 1810 -defaultsOSRD
+preplace portBus motor12 -pg 1 -lvl 8 -x 3570 -y 1980 -defaultsOSRD
+preplace portBus encoder12 -pg 1 -lvl 0 -x -130 -y 1970 -defaultsOSRD
+preplace portBus motor13 -pg 1 -lvl 8 -x 3570 -y 2140 -defaultsOSRD
+preplace portBus encoder13 -pg 1 -lvl 0 -x -130 -y 2130 -defaultsOSRD
+preplace portBus user_led2 -pg 1 -lvl 8 -x 3570 -y 2400 -defaultsOSRD
+preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 2 -x 600 -y 300 -defaultsOSRD
+preplace inst clk_wiz_0 -pg 1 -lvl 1 -x 120 -y 90 -defaultsOSRD
+preplace inst proc_sys_reset_0 -pg 1 -lvl 2 -x 600 -y 110 -defaultsOSRD
+preplace inst proc_sys_reset_1 -pg 1 -lvl 2 -x 600 -y 500 -defaultsOSRD
+preplace inst axi_intc_0 -pg 1 -lvl 4 -x 1460 -y 330 -defaultsOSRD
+preplace inst ps8_0_axi_periph -pg 1 -lvl 3 -x 1100 -y 790 -defaultsOSRD
+preplace inst axi_iic_0 -pg 1 -lvl 4 -x 1460 -y 560 -defaultsOSRD
+preplace inst axi_gpio_motor0 -pg 1 -lvl 5 -x 2390 -y -20 -defaultsOSRD
+preplace inst axi_gpio_motor1 -pg 1 -lvl 5 -x 2390 -y 170 -defaultsOSRD
+preplace inst axi_gpio_motor2 -pg 1 -lvl 5 -x 2390 -y 330 -defaultsOSRD
+preplace inst axi_gpio_motor3 -pg 1 -lvl 5 -x 2390 -y 510 -defaultsOSRD
+preplace inst axi_gpio_motor4 -pg 1 -lvl 5 -x 2390 -y 670 -defaultsOSRD
+preplace inst axi_gpio_motor5 -pg 1 -lvl 5 -x 2390 -y 830 -defaultsOSRD
+preplace inst axi_gpio_motor6 -pg 1 -lvl 5 -x 2390 -y 1010 -defaultsOSRD
+preplace inst axi_gpio_motor7 -pg 1 -lvl 5 -x 2390 -y 1170 -defaultsOSRD
+preplace inst axi_gpio_motor8 -pg 1 -lvl 5 -x 2390 -y 1330 -defaultsOSRD
+preplace inst axi_gpio_motor9 -pg 1 -lvl 5 -x 2390 -y 1490 -defaultsOSRD
+preplace inst axi_gpio_10 -pg 1 -lvl 5 -x 2390 -y 1650 -defaultsOSRD
+preplace inst axi_gpio_motor11 -pg 1 -lvl 5 -x 2390 -y 1810 -defaultsOSRD
+preplace inst axi_gpio_motor12 -pg 1 -lvl 5 -x 2390 -y 1970 -defaultsOSRD
+preplace inst axi_gpio_motor13 -pg 1 -lvl 5 -x 2390 -y 2130 -defaultsOSRD
+preplace inst axi_gpio_watchdog -pg 1 -lvl 5 -x 2390 -y 2340 -defaultsOSRD
+preplace inst motor_controller_0 -pg 1 -lvl 7 -x 3270 -y -50 -defaultsOSRD
+preplace inst motor_controller_10 -pg 1 -lvl 7 -x 3270 -y 1660 -defaultsOSRD
+preplace inst motor_controller_11 -pg 1 -lvl 7 -x 3270 -y 1820 -defaultsOSRD
+preplace inst motor_controller_12 -pg 1 -lvl 7 -x 3270 -y 1980 -defaultsOSRD
+preplace inst motor_controller_13 -pg 1 -lvl 7 -x 3270 -y 2140 -defaultsOSRD
+preplace inst motor_controller_1 -pg 1 -lvl 7 -x 3270 -y 130 -defaultsOSRD
+preplace inst motor_controller_2 -pg 1 -lvl 7 -x 3270 -y 290 -defaultsOSRD
+preplace inst motor_controller_3 -pg 1 -lvl 7 -x 3270 -y 450 -defaultsOSRD
+preplace inst motor_controller_4 -pg 1 -lvl 7 -x 3270 -y 650 -defaultsOSRD
+preplace inst motor_controller_5 -pg 1 -lvl 7 -x 3270 -y 810 -defaultsOSRD
+preplace inst motor_controller_6 -pg 1 -lvl 7 -x 3270 -y 1010 -defaultsOSRD
+preplace inst motor_controller_7 -pg 1 -lvl 7 -x 3270 -y 1170 -defaultsOSRD
+preplace inst motor_controller_8 -pg 1 -lvl 7 -x 3270 -y 1340 -defaultsOSRD
+preplace inst motor_controller_9 -pg 1 -lvl 7 -x 3270 -y 1500 -defaultsOSRD
+preplace inst watchdog_0 -pg 1 -lvl 6 -x 2830 -y 2340 -defaultsOSRD
+preplace inst xlconstant_0 -pg 1 -lvl 7 -x 3270 -y 2400 -defaultsOSRD
+preplace netloc axi_gpio_0_gpio_io_o 1 5 2 2540 -80 N
+preplace netloc axi_gpio_10_gpio_io_o 1 5 2 N 1640 3080
+preplace netloc axi_gpio_11_gpio_io_o 1 5 2 2630 1790 N
+preplace netloc axi_gpio_12_gpio_io_o 1 5 2 2650 1950 N
+preplace netloc axi_gpio_13_gpio_io_o 1 5 2 2680 2110 N
+preplace netloc axi_gpio_1_gpio_io_o 1 5 2 2540 100 N
+preplace netloc axi_gpio_2_gpio_io_o 1 5 2 2560 260 N
+preplace netloc axi_gpio_3_gpio_io_o 1 5 2 2560 420 N
+preplace netloc axi_gpio_4_gpio_io_o 1 5 2 2560 620 N
+preplace netloc axi_gpio_5_gpio_io_o 1 5 2 2540 780 N
+preplace netloc axi_gpio_6_gpio_io_o 1 5 2 2550 980 N
+preplace netloc axi_gpio_7_gpio_io_o 1 5 2 2600 1140 N
+preplace netloc axi_gpio_8_gpio_io_o 1 5 2 N 1320 3030
+preplace netloc axi_gpio_9_gpio_io_o 1 5 2 N 1480 3040
+preplace netloc axi_iic_0_iic2intc_irpt 1 3 2 1330 440 1630
+preplace netloc axi_intc_0_irq 1 1 4 310 390 890J 330 1300J 430 1630
+preplace netloc clk_wiz_0_clk_out1 1 1 1 N 70
+preplace netloc clk_wiz_0_clk_out2 1 1 4 290 400 950 320 1310 450 2190
+preplace netloc enc_in_0_1 1 0 7 -110J -120 NJ -120 NJ -120 NJ -120 NJ -120 NJ -120 3070
+preplace netloc enc_in_10_1 1 0 7 NJ 1810 NJ 1810 NJ 1810 NJ 1810 1610J 2420 2690J 1830 N
+preplace netloc enc_in_11_1 1 0 7 NJ 1970 NJ 1970 NJ 1970 NJ 1970 1600J 2430 2700J 1990 N
+preplace netloc enc_in_12_1 1 0 7 NJ 2130 NJ 2130 NJ 2130 NJ 2130 1590J 2440 2710J 2150 N
+preplace netloc enc_in_1_1 1 0 7 -90J 0 NJ 0 NJ 0 NJ 0 1630J 70 NJ 70 3030
+preplace netloc enc_in_2_1 1 0 7 -100J -110 NJ -110 NJ -110 NJ -110 NJ -110 NJ -110 3040
+preplace netloc enc_in_3_1 1 0 7 NJ 670 NJ 670 900J 350 1290J 420 NJ 420 2540J 430 3020
+preplace netloc enc_in_4_1 1 0 7 NJ 830 NJ 830 900J 1270 NJ 1270 1660J 2220 2610J 850 2950
+preplace netloc enc_in_5_1 1 0 7 NJ 1010 NJ 1010 910J 1230 1320J 920 NJ 920 NJ 920 2950
+preplace netloc enc_in_6_1 1 0 7 NJ 1170 NJ 1170 890J 1240 NJ 1240 1670J 2230 2620J 1310 2950
+preplace netloc enc_in_7_1 1 0 7 NJ 1330 NJ 1330 NJ 1330 NJ 1330 1640J 2240 2640J 1470 3030
+preplace netloc enc_in_8_1 1 0 7 NJ 1490 NJ 1490 NJ 1490 NJ 1490 1630J 2250 2660J 1630 3030
+preplace netloc enc_in_9_1 1 0 7 NJ 1650 NJ 1650 NJ 1650 NJ 1650 1620J 2260 2670J 1670 N
+preplace netloc motor_controller_0_h_bridge_cntrl 1 7 1 3540J -40n
+preplace netloc motor_controller_0_motor_pos 1 5 3 N 10 3060 40 3470
+preplace netloc motor_controller_10_h_bridge_cntrl 1 7 1 3550 1660n
+preplace netloc motor_controller_10_motor_pos 1 5 3 NJ 1680 3000 2230 3470
+preplace netloc motor_controller_11_h_bridge_cntrl 1 7 1 3550 1820n
+preplace netloc motor_controller_11_motor_pos 1 5 3 NJ 1840 2970 2280 3490
+preplace netloc motor_controller_12_h_bridge_cntrl 1 7 1 3550 1980n
+preplace netloc motor_controller_12_motor_pos 1 5 3 NJ 2000 2990 2250 3480
+preplace netloc motor_controller_13_h_bridge_cntrl 1 7 1 3550 2140n
+preplace netloc motor_controller_13_motor_pos 1 5 3 NJ 2160 2980 2240 3460
+preplace netloc motor_controller_1_h_bridge_cntrl 1 7 1 3520 140n
+preplace netloc motor_controller_1_motor_pos 1 5 3 2610 560 N 560 3500
+preplace netloc motor_controller_2_h_bridge_cntrl 1 7 1 3520 300n
+preplace netloc motor_controller_2_motor_pos 1 5 3 NJ 360 3030 550 3490
+preplace netloc motor_controller_3_h_bridge_cntrl 1 7 1 3520 460n
+preplace netloc motor_controller_3_motor_pos 1 5 3 N 540 N 540 3470
+preplace netloc motor_controller_4_h_bridge_cntrl 1 7 1 3550 660n
+preplace netloc motor_controller_4_motor_pos 1 5 3 2550 -130 3070 -150 3510
+preplace netloc motor_controller_5_h_bridge_cntrl 1 7 1 3550 820n
+preplace netloc motor_controller_5_motor_pos 1 5 3 NJ 860 2950 900 3470
+preplace netloc motor_controller_6_h_bridge_cntrl 1 7 1 N 1020
+preplace netloc motor_controller_6_motor_pos 1 5 3 2540 910 N 910 3470
+preplace netloc motor_controller_7_h_bridge_cntrl 1 7 1 N 1180
+preplace netloc motor_controller_7_motor_pos 1 5 3 2550J 2180 2950 2270 3510
+preplace netloc motor_controller_8_h_bridge_cntrl 1 7 1 3550 1340n
+preplace netloc motor_controller_8_motor_pos 1 5 3 2540 2170 2960 2260 3500
+preplace netloc motor_controller_9_h_bridge_cntrl 1 7 1 3550 1500n
+preplace netloc motor_controller_9_motor_pos 1 5 3 2560 930 2960 920 3490
+preplace netloc pmod2_io_1 1 6 2 3080 -140 3550J
+preplace netloc proc_sys_reset_1_peripheral_aresetn 1 2 3 960 340 1280 640 2200
+preplace netloc watchdog_0_out 1 6 2 3010 2340 N
+preplace netloc watchdog_gpio_gpio_io_o 1 5 1 N 2350
+preplace netloc xlconstant_0_dout 1 7 1 N 2400
+preplace netloc zynq_ultra_ps_e_0_pl_clk0 1 0 7 20 10 NJ 10 900 80 NJ 80 NJ 80 2590 80 3050
+preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 0 3 10 170 300 210 890
+preplace netloc axi_iic_0_IIC 1 4 4 1640J -130 2540 -140 3040 -160 3530J
+preplace netloc ps8_0_axi_periph_M00_AXI 1 3 1 1250 300n
+preplace netloc ps8_0_axi_periph_M01_AXI 1 3 2 1240 -40 N
+preplace netloc ps8_0_axi_periph_M02_AXI 1 3 2 1260 150 NJ
+preplace netloc ps8_0_axi_periph_M03_AXI 1 3 2 1290 460 1650J
+preplace netloc ps8_0_axi_periph_M04_AXI 1 3 2 1320 480 2240J
+preplace netloc ps8_0_axi_periph_M05_AXI 1 3 1 1330 540n
+preplace netloc ps8_0_axi_periph_M06_AXI 1 3 2 NJ 750 1630
+preplace netloc ps8_0_axi_periph_M07_AXI 1 3 2 NJ 770 2240
+preplace netloc ps8_0_axi_periph_M08_AXI 1 3 2 NJ 790 2230
+preplace netloc ps8_0_axi_periph_M09_AXI 1 3 2 NJ 810 2220
+preplace netloc ps8_0_axi_periph_M10_AXI 1 3 2 NJ 830 1640
+preplace netloc ps8_0_axi_periph_M11_AXI 1 3 2 NJ 850 1630
+preplace netloc ps8_0_axi_periph_M12_AXI 1 3 2 NJ 870 2210
+preplace netloc ps8_0_axi_periph_M13_AXI 1 3 2 NJ 890 1700
+preplace netloc ps8_0_axi_periph_M14_AXI 1 3 2 NJ 910 1690
+preplace netloc ps8_0_axi_periph_M15_AXI 1 3 2 NJ 930 1680
+preplace netloc ps8_0_axi_periph_M16_AXI 1 3 2 NJ 950 1650
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_LPD 1 2 1 910 270n
+levelinfo -pg 1 -130 120 600 1100 1460 2390 2830 3270 3570
+pagesize -pg 1 -db -bbox -sgen -280 -990 3720 2460
+"
+}
+{
+   "da_axi4_cnt":"35",
+   "da_board_cnt":"24",
+   "da_clkrst_cnt":"20",
+   "da_zynq_ultra_ps_e_cnt":"1"
+}
