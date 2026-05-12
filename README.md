@@ -1,2 +1,2 @@
 # my-SIMBA
-My own version of the SIMBA Rover Movement code
+My own compilation of the SIMBA Rover Movement code
