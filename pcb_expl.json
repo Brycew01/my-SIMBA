@@ -1,0 +1,1176 @@
+{
+  "format": "kiro-session-export-v1",
+  "metadata": {
+    "session_id": "71dfd361-c5d5-4032-9462-3d9f0c7df408",
+    "cwd": "/home/bwang56/my-SIMBA",
+    "created_at": "2026-05-13T23:43:32.948556707Z",
+    "updated_at": "2026-05-13T23:46:32.936853519Z",
+    "title": "can you read the .fsch file in the pcb folder?",
+    "session_state": {
+      "version": "v1",
+      "conversation_metadata": {
+        "user_turn_metadatas": [
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 2056750376
+            },
+            "result": {
+              "Ok": {
+                "id": "303e5266-f47c-48dc-9472-7d91b257d85d",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "The file `SIMBA_System_Control_PCB v38.fsch` is a binary file — it doesn't contain valid UTF-8 text, so it can't be read as plain text. `.fsch` is a Fritzing schematic file, which is actually a ZIP archive containing XML files inside.\n\nI can try to extract and read its contents if you'd like — want me to unzip it and show the XML?"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778715829
+                }
+              }
+            },
+            "message_ids": [
+              "a35d4a6e-4d5d-439c-87b4-7d5500a7a495",
+              "34f11f02-9c04-4e5b-ae47-4877e083bfdb",
+              "491826f5-62ae-4b9c-bd65-041a7759ab02",
+              "85cd6de0-5416-4723-9efb-27b054597611",
+              "76fc4ff6-e8a3-4cb3-ba5a-d36fedbc2a25",
+              "f1d8d314-dddd-4910-99fb-8b56d3007d5c"
+            ],
+            "total_request_count": 3,
+            "number_of_cycles": 2,
+            "builtin_tool_uses": 2,
+            "turn_duration": {
+              "secs": 7,
+              "nanos": 704095370
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-13T23:43:49.993318177Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 1.2028999,
+            "metering_usage": [
+              {
+                "value": 0.03880851343283582,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.03516415207296849,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.03295643548922056,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 3869935711
+            },
+            "result": {
+              "Ok": {
+                "id": "eb4c869b-4460-498d-8593-f5a53ea2dd45",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "It's an **Autodesk EAGLE schematic** (XML format, version 9.7.0). The file is quite large (~1.8MB). Here's a summary of what's inside:\n\n- **Format**: EAGLE schematic XML (`<!DOCTYPE eagle SYSTEM \"eagle.dtd\">`)\n- **Version**: EAGLE 9.7.0\n- **Layers defined**: Standard EAGLE layers including Top, Bottom, routing layers (Route2–Route15), Pads, Vias, Unrouted, silkscreen (tPlace/bPlace), names, values, stop masks, cream, etc.\n\nWant me to dig deeper into a specific part — like the components/parts list, nets/connections, or something else?"
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778715863
+                }
+              }
+            },
+            "message_ids": [
+              "c07220f8-c5f2-41a0-a436-5e8375035bd2",
+              "8048a507-5227-4e63-a17e-e0aa246f97e2",
+              "ce3988e2-7171-42b6-b129-ffe2381c3d46",
+              "0e79e4b3-7e78-4cd2-b696-813d4d21db15",
+              "a236945a-248e-4068-abbd-d8d063c8c9f5",
+              "9128def4-d96f-4ee1-acd2-f8beffeab0cc",
+              "192d07cd-e5d0-4105-9f21-cda0b6a660c6",
+              "819e38ff-3edd-4201-9769-5dc0e6e906b4",
+              "6bfa62d0-be2f-4c6a-b685-5b69fb8aa7ba",
+              "6fe85dc5-5af7-4f9f-a932-c96846c77b85"
+            ],
+            "total_request_count": 5,
+            "number_of_cycles": 4,
+            "builtin_tool_uses": 4,
+            "turn_duration": {
+              "secs": 26,
+              "nanos": 960881509
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-13T23:44:23.999497628Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 1.7605,
+            "metering_usage": [
+              {
+                "value": 0.03651904427860696,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.04953308043117745,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.04207289386401327,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.05069651310116086,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.07361049635157546,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          },
+          {
+            "loop_id": {
+              "agent_id": {
+                "name": "kiro_default",
+                "parent_id": null,
+                "rand": null
+              },
+              "rand": 1629728805
+            },
+            "result": {
+              "Ok": {
+                "id": "b9715f10-9936-495e-8f20-caf2fa7e2309",
+                "role": "assistant",
+                "content": [
+                  {
+                    "kind": "text",
+                    "data": "Now I have a complete picture. Here's the full breakdown:\n\n---\n\n## PCB Schematic: SIMBA System Control PCB v38\n\n### What's on the board\n\n**Central compute: AMD Kria SOM (U1 — SM-K26-XCL2GI)**\nThe Kria K26 SOM is the brain. It runs the Linux OS, the rover C code (`rover/`), and the Vivado FPGA fabric (`vivado/`). The PCB is essentially a carrier board for this module.\n\n**Power system** — the bulk of the schematic:\n- `BAT_IN` / `VCC_BATT` / `12V_IN`: battery input rail\n- `MP5016GQH-Z` (U2): power protection/load switch with fuse (`BAT_FUSE`)\n- `IRFHS8342TRPBF` (IC1): MOSFET for power switching\n- `SMAJ16A` (D1): 16V TVS diode for battery transient protection\n- `MP8772GQ-Z` (U3): step-down converter → `VMOTOR` (motor drive rail)\n- `MPM3840GQV-Z` (U8, U9, U10): 4A buck converters → `PS_3V3`, `PL_3V3`, `PL_1V8` (Kria PS and PL supply rails)\n- `MPM3810AGQB` (U6, U7, U11): 1A buck converters → `PS_1V8`, `UTIL_3V3`, `PMOD_3V3`, `ENC_5V0` (encoder power)\n- `MP8904DD-LF-Z` (U5, U12): LDO regulators → `FTDI_3V3`, `5V0_IN`\n- `INA260AIPWR` (U4): I²C power monitor (current/voltage sensing on the battery rail)\n\n**Interfaces to the rover hardware:**\n- `VMOTOR` net: the motor drive voltage rail — this feeds the H-bridge drivers in the FPGA fabric (`H_Bridge_Driver.v`) that actually spin the 10 motors defined in `rover.h`\n- `ENC_5V0`: dedicated 5V supply for the quadrature encoders — these feed back into `Quadrature_Decoder.v` in the FPGA, which is how `motor_get_position()` works\n- `MIO24_I2C_SCK` / `MIO25_I2C_SDA`: PS-side I²C — this is the bus the BMI270 IMU sits on, accessed in `bmi270_port.c` via `axi_iic_init()` and used by the Kalman filter / `imu_correction` system in `Main.c`\n- `I2C_SCK_LS` / `I2C_SDA_LS`: level-shifted I²C (via `LSF0102DQER` translators U61–U73) — bridges 1.8V Kria logic to 3.3V peripherals\n- `FTDI_TCK/TDI/TDO/TMS` + `FTDI_UARTB_RXD/TXD`: JTAG and UART via FTDI chip — used for programming/debugging the Kria and loading the bitstream (`bitstream/Kria_BD_wrapper.bit`)\n- `GTH_DP*` / `GTR_DP*`: high-speed serial lanes on the SOM connector — likely for camera or high-bandwidth peripherals\n- `SOM240_1_*`: SOM connector signals carrying PL GPIO to the FPGA fabric (PWM outputs, encoder inputs, H-bridge control signals)\n\n**Other:**\n- `H1–H4` (9774050960R): M5 standoff mounting holes\n- `S1` (B3U-X000): tactile reset button\n- `DMN26D0UFB4-7` (Q1): small MOSFET, likely for enable/power sequencing logic\n- `EEPROM_WC_B` / `FTDI_EEPROM_WC`: write-control for the FTDI EEPROM (stores USB config)\n\n---\n\n### How it connects to the rest of the project\n\nThe PCB is the physical hardware layer that everything else depends on:\n\n- **`rover/` C code** talks to motor controllers and encoders via MMIO at addresses like `0x80000000`–`0x800D0000` (defined in `rover.h`). Those addresses map to AXI-lite registers in the FPGA fabric, which drives signals that ultimately come out of SOM connector pins on this PCB → to the motor H-bridges powered by `VMOTOR`.\n\n- **`vivado/` FPGA design** (`motor_controller.v`, `H_Bridge_Driver.v`, `Quadrature_Decoder.v`, `PWM_Generator.v`) implements the real-time motor control logic. The PCB routes the SOM's PL I/O pins to the physical motor connectors and encoder headers, with `ENC_5V0` powering the encoders.\n\n- **IMU (`bmi270_port.c`, `imu_correction.c`, `ESKF.cpp`)** communicates over the `MIO24/25` I²C bus on this PCB. The level shifters (U61–U73) ensure the 1.8V Kria MIO signals are translated to 3.3V for the BMI270.\n\n- **`bitstream/Kria_BD_wrapper.bit`** is loaded onto the Kria's PL via JTAG, which goes through the FTDI chip on this PCB.\n\nIn short: the PCB is the carrier board that powers the Kria, routes its I/O to motors/encoders/IMU, and handles power regulation from battery to all the different voltage domains the system needs."
+                  }
+                ],
+                "meta": {
+                  "timestamp": 1778715992
+                }
+              }
+            },
+            "message_ids": [
+              "01139517-2535-4f8a-9db5-fc71f1621951",
+              "536addf3-785e-4941-942a-dfb72f97315d",
+              "ba611f6b-fb6a-4b94-ad4e-d492046252ec",
+              "e5d126df-9fcb-4a8d-a226-a2c0fd9368b4",
+              "fdd57a07-9b03-4948-8ee7-8784a569e6cc",
+              "4baa8ce1-5362-4ca7-baf5-f8c42549bfb7",
+              "d972a260-8a7c-48cb-9a50-e5d361c588b4",
+              "b47881e8-d87f-4eb3-baec-70b2327dadec"
+            ],
+            "total_request_count": 4,
+            "number_of_cycles": 3,
+            "builtin_tool_uses": 5,
+            "turn_duration": {
+              "secs": 114,
+              "nanos": 177807903
+            },
+            "end_reason": "UserTurnEnd",
+            "end_timestamp": "2026-05-13T23:46:32.935359352Z",
+            "input_token_count": 0,
+            "output_token_count": 0,
+            "context_usage_percentage": 5.2273,
+            "metering_usage": [
+              {
+                "value": 0.06525411973466003,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.1824370767827529,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.18045604162520737,
+                "unit": "credit",
+                "unitPlural": "credits"
+              },
+              {
+                "value": 0.2644883358208955,
+                "unit": "credit",
+                "unitPlural": "credits"
+              }
+            ]
+          }
+        ],
+        "user_turn_start_request": null,
+        "last_request": null
+      },
+      "rts_model_state": {
+        "conversation_id": "71dfd361-c5d5-4032-9462-3d9f0c7df408",
+        "model_info": {
+          "model_id": "auto",
+          "context_window_tokens": 200000
+        },
+        "context_usage_percentage": 5.2273
+      },
+      "permissions": {
+        "filesystem": {
+          "allowed_read_paths": [
+            "/home/bwang56/my-SIMBA"
+          ],
+          "allowed_write_paths": [],
+          "denied_read_paths": [],
+          "denied_write_paths": []
+        },
+        "trusted_tools": [],
+        "denied_tools": [],
+        "allowed_commands": []
+      },
+      "agent_name": "kiro_default"
+    }
+  },
+  "log_entries": [
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "07f135ea-e71f-497b-9089-76b6bbcd7e56",
+        "content": [
+          {
+            "kind": "text",
+            "data": "can you read the .fsch file in the pcb folder?"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778715822
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "34f11f02-9c04-4e5b-ae47-4877e083bfdb",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_fYbc69wT1nBjWUJ5aLox1n",
+              "name": "glob",
+              "input": {
+                "pattern": "pcb/**/*.fsch",
+                "__tool_use_purpose": "Find .fsch files in the pcb folder"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "f2a7cf48-c3cc-4cff-8387-dbda332637f8",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_fYbc69wT1nBjWUJ5aLox1n",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "filePaths": [
+                      "/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch"
+                    ],
+                    "totalFiles": 1,
+                    "truncated": false
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_fYbc69wT1nBjWUJ5aLox1n": {
+            "tool": {
+              "tool_use_purpose": "Find .fsch files in the pcb folder",
+              "kind": {
+                "BuiltIn": {
+                  "Glob": {
+                    "pattern": "pcb/**/*.fsch",
+                    "path": null,
+                    "limit": null,
+                    "max_depth": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "filePaths": [
+                        "/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch"
+                      ],
+                      "totalFiles": 1,
+                      "truncated": false
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "85cd6de0-5416-4723-9efb-27b054597611",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_hKQfFia8d24Y1GYJW93qrZ",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Read the .fsch file",
+                "operations": [
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "fc8e6144-516f-4c84-8958-8252ef137383",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_hKQfFia8d24Y1GYJW93qrZ",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "Failed to read line 6: stream did not contain valid UTF-8"
+                }
+              ],
+              "status": "error"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_hKQfFia8d24Y1GYJW93qrZ": {
+            "tool": {
+              "tool_use_purpose": "Read the .fsch file",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch",
+                        "limit": null,
+                        "offset": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Error": {
+                "Custom": "Failed to read line 6: stream did not contain valid UTF-8"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "f1d8d314-dddd-4910-99fb-8b56d3007d5c",
+        "content": [
+          {
+            "kind": "text",
+            "data": "The file `SIMBA_System_Control_PCB v38.fsch` is a binary file — it doesn't contain valid UTF-8 text, so it can't be read as plain text. `.fsch` is a Fritzing schematic file, which is actually a ZIP archive containing XML files inside.\n\nI can try to extract and read its contents if you'd like — want me to unzip it and show the XML?"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "b1ff8dee-76b0-4768-89fe-5896b22615ea",
+        "content": [
+          {
+            "kind": "text",
+            "data": "yes"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778715837
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "8048a507-5227-4e63-a17e-e0aa246f97e2",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_SVmao9F3qf2d1meZ2U7YDj",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Unzip and list contents of the .fsch file",
+                "command": "unzip -l \"/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\""
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "956ee297-db47-4ea3-8342-2c0f224f87ee",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_SVmao9F3qf2d1meZ2U7YDj",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "Archive:  /home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/ProteinAssets.BlobParts/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/electron.BlobParts/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/Design1/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/Previews/\n      456  2024-01-24 07:57   Manifest.dat\n        4  2024-01-24 07:57   Properties.dat\n      438  2024-01-24 07:57   Schematic Document Asset[Active]/Manifest.dat\n  1858048  2024-01-24 07:57   Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\n      683  2024-01-24 07:57   Schematic Document Asset[Active]/Design1/BulkStream.dat\n     1006  2024-01-24 07:57   Schematic Document Asset[Active]/Design1/MetaStream.dat\n   197266  2024-01-24 07:57   Schematic Document Asset[Active]/Previews/small.png\n---------                     -------\n  2057901                     12 files\n",
+                    "stderr": ""
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_SVmao9F3qf2d1meZ2U7YDj": {
+            "tool": {
+              "tool_use_purpose": "Unzip and list contents of the .fsch file",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "unzip -l \"/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\"",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "Archive:  /home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/ProteinAssets.BlobParts/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/electron.BlobParts/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/Design1/\n        0  2024-01-24 07:57   Schematic Document Asset[Active]/Previews/\n      456  2024-01-24 07:57   Manifest.dat\n        4  2024-01-24 07:57   Properties.dat\n      438  2024-01-24 07:57   Schematic Document Asset[Active]/Manifest.dat\n  1858048  2024-01-24 07:57   Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\n      683  2024-01-24 07:57   Schematic Document Asset[Active]/Design1/BulkStream.dat\n     1006  2024-01-24 07:57   Schematic Document Asset[Active]/Design1/MetaStream.dat\n   197266  2024-01-24 07:57   Schematic Document Asset[Active]/Previews/small.png\n---------                     -------\n  2057901                     12 files\n",
+                      "stderr": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "0e79e4b3-7e78-4cd2-b696-813d4d21db15",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_JgF7nZucSrxSJ2qOqFKIiv",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Extract and read the main schematic XML file",
+                "command": "unzip -p \"/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\" \"Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | head -c 5000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "9b6ff986-2aa6-40eb-8777-0ce69f5fe59d",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_JgF7nZucSrxSJ2qOqFKIiv",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "",
+                    "stderr": "caution: filename not matched:  Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\n"
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_JgF7nZucSrxSJ2qOqFKIiv": {
+            "tool": {
+              "tool_use_purpose": "Extract and read the main schematic XML file",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "unzip -p \"/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\" \"Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | head -c 5000",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "",
+                      "stderr": "caution: filename not matched:  Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\n"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "9128def4-d96f-4ee1-acd2-f8beffeab0cc",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_eW2mO9CbVY8aKHmsPM0Nbn",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Extract to temp dir and read the schematic file",
+                "command": "cd /tmp && mkdir -p fsch_extract && unzip -o \"/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\" -d /tmp/fsch_extract && ls -R /tmp/fsch_extract"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "b4d23ea9-be61-47af-bc8a-c99255228fbe",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_eW2mO9CbVY8aKHmsPM0Nbn",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "Archive:  /home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/ProteinAssets.BlobParts/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/Design1/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/Previews/\n  inflating: /tmp/fsch_extract/Manifest.dat  \n extracting: /tmp/fsch_extract/Properties.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Manifest.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Design1/BulkStream.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Design1/MetaStream.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Previews/small.png  \n/tmp/fsch_extract:\nManifest.dat\nProperties.dat\nSchematic Document Asset[Active]\n\n/tmp/fsch_extract/Schematic Document Asset[Active]:\nDesign1\nelectron.BlobParts\nManifest.dat\nPreviews\nProteinAssets.BlobParts\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/Design1:\nBulkStream.dat\nMetaStream.dat\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts:\nExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/Previews:\nsmall.png\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/ProteinAssets.BlobParts:\n",
+                    "stderr": ""
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_eW2mO9CbVY8aKHmsPM0Nbn": {
+            "tool": {
+              "tool_use_purpose": "Extract to temp dir and read the schematic file",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "cd /tmp && mkdir -p fsch_extract && unzip -o \"/home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\" -d /tmp/fsch_extract && ls -R /tmp/fsch_extract",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "Archive:  /home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/ProteinAssets.BlobParts/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/Design1/\n   creating: /tmp/fsch_extract/Schematic Document Asset[Active]/Previews/\n  inflating: /tmp/fsch_extract/Manifest.dat  \n extracting: /tmp/fsch_extract/Properties.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Manifest.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Design1/BulkStream.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Design1/MetaStream.dat  \n  inflating: /tmp/fsch_extract/Schematic Document Asset[Active]/Previews/small.png  \n/tmp/fsch_extract:\nManifest.dat\nProperties.dat\nSchematic Document Asset[Active]\n\n/tmp/fsch_extract/Schematic Document Asset[Active]:\nDesign1\nelectron.BlobParts\nManifest.dat\nPreviews\nProteinAssets.BlobParts\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/Design1:\nBulkStream.dat\nMetaStream.dat\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts:\nExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/Previews:\nsmall.png\n\n/tmp/fsch_extract/Schematic Document Asset[Active]/ProteinAssets.BlobParts:\n",
+                      "stderr": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "819e38ff-3edd-4201-9769-5dc0e6e906b4",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_tG7y2a9hEOYiWmuJoVV3Nv",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Read the schematic file content",
+                "command": "head -c 8000 \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\""
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "8ff6f444-bed7-4f5a-8990-8ed944f774ea",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_tG7y2a9hEOYiWmuJoVV3Nv",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE eagle SYSTEM \"eagle.dtd\">\n<eagle version=\"9.7.0\">\n<drawing>\n<settings>\n<setting alwaysvectorfont=\"no\"/>\n<setting verticaltext=\"up\"/>\n</settings>\n<grid distance=\"0.1\" unitdist=\"inch\" unit=\"inch\" style=\"lines\" multiple=\"1\" display=\"yes\" altdistance=\"0.01\" altunitdist=\"inch\" altunit=\"inch\"/>\n<layers>\n<layer number=\"1\" name=\"Top\" blackcolor=\"0xc8ff4164\" whitecolor=\"0xccc90d0c\" coloredcolor=\"0xccc90d0c\" blackhighlight=\"0xffff5147\" whitehighlight=\"0xffff4102\" coloredhighlight=\"0xffff4102\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"2\" name=\"Route2\" blackcolor=\"0xc800bfbf\" whitecolor=\"0xc800bfbf\" coloredcolor=\"0xccffe74c\" blackhighlight=\"0xc800bfbf\" whitehighlight=\"0xc800bfbf\" coloredhighlight=\"0xccffd900\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"3\" name=\"Route3\" blackcolor=\"0xc8faaf3c\" whitecolor=\"0xc8faaf3c\" coloredcolor=\"0xcc91d178\" blackhighlight=\"0xc8fa9600\" whitehighlight=\"0xc8fa9600\" coloredhighlight=\"0xcc3bd100\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"4\" name=\"Route4\" blackcolor=\"0xc89fc966\" whitecolor=\"0xc89fc966\" coloredcolor=\"0xccffdda1\" blackhighlight=\"0xc875c900\" whitehighlight=\"0xc875c900\" coloredhighlight=\"0xccffa200\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"5\" name=\"Route5\" blackcolor=\"0xc8a7bacf\" whitecolor=\"0xc8a7bacf\" coloredcolor=\"0xcc5fad56\" blackhighlight=\"0xc80064cf\" whitehighlight=\"0xc80064cf\" coloredhighlight=\"0xcc14ad00\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"6\" name=\"Route6\" blackcolor=\"0xc8c5a1f8\" whitecolor=\"0xc8c5a1f8\" coloredcolor=\"0xcc5e897c\" blackhighlight=\"0xc86300f8\" whitehighlight=\"0xc86300f8\" coloredhighlight=\"0xcc00895e\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"7\" name=\"Route7\" blackcolor=\"0xc8ff8cc6\" whitecolor=\"0xc8ff8cc6\" coloredcolor=\"0xcc6f45b4\" blackhighlight=\"0xc8ff0084\" whitehighlight=\"0xc8ff0084\" coloredhighlight=\"0xcc4200b4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"8\" name=\"Route8\" blackcolor=\"0xc8f26a52\" whitecolor=\"0xc8f26a52\" coloredcolor=\"0xcc516363\" blackhighlight=\"0xc8f22400\" whitehighlight=\"0xc8f22400\" coloredhighlight=\"0xcc006363\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"9\" name=\"Route9\" blackcolor=\"0xc89bd5ef\" whitecolor=\"0xc89bd5ef\" coloredcolor=\"0xccd6a2ad\" blackhighlight=\"0xc800a7ef\" whitehighlight=\"0xc800a7ef\" coloredhighlight=\"0xccd6002e\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"10\" name=\"Route10\" blackcolor=\"0xc8ffbeab\" whitecolor=\"0xc8ffbeab\" coloredcolor=\"0xccef476f\" blackhighlight=\"0xc8ff3700\" whitehighlight=\"0xc8ff3700\" coloredhighlight=\"0xccef003c\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"11\" name=\"Route11\" blackcolor=\"0xc8e8430f\" whitecolor=\"0xc8e8430f\" coloredcolor=\"0xccd4dcff\" blackhighlight=\"0xc8e83600\" whitehighlight=\"0xc8e83600\" coloredhighlight=\"0xcc0033ff\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"12\" name=\"Route12\" blackcolor=\"0xc8bb7a14\" whitecolor=\"0xc8bb7a14\" coloredcolor=\"0xcc00bfb2\" blackhighlight=\"0xc8bb7000\" whitehighlight=\"0xc8bb7000\" coloredhighlight=\"0xcc00bfaf\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"13\" name=\"Route13\" blackcolor=\"0xc8658d30\" whitecolor=\"0xc8658d30\" coloredcolor=\"0xcc65def1\" blackhighlight=\"0xc8528d00\" whitehighlight=\"0xc8528d00\" coloredhighlight=\"0xcc00d1f1\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"14\" name=\"Route14\" blackcolor=\"0xc823a597\" whitecolor=\"0xc823a597\" coloredcolor=\"0xccc55ea3\" blackhighlight=\"0xc800a592\" whitehighlight=\"0xc800a592\" coloredhighlight=\"0xccc50087\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"15\" name=\"Route15\" blackcolor=\"0xc8a76ef5\" whitecolor=\"0xc8a76ef5\" coloredcolor=\"0xccf56416\" blackhighlight=\"0xc86600f5\" whitehighlight=\"0xc86600f5\" coloredhighlight=\"0xccf55200\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"16\" name=\"Bottom\" blackcolor=\"0xc80696d7\" whitecolor=\"0xcc0696d7\" coloredcolor=\"0xcc0696d7\" blackhighlight=\"0xff147eff\" whitehighlight=\"0xff147eff\" coloredhighlight=\"0xff147eff\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"17\" name=\"Pads\" blackcolor=\"0xb462d987\" whitecolor=\"0xb462d987\" coloredcolor=\"0xcc0dab76\" blackhighlight=\"0xff17ff96\" whitehighlight=\"0xff17ff96\" coloredhighlight=\"0xff00dbc5\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"18\" name=\"Vias\" blackcolor=\"0xb462d987\" whitecolor=\"0xb462d987\" coloredcolor=\"0xccffcd07\" blackhighlight=\"0xff17ff96\" whitehighlight=\"0xff17ff96\" coloredhighlight=\"0xfff9ff47\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"19\" name=\"Unrouted\" blackcolor=\"0xccd9d9d9\" whitecolor=\"0xbbc8c832\" coloredcolor=\"0xbbc8c832\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xffc0ff01\" coloredhighlight=\"0xffc0ff01\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"20\" name=\"Dimension\" blackcolor=\"0xb462d986\" whitecolor=\"0xb462d986\" coloredcolor=\"0xcceec643\" blackhighlight=\"0xff17ff96\" whitehighlight=\"0xff17ff96\" coloredhighlight=\"0xffffff32\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"21\" name=\"tPlace\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"22\" name=\"bPlace\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"23\" name=\"tOrigins\" blackcolor=\"0xc8ffffff\" whitecolor=\"0xccafd134\" coloredcolor=\"0xccafd134\" blackhighlight=\"0xc8ffffff\" whitehighlight=\"0xff92ff0d\" coloredhighlight=\"0xff92ff0d\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"24\" name=\"bOrigins\" blackcolor=\"0xc8ffffff\" whitecolor=\"0xccafd134\" coloredcolor=\"0xccafd134\" blackhighlight=\"0xc8ffffff\" whitehighlight=\"0xff92ff0d\" coloredhighlight=\"0xff92ff0d\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"25\" name=\"tNames\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"26\" name=\"bNames\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"27\" name=\"tValues\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"28\" name=\"bValues\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"29\" name=\"tStop\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"3\" visible=\"no\" active=\"no\"/>\n<layer number=\"30\" name=\"bStop\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"6\" visible=\"no\" active=\"no\"/>\n<layer number=\"31\" name=\"tCream\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"32\" name=\"bCream\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"5\" visible=\"no\" active=\"no\"/>\n<layer number=\"33\" name=\"tFinish\" blackcolor=\"0xccd9d9d9\" whitecolor=\"0xbbc8c832\" coloredcolor=\"0xbbc8c832\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xffc0ff01\" coloredhighlight=\"0xffc0ff01\" fill=\"3\" visible=\"no\" active=\"no\"/>\n<layer number=\"34\" name=\"bFinish\" blackcolor=\"0xccd9d9d9\" whitecolor=\"0xbbc8c832\" coloredcolor=\n",
+                    "stderr": ""
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_tG7y2a9hEOYiWmuJoVV3Nv": {
+            "tool": {
+              "tool_use_purpose": "Read the schematic file content",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "head -c 8000 \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\"",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE eagle SYSTEM \"eagle.dtd\">\n<eagle version=\"9.7.0\">\n<drawing>\n<settings>\n<setting alwaysvectorfont=\"no\"/>\n<setting verticaltext=\"up\"/>\n</settings>\n<grid distance=\"0.1\" unitdist=\"inch\" unit=\"inch\" style=\"lines\" multiple=\"1\" display=\"yes\" altdistance=\"0.01\" altunitdist=\"inch\" altunit=\"inch\"/>\n<layers>\n<layer number=\"1\" name=\"Top\" blackcolor=\"0xc8ff4164\" whitecolor=\"0xccc90d0c\" coloredcolor=\"0xccc90d0c\" blackhighlight=\"0xffff5147\" whitehighlight=\"0xffff4102\" coloredhighlight=\"0xffff4102\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"2\" name=\"Route2\" blackcolor=\"0xc800bfbf\" whitecolor=\"0xc800bfbf\" coloredcolor=\"0xccffe74c\" blackhighlight=\"0xc800bfbf\" whitehighlight=\"0xc800bfbf\" coloredhighlight=\"0xccffd900\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"3\" name=\"Route3\" blackcolor=\"0xc8faaf3c\" whitecolor=\"0xc8faaf3c\" coloredcolor=\"0xcc91d178\" blackhighlight=\"0xc8fa9600\" whitehighlight=\"0xc8fa9600\" coloredhighlight=\"0xcc3bd100\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"4\" name=\"Route4\" blackcolor=\"0xc89fc966\" whitecolor=\"0xc89fc966\" coloredcolor=\"0xccffdda1\" blackhighlight=\"0xc875c900\" whitehighlight=\"0xc875c900\" coloredhighlight=\"0xccffa200\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"5\" name=\"Route5\" blackcolor=\"0xc8a7bacf\" whitecolor=\"0xc8a7bacf\" coloredcolor=\"0xcc5fad56\" blackhighlight=\"0xc80064cf\" whitehighlight=\"0xc80064cf\" coloredhighlight=\"0xcc14ad00\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"6\" name=\"Route6\" blackcolor=\"0xc8c5a1f8\" whitecolor=\"0xc8c5a1f8\" coloredcolor=\"0xcc5e897c\" blackhighlight=\"0xc86300f8\" whitehighlight=\"0xc86300f8\" coloredhighlight=\"0xcc00895e\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"7\" name=\"Route7\" blackcolor=\"0xc8ff8cc6\" whitecolor=\"0xc8ff8cc6\" coloredcolor=\"0xcc6f45b4\" blackhighlight=\"0xc8ff0084\" whitehighlight=\"0xc8ff0084\" coloredhighlight=\"0xcc4200b4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"8\" name=\"Route8\" blackcolor=\"0xc8f26a52\" whitecolor=\"0xc8f26a52\" coloredcolor=\"0xcc516363\" blackhighlight=\"0xc8f22400\" whitehighlight=\"0xc8f22400\" coloredhighlight=\"0xcc006363\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"9\" name=\"Route9\" blackcolor=\"0xc89bd5ef\" whitecolor=\"0xc89bd5ef\" coloredcolor=\"0xccd6a2ad\" blackhighlight=\"0xc800a7ef\" whitehighlight=\"0xc800a7ef\" coloredhighlight=\"0xccd6002e\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"10\" name=\"Route10\" blackcolor=\"0xc8ffbeab\" whitecolor=\"0xc8ffbeab\" coloredcolor=\"0xccef476f\" blackhighlight=\"0xc8ff3700\" whitehighlight=\"0xc8ff3700\" coloredhighlight=\"0xccef003c\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"11\" name=\"Route11\" blackcolor=\"0xc8e8430f\" whitecolor=\"0xc8e8430f\" coloredcolor=\"0xccd4dcff\" blackhighlight=\"0xc8e83600\" whitehighlight=\"0xc8e83600\" coloredhighlight=\"0xcc0033ff\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"12\" name=\"Route12\" blackcolor=\"0xc8bb7a14\" whitecolor=\"0xc8bb7a14\" coloredcolor=\"0xcc00bfb2\" blackhighlight=\"0xc8bb7000\" whitehighlight=\"0xc8bb7000\" coloredhighlight=\"0xcc00bfaf\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"13\" name=\"Route13\" blackcolor=\"0xc8658d30\" whitecolor=\"0xc8658d30\" coloredcolor=\"0xcc65def1\" blackhighlight=\"0xc8528d00\" whitehighlight=\"0xc8528d00\" coloredhighlight=\"0xcc00d1f1\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"14\" name=\"Route14\" blackcolor=\"0xc823a597\" whitecolor=\"0xc823a597\" coloredcolor=\"0xccc55ea3\" blackhighlight=\"0xc800a592\" whitehighlight=\"0xc800a592\" coloredhighlight=\"0xccc50087\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"15\" name=\"Route15\" blackcolor=\"0xc8a76ef5\" whitecolor=\"0xc8a76ef5\" coloredcolor=\"0xccf56416\" blackhighlight=\"0xc86600f5\" whitehighlight=\"0xc86600f5\" coloredhighlight=\"0xccf55200\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"16\" name=\"Bottom\" blackcolor=\"0xc80696d7\" whitecolor=\"0xcc0696d7\" coloredcolor=\"0xcc0696d7\" blackhighlight=\"0xff147eff\" whitehighlight=\"0xff147eff\" coloredhighlight=\"0xff147eff\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"17\" name=\"Pads\" blackcolor=\"0xb462d987\" whitecolor=\"0xb462d987\" coloredcolor=\"0xcc0dab76\" blackhighlight=\"0xff17ff96\" whitehighlight=\"0xff17ff96\" coloredhighlight=\"0xff00dbc5\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"18\" name=\"Vias\" blackcolor=\"0xb462d987\" whitecolor=\"0xb462d987\" coloredcolor=\"0xccffcd07\" blackhighlight=\"0xff17ff96\" whitehighlight=\"0xff17ff96\" coloredhighlight=\"0xfff9ff47\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"19\" name=\"Unrouted\" blackcolor=\"0xccd9d9d9\" whitecolor=\"0xbbc8c832\" coloredcolor=\"0xbbc8c832\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xffc0ff01\" coloredhighlight=\"0xffc0ff01\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"20\" name=\"Dimension\" blackcolor=\"0xb462d986\" whitecolor=\"0xb462d986\" coloredcolor=\"0xcceec643\" blackhighlight=\"0xff17ff96\" whitehighlight=\"0xff17ff96\" coloredhighlight=\"0xffffff32\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"21\" name=\"tPlace\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"22\" name=\"bPlace\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"23\" name=\"tOrigins\" blackcolor=\"0xc8ffffff\" whitecolor=\"0xccafd134\" coloredcolor=\"0xccafd134\" blackhighlight=\"0xc8ffffff\" whitehighlight=\"0xff92ff0d\" coloredhighlight=\"0xff92ff0d\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"24\" name=\"bOrigins\" blackcolor=\"0xc8ffffff\" whitecolor=\"0xccafd134\" coloredcolor=\"0xccafd134\" blackhighlight=\"0xc8ffffff\" whitehighlight=\"0xff92ff0d\" coloredhighlight=\"0xff92ff0d\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"25\" name=\"tNames\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"26\" name=\"bNames\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"27\" name=\"tValues\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"28\" name=\"bValues\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"29\" name=\"tStop\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"3\" visible=\"no\" active=\"no\"/>\n<layer number=\"30\" name=\"bStop\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"6\" visible=\"no\" active=\"no\"/>\n<layer number=\"31\" name=\"tCream\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"1\" visible=\"no\" active=\"no\"/>\n<layer number=\"32\" name=\"bCream\" blackcolor=\"0xccc8c8c8\" whitecolor=\"0xbb808080\" coloredcolor=\"0xbb808080\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xbba4a4a4\" coloredhighlight=\"0xbba4a4a4\" fill=\"5\" visible=\"no\" active=\"no\"/>\n<layer number=\"33\" name=\"tFinish\" blackcolor=\"0xccd9d9d9\" whitecolor=\"0xbbc8c832\" coloredcolor=\"0xbbc8c832\" blackhighlight=\"0xccffffff\" whitehighlight=\"0xffc0ff01\" coloredhighlight=\"0xffc0ff01\" fill=\"3\" visible=\"no\" active=\"no\"/>\n<layer number=\"34\" name=\"bFinish\" blackcolor=\"0xccd9d9d9\" whitecolor=\"0xbbc8c832\" coloredcolor=\n",
+                      "stderr": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "6fe85dc5-5af7-4f9f-a932-c96846c77b85",
+        "content": [
+          {
+            "kind": "text",
+            "data": "It's an **Autodesk EAGLE schematic** (XML format, version 9.7.0). The file is quite large (~1.8MB). Here's a summary of what's inside:\n\n- **Format**: EAGLE schematic XML (`<!DOCTYPE eagle SYSTEM \"eagle.dtd\">`)\n- **Version**: EAGLE 9.7.0\n- **Layers defined**: Standard EAGLE layers including Top, Bottom, routing layers (Route2–Route15), Pads, Vias, Unrouted, silkscreen (tPlace/bPlace), names, values, stop masks, cream, etc.\n\nWant me to dig deeper into a specific part — like the components/parts list, nets/connections, or something else?"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "Prompt",
+      "data": {
+        "message_id": "f3b3e5dd-87fe-41bb-b852-ced92b48bec3",
+        "content": [
+          {
+            "kind": "text",
+            "data": "yes and explain its relevance to the rest of the rover project"
+          }
+        ],
+        "meta": {
+          "timestamp": 1778715878
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "536addf3-785e-4941-942a-dfb72f97315d",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Let me read more of the schematic and the rest of the project simultaneously."
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_AAFpLFTsLNcySFRh34Vlyy",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Extract components/parts and nets from the schematic",
+                "command": "grep -o 'part name=\"[^\"]*\" library=\"[^\"]*\" deviceset=\"[^\"]*\" device=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | head -80"
+              }
+            }
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_X0XnIsDxDBRdGFAYfJBPOC",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Explore the project structure",
+                "operations": [
+                  {
+                    "mode": "Directory",
+                    "path": "/home/bwang56/my-SIMBA",
+                    "depth": 3
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "63040535-bcbe-4fc4-be9c-b7db97767124",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_AAFpLFTsLNcySFRh34Vlyy",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "part name=\"U1\" library=\"SM-K26-XCL2GI\" deviceset=\"SM-K26-XCL2GI\" device=\"\"\npart name=\"S1\" library=\"Switch\" deviceset=\"B3U-X000\" device=\"1000P(M)-B\"\npart name=\"C1\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C2\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C3\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C4\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C5\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C6\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"H1\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"H2\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"H3\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"H4\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"C7\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C8\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C9\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C10\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C11\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C12\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U2\" library=\"MP5016GQH-Z\" deviceset=\"MP5016GQH-Z\" device=\"\"\npart name=\"C13\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C14\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"IC1\" library=\"IRFHS8342TRPBF\" deviceset=\"IRFHS8342TRPBF\" device=\"\"\npart name=\"C15\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C16\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C17\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C18\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"D1\" library=\"SMAJ16A\" deviceset=\"SMAJ16A\" device=\"\"\npart name=\"U3\" library=\"MP8772GQ-Z\" deviceset=\"MP8772GQ-Z\" device=\"\"\npart name=\"C19\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C20\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C21\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"L1\" library=\"Inductor\" deviceset=\"L\" device=\"CHIP-1206(3216-METRIC)\"\npart name=\"C22\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C23\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C24\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C25\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C26\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"Q1\" library=\"DMN26D0UFB4-7\" deviceset=\"DMN26D0UFB4-7\" device=\"\"\npart name=\"C27\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C28\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C29\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C30\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U4\" library=\"INA260AIPWR\" deviceset=\"INA260AIPWR\" device=\"\"\npart name=\"C31\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U5\" library=\"MP8904DD-LF-Z\" deviceset=\"MP8904DD-LF-Z\" device=\"\"\npart name=\"C32\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C33\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C34\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U6\" library=\"2024-01-21_00-58-50_Library\" deviceset=\"MPM3810AGQB-AEC1-Z\" device=\"QFN2P5X3P0X0P9_MNP\"\npart name=\"C35\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C36\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C37\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U7\" library=\"2024-01-21_00-58-50_Library\" deviceset=\"MPM3810AGQB-AEC1-Z\" device=\"QFN2P5X3P0X0P9_MNP\"\npart name=\"C38\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C39\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C40\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U8\" library=\"MPM3840GQV-Z\" deviceset=\"MPM3840GQV-Z\" device=\"\"\npart name=\"C41\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C42\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C43\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C44\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C45\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U9\" library=\"MPM3840GQV-Z\" deviceset=\"MPM3840GQV-Z\" device=\"\"\npart name=\"C46\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C47\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C48\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C57\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C58\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U10\" library=\"MPM3840GQV-Z\" deviceset=\"MPM3840GQV-Z\" device=\"\"\npart name=\"C49\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C50\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C51\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C59\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C60\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U11\" library=\"2024-01-21_00-58-50_Library\" deviceset=\"MPM3810AGQB-AEC1-Z\" device=\"QFN2P5X3P0X0P9_MNP\"\npart name=\"C52\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C53\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C54\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U12\" library=\"MP8904DD-LF-Z\" deviceset=\"MP8904DD-LF-Z\" device=\"\"\npart name=\"C55\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\n",
+                    "stderr": ""
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          },
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_X0XnIsDxDBRdGFAYfJBPOC",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "User id: 1000\ndrwxr-xr-x 2 1000 1000 4096 May 13 23:43 /home/bwang56/my-SIMBA/pcb\ndrwxr-xr-x 8 1000 1000 4096 May 13 23:42 /home/bwang56/my-SIMBA/.git\n-rw-r--r-- 1 1000 1000 63 May 12 21:36 /home/bwang56/my-SIMBA/README.md\n-rw-r--r-- 1 1000 1000 219850 May 12 18:12 /home/bwang56/my-SIMBA/vivado_explanation.json\ndrwxr-xr-x 3 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado\n-rw-r--r-- 1 1000 1000 190179 May 09 00:44 /home/bwang56/my-SIMBA/arch_diagram.json\n-rw-r--r-- 1 1000 1000 62812 May 08 22:33 /home/bwang56/my-SIMBA/new.txt\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/rover\n-rw-r--r-- 1 1000 1000 5819 May 08 22:33 /home/bwang56/my-SIMBA/README\n-rw-r--r-- 1 1000 1000 64 May 08 22:33 /home/bwang56/my-SIMBA/.gitignore\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:15 /home/bwang56/my-SIMBA/test\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:13 /home/bwang56/my-SIMBA/bitstream\n-rw-r--r-- 1 1000 1000 674 May 07 08:12 /home/bwang56/my-SIMBA/.pre-commit-config.yaml\n-rwxr-xr-x 1 1000 1000 158 May 07 08:12 /home/bwang56/my-SIMBA/setup.sh\n-rw-r--r-- 1 1000 1000 199158 May 13 23:43 /home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\n-rw-r--r-- 1 1000 1000 96 May 13 23:42 /home/bwang56/my-SIMBA/.git/FETCH_HEAD\n-rw-r--r-- 1 1000 1000 41 May 13 23:42 /home/bwang56/my-SIMBA/.git/ORIG_HEAD\ndrwxr-xr-x 121 1000 1000 4096 May 13 23:42 /home/bwang56/my-SIMBA/.git/objects\n-rw-r--r-- 1 1000 1000 13242 May 12 21:36 /home/bwang56/my-SIMBA/.git/index\n-rw-r--r-- 1 1000 1000 21 May 12 18:12 /home/bwang56/my-SIMBA/.git/COMMIT_EDITMSG\n-rw-r--r-- 1 1000 1000 294 May 07 08:10 /home/bwang56/my-SIMBA/.git/config\n-rw-r--r-- 1 1000 1000 112 May 07 08:10 /home/bwang56/my-SIMBA/.git/packed-refs\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs\ndrwxr-xr-x 5 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs\n-rw-r--r-- 1 1000 1000 21 May 07 08:10 /home/bwang56/my-SIMBA/.git/HEAD\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/info\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks\n-rw-r--r-- 1 1000 1000 73 May 07 08:10 /home/bwang56/my-SIMBA/.git/description\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/branches\ndrwxr-xr-x 4 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1\n-rw-r--r-- 1 1000 1000 14531 May 12 07:43 /home/bwang56/my-SIMBA/vivado/Kria_Constraints.xdc\n-rw-r--r-- 1 1000 1000 5053 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.c\n-rw-r--r-- 1 1000 1000 589 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.cpp\n-rw-r--r-- 1 1000 1000 1345 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.h\n-rw-r--r-- 1 1000 1000 16023 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.c\n-rw-r--r-- 1 1000 1000 286 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.h\n-rw-r--r-- 1 1000 1000 900 May 08 22:33 /home/bwang56/my-SIMBA/rover/utilities.h\n-rw-r--r-- 1 1000 1000 852 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.h\n-rw-r--r-- 1 1000 1000 5120 May 08 22:33 /home/bwang56/my-SIMBA/rover/Main.c\n-rw-r--r-- 1 1000 1000 3842 May 08 22:33 /home/bwang56/my-SIMBA/rover/Quaternion.h\n-rw-r--r-- 1 1000 1000 1580 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.h\n-rw-r--r-- 1 1000 1000 7999 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.cpp\n-rwxr-xr-x 1 1000 1000 681 May 07 08:16 /home/bwang56/my-SIMBA/rover/Makefile\n-rwxr-xr-x 1 1000 1000 503 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.h\n-rwxr-xr-x 1 1000 1000 3097 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.h\n-rwxr-xr-x 1 1000 1000 43776 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover\n-rwxr-xr-x 1 1000 1000 7979 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.c\n-rwxr-xr-x 1 1000 1000 800 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.h\n-rwxr-xr-x 1 1000 1000 696 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.h\n-rwxr-xr-x 1 1000 1000 14138 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.c\n-rwxr-xr-x 1 1000 1000 1866 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.c\n-rwxr-xr-x 1 1000 1000 1371 May 07 08:12 /home/bwang56/my-SIMBA/rover/plot.py\n-rwxr-xr-x 1 1000 1000 726 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.c\n-rwxr-xr-x 1 1000 1000 735 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.h\n-rwxr-xr-x 1 1000 1000 357 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.h\n-rw-r--r-- 1 1000 1000 78816 May 07 08:12 /home/bwang56/my-SIMBA/rover/librover.a\n-rwxr-xr-x 1 1000 1000 1195 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.c\n-rwxr-xr-x 1 1000 1000 1590 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.c\n-rw-r--r-- 1 1000 1000 23150 May 07 08:12 /home/bwang56/my-SIMBA/test/out.txt\n-rw-r--r-- 1 1000 1000 155 May 07 08:12 /home/bwang56/my-SIMBA/test/Makefile\n-rwxr-xr-x 1 1000 1000 48096 May 07 08:12 /home/bwang56/my-SIMBA/test/main\n-rw-r--r-- 1 1000 1000 1136 May 07 08:12 /home/bwang56/my-SIMBA/test/main.c\n-rwxr-xr-x 1 1000 1000 76 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/load.py\n-rwxr-xr-x 1 1000 1000 828632 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.hwh\n-rwxr-xr-x 1 1000 1000 7797811 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.bit\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/23\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/86\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/ea\ndrwxr-xr-x 2 1000 1000 4096 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/7a\ndrwxr-xr-x 2 1000 1000 4096 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/e6\ndrwxr-xr-x 2 1000 1000 4096 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/51\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/05\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/48\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c9\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d4\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f1\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/42\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c6\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/13\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/22\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/45\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/56\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c5\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/08\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/58\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/18\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/71\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c7\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/14\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ee\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/64\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/91\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9c\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/74\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d6\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8f\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ab\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/fd\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/32\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/85\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/12\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/97\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/be\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e8\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a7\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/61\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/50\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d1\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/63\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/4e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ae\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/2e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/94\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cf\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e5\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/79\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f0\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cc\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b0\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5c\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/db\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b6\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ed\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f5\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/bb\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f3\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/62\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7f\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b7\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f9\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/6a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/43\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/98\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/90\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/00\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/1f\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/dd\ndrwxr-xr-x 2 1000 1000 4096 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/30\ndrwxr-xr-x 2 1000 1000 4096 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/15\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/info\n-rw-r--r-- 1 1000 1000 1289 May 12 21:36 /home/bwang56/my-SIMBA/.git/logs/HEAD\ndrwxr-xr-x 4 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/remotes\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/tags\n-rw-r--r-- 1 1000 1000 240 May 07 08:10 /home/bwang56/my-SIMBA/.git/info/exclude\n-rwxr-xr-x 1 1000 1000 896 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/commit-msg.sample\n-rwxr-xr-x 1 1000 1000 416 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-merge-commit.sample\n-rwxr-xr-x 1 1000 1000 189 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/post-update.sample\n-rwxr-xr-x 1 1000 1000 1374 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-push.sample\n-rwxr-xr-x 1 1000 1000 4898 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-rebase.sample\n-rwxr-xr-x 1 1000 1000 3650 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/update.sample\n-rwxr-xr-x 1 1000 1000 2308 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/sendemail-validate.sample\n-rwxr-xr-x 1 1000 1000 544 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-receive.sample\n-rwxr-xr-x 1 1000 1000 424 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-applypatch.sample\n-rwxr-xr-x 1 1000 1000 2783 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/push-to-checkout.sample\n-rwxr-xr-x 1 1000 1000 478 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/applypatch-msg.sample\n-rwxr-xr-x 1 1000 1000 1492 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/prepare-commit-msg.sample\n-rwxr-xr-x 1 1000 1000 4726 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/fsmonitor-watchman.sample\n-rwxr-xr-x 1 1000 1000 1643 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-commit.sample\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new\ndrwxr-xr-x 3 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/bd\n-r--r--r-- 1 1000 1000 828 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/23/71fbd461865b92b5752637364fecbd5b68ed38\n-r--r--r-- 1 1000 1000 428 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/86/3968993cf82410b13c469559f4627d0de0edac\n-r--r--r-- 1 1000 1000 73 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/ea/2d124843bc2b966920ffffede360f705041d0e\n-r--r--r-- 1 1000 1000 162 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/ea/693e217dacf11722b521d83c72ac6a455a0a0e\n-r--r--r-- 1 1000 1000 169 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/7a/b4805bcca8cb9196d5153c8437cf1b711a9d2f\n-r--r--r-- 1 1000 1000 3504 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7a/7a56551473163bb6c952eaffec0cf2fda27c7e\n-r--r--r-- 1 1000 1000 429 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/e6/105247822caca245d6bf001bf22b38954e52d8\n-r--r--r-- 1 1000 1000 30097 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/51/0b0ffd403d06695f5396284d9612ac4b31dc25\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5d/217479b0ea6e56797905ec9c750ea94a29f5de\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/05/43379aa6a78106b6b25608be1ec1a1e110e5d1\n-r--r--r-- 1 1000 1000 2123 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/05/426f9d0d37d787e131cf79ab170470c143b69a\n-r--r--r-- 1 1000 1000 100 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9b/a3df3a5ad3acc74a1692d0104d83940bbf9c38\n-r--r--r-- 1 1000 1000 3506 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9b/b6d1f238ab2d62324e3cae3e68c2bef2b0954b\n-r--r--r-- 1 1000 1000 3610 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/9b/6dda044412f609364e082d8bcc7cbafa27da7f\n-r--r--r-- 1 1000 1000 75 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/48/4c4e736d581639bbe7ec8ca45366c236b1f217\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c9/d3e84f6858c9724cba5d42ac7cdfc5c5caf07d\n-r--r--r-- 1 1000 1000 3504 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c9/46f382d0fd6b106aa56843ab365eaa2fc41710\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d4/b9e6ab8892c1c72e81237bb1103cf6e9e0281f\n-r--r--r-- 1 1000 1000 75 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f1/b7fcff011256fda3c836071702d492db0909d5\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f1/b79fe32f627d7b3450e18b7090675149e7e95c\n-r--r--r-- 1 1000 1000 287 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/f1/9a764cb5def2cfb7e3d00d30001866911d3892\n-r--r--r-- 1 1000 1000 75 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9a/bffb8729a05f13186ee5422823a3afb1b25059\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/42/75cf693c479c8232722332beb1c646636bf709\n-r--r--r-- 1 1000 1000 3504 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/42/b4b41e28d7f45299846855c01a4245ff699f41\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c6/56edf7142a5af176b9a2547a50dd6f9e75e8dc\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/13/95f0da092f0555675302eda892c5c7cb88bc29\n-r--r--r-- 1 1000 1000 66 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/22/44745236a5aa19ac1ee7d9064de4e74b573abf\n-r--r--r-- 1 1000 1000 280 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/22/c00319db0c64f345167e6ae40eb323ce33baa8\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/45/d6f0d4987dfac284fb1a829d2bdc576ffef3f8\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/56/71ac568ffa9e3f5d6061e245ea19f4edd31a30\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3d/bcac8c633531a2bfbb22f83f0a3d4f054d9909\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c5/b05c71b65ca173fcedbe0596fc7e5848ba616c\n-r--r--r-- 1 1000 1000 618 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c5/15101ec4384d13baa98490d8bb74a35b041288\n-r--r--r-- 1 1000 1000 110 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/08/ab78c821a4775111076dd2680d188e0776e1a6\n-r--r--r-- 1 1000 1000 359 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/08/304be748e202272ace4416341cc509bb9d2f86\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/58/b136b057927e82d9a121f8ba107fca4ff32a95\n-r--r--r-- 1 1000 1000 1160 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/58/14d75570e80dc58b7361f4943cb5ea6d5d6794\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/18/f690d54663d7402d30e4e5e5ad3d0b6fad2fc8\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3/50377afee05bcc574412b6f4b253b5eb3ac8fa\n-r--r--r-- 1 1000 1000 3251 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3/ca916a215cee9727ea1a03c55b6fe3df4493d5\n-r--r--r-- 1 1000 1000 551 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3/c2b557f2ff92031da26a07423ef710b3ef7ba8\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8d/e6c67ea2e2f3e6ef72f643497fec8e9d890905\n-r--r--r-- 1 1000 1000 346 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/8d/7000843d6181d58750b7a139cd1b2b7f26793f\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5a/37ce1e261c75eaaaf3d0d56d7bff54bd7af3e8\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/71/e36cd2333894d61f94da62c972c521ef3e63d4\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c7/da13dbc10af3cf00b21a5cea0fed471fa7c1fb\n-r--r--r-- 1 1000 1000 3901 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c7/078e0a2ff5774fcd85bbd3bf7b885a1975b99e\n-r--r--r-- 1 1000 1000 358 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/c7/2627d6450e0436fdbcd6662986aaec64dc44bf\n-r--r--r-- 1 1000 1000 70 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0b/7cb18cd6d5a40aaa347f81f8fbb8e9b57577de\n-r--r--r-- 1 1000 1000 316 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/14/2d09189f3b3929331c2ca143a9b4112f237ae8\n-r--r--r-- 1 1000 1000 319 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/14/7d45029d2cc988f21fa4fb7155ff5ca359b178\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ee/ab1d6eab0ed0085a786000a63a48264d8eeff6\n-r--r--r-- 1 1000 1000 251 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ee/a9b94e23091fccf3e4d303e999db2fee1b3f1d\n-r--r--r-- 1 1000 1000 165 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7e/3ab9f09a17284779c06afa75245e7d96b6ec96\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/64/ead9111b6fb2b12ce5253f4737d96bea4c10ed\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9d/f5f9fd6662309b78bfdd109a0c3e6818e1a3a3\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/91/629ea6ee35b4fff73191869a53f922f6675386\n-r--r--r-- 1 1000 1000 76 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9c/b6a7c2d9b6e82d757ea9fcb8e6c1fd6e61601e\n-r--r--r-- 1 1000 1000 63 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/74/80beeb1f5b17b8d598a01e5986483260abc8bd\n-r--r--r-- 1 1000 1000 70 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d6/21cb07eaddb92ebc7522961816c54742f5dc66\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8f/3da17c2d9e1eea1fe7f2dac328e9d8431dd223\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ab/4e72e8f35802414daab5d85a6646358ce9d741\n-r--r--r-- 1 1000 1000 49 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ab/0d1a7307c2452ef294d2a1868b5284b6734082\n-r--r--r-- 1 1000 1000 1258 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/fd/669e4a61d919ff7ab696e948bc7ad6fe65301b\n-r--r--r-- 1 1000 1000 69 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/fd/3c1076cefafe5619b26cd5a9d5222ebbeb1f9e\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/32/58e1a4609e53cd2107b035e9db9af3fc36da63\n-r--r--r-- 1 1000 1000 70 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/85/5f1490c1129acbfca5c01972aa4cb31e2bda15\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/12/26e5e1b8e7c1624306bfeb3506fa4b1f63862e\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/12/6460c7dba570f3ce5dd9a94120e21b9c73f8f9\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f2/c9290f4e88b3f9043a7529deca7a1e16736885\n-r--r--r-- 1 1000 1000 58 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/97/6c059b982f9ffe0cd9c86e67cc004e8ff8aaba\n-r--r--r-- 1 1000 1000 816 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/97/bf3e1efc3e62233fb61738d05e31e635645eb5\n-r--r--r-- 1 1000 1000 1689 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/97/f1de43a6ba648a8945d1cb1597134e76b618f5\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/be/be47ae8f06ebefe04872768aaeb2d4bdc77d95\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e8/8f6129e2fed2f387564e8ae1b9bda9795b087d\n-r--r--r-- 1 1000 1000 3502 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e8/20655d97080f88690fda385df410efb9fd1831\n-r--r--r-- 1 1000 1000 76 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e2/d5559c92d8542c12d47b20efb91e818174ef01\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e2/b39f83f7957a1107b4da5893ec26ec9345735b\n-r--r--r-- 1 1000 1000 390 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a7/3413af82c42458ea24d693aa416286b1f462e4\n-r--r--r-- 1 1000 1000 72 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/61/0f0d6ca7ff1c9c91545bb95f80d679e8247784\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/50/8413703073f5ddf3e5e7607a6f5fb37498e0ac\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d1/552e8a299dd6e10fe2b1681ec06ccb614649e2\n-r--r--r-- 1 1000 1000 285 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/63/fd8d897b72c35d68b776c4c4899cb97af4c965\n-r--r--r-- 1 1000 1000 749 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/63/e2f5c23f29e7528c33e1c4d1047bf3b554292d\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b2/0e8bfa46855d4f48d3a8c39f90582a09c74d5d\n-r--r--r-- 1 1000 1000 11561 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/4e/b9569948eea4becf7ee159f94162d2846c75dd\n-r--r--r-- 1 1000 1000 541 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/4e/fb27cbcc7690b7ce461a8d84542453ba516da2\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ae/d5f3d4544f36fd2737f994a825a491d1c384d7\n-r--r--r-- 1 1000 1000 541 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/ae/5e0a97cee830f2edb73ab37fcf5b8e053b3a15\n-r--r--r-- 1 1000 1000 3508 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/2e/6ab0f3714c702bc5541cef2c650ebc5fe4b4b5\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/94/c351bbecf4a9bfbdcb19f362b77fd82f0c3a38\n-r--r--r-- 1 1000 1000 2048 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cf/7cd65e151450f928c1e37376e7953988a89f68\n-r--r--r-- 1 1000 1000 1135 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e5/8b2988da6454f4fcd34258daa8d62c0382667f\n-r--r--r-- 1 1000 1000 3507 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/79/d5fe630e4ab82c184d7ecab8d7cf888706d0b0\n-r--r--r-- 1 1000 1000 1832 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f0/05c04719aecb8b268193825bde42fdb4f55939\n-r--r--r-- 1 1000 1000 3505 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f0/5cc4c473571ff6789b3e41ae451678a43ca69c\n-r--r--r-- 1 1000 1000 2622 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cc/fc4a8006eca70e5c2e2c5700bf680fa627fb02\n-r--r--r-- 1 1000 1000 3512 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b0/9d4ea4bf24cd8e460bd9c10618430d19dca017\n-r--r--r-- 1 1000 1000 155 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/b0/c90361b23f5d534b4cfb3faa9900d94c2fafad\n-r--r--r-- 1 1000 1000 398 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5c/72431a23ae53f8bc51f0abcc0b9b7737694bd3\n-r--r--r-- 1 1000 1000 6716 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/db/7b70b2b6fdd7ec15a7a72b64f821bff3e9472b\n-r--r--r-- 1 1000 1000 1828 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b6/0f8ea74c55e6509a963eef3ce44c2e1ea42ff3\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ed/5dbf3491287d4094a137f81b4e7142bcddfe27\n-r--r--r-- 1 1000 1000 1134 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ed/b2b019cb6d8c22e3e2cf1e139907de9dfdf628\n-r--r--r-- 1 1000 1000 18852 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f5/b2d66cafa0292ad9cb532e25a73545298f61e3\n-r--r--r-- 1 1000 1000 3451 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/bb/f7150b23845f9b99d0f099adfe428efc2d42eb\n-r--r--r-- 1 1000 1000 1135 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/bb/9f98928b64c32c19031c564b60ca8505459208\n-r--r--r-- 1 1000 1000 3508 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f3/f280d596d0f3f2d8ce99a032c2acaefb8d5c75\n-r--r--r-- 1 1000 1000 562 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/e007bae173fb27e4e14c88c87e941d9a951f20\n-r--r--r-- 1 1000 1000 84 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/f7a2bc3d79380fdbeb17e0e632a253796b98dd\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/62/4aeb317d2e4616c1c8b0845ae63b68ba3e9dad\n-r--r--r-- 1 1000 1000 3507 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7f/e937e21198a83a9a1d87a97d5d225082b214ef\n-r--r--r-- 1 1000 1000 846 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7b/e29aa752e81cc9350dcfff817d1bc6de1113c0\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b7/3d51b4096b7a11bb9b252e488d86347fa7be3b\n-r--r--r-- 1 1000 1000 9356 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f9/2e845d188ef0df779e3ac4bb7c15ffd11c7205\n-r--r--r-- 1 1000 1000 3528 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a2/1815d02aaa52a45e14a7ec2eaf03a3435ee841\n-r--r--r-- 1 1000 1000 9942 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a2/b5178cf75caf3c7b2c7eebb8a550f68de9fe40\n-r--r--r-- 1 1000 1000 15405 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/6a/2afcf04d4e5adc9430e3ed39818fa31aa9fbc1\n-r--r--r-- 1 1000 1000 155 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6a/fa66b3cb5ebdb8473a59a5f9223f65b79121a5\n-r--r--r-- 1 1000 1000 3506 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/43/3cec6f6d9b00455278c66f2966558a6bb557a9\n-r--r--r-- 1 1000 1000 11144 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3a/73c940e84f745e7132a6b65b3ffccaa542e984\n-r--r--r-- 1 1000 1000 1135 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3a/b5909260d5e26897ef1d363ca546fb50a46569\n-r--r--r-- 1 1000 1000 18502 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3a/e3da6d593358d60df7f791e96b409319ccb18b\n-r--r--r-- 1 1000 1000 3499 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0a/8e1ab9e60d7b0f4256132ab261cab31a64a513\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5e/a55a7549bd2f577d8639fa13419213f514cec7\n-r--r--r-- 1 1000 1000 497 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/98/b4c3ea523cacf7eb9ea27545782c49f5dc3cb2\n-r--r--r-- 1 1000 1000 6595 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3b/500075adae08d9ef25e26ea6a332397ca1f223\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/90/4c9aeb4fd652dfa85f25078654aafb43697ecf\n-r--r--r-- 1 1000 1000 2284 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/603940d49ab8e4ada5500872c2398217c9c94f\n-r--r--r-- 1 1000 1000 492 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/f548bfd63859c9a31ab38737d9625ebc54b958\n-r--r--r-- 1 1000 1000 547 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/00/613e219795b8c48393fdd37c4a26c525ad5f3e\n-r--r--r-- 1 1000 1000 1063 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/1f/32a71d722d3af8636d7b82ad2175bfb4376e78\n-r--r--r-- 1 1000 1000 2522 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/1f/34ad8530b51c7b647fb6d29bcd00ad705f074f\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/dd/5f56836be6b241228c8848934340e0bd5122e1\n-r--r--r-- 1 1000 1000 155 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/30/59615699caa26ac91ad47e3c5c8c04def33f3c\n-r--r--r-- 1 1000 1000 41069 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/15/93247c8466d06b3f33145f5c12aad1f2b81c21\n-r--r--r-- 1 1000 1000 123 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c/cc79f7f462a58f8889119b960c34a73bcba9fe\n-r--r--r-- 1 1000 1000 65 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0/34387a1e43c7fcbe19bb2860eda0bead815ea6\n-r--r--r-- 1 1000 1000 67385 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b/afdeca106f1b4dc9b97138951d168997b46559\n-r--r--r-- 1 1000 1000 415 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/6b/14001825e88fc22941b4da7538fded87a408eb\n-r--r--r-- 1 1000 1000 201527 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c/ef177c37dacea5a99a7cf7648876ca2b1b5339\n-r--r--r-- 1 1000 1000 318 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f/ee5567df7f7ec640574a0ab28c6ee39a7c3110\n-r--r--r-- 1 1000 1000 357 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8/396bab1912f26d1be495992358cff7a9d05dc0\n-r--r--r-- 1 1000 1000 1200 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0/f991512d8430ffb627ef44f7eb2121563defd6\n-r--r--r-- 1 1000 1000 159 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95/0bd132c3d578359953e77cb818c4a0837ec6e4\n-r--r--r-- 1 1000 1000 1758 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24/7e1b65e06aae462dd232229ca08f62244aa179\n-r--r--r-- 1 1000 1000 771 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d/4b32dde50e5087e808278249d3c26afb6d5a9a\n-r--r--r-- 1 1000 1000 408 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20/c1879c4eb9e7ef5c1d47832d0a05f86728f878\n-r--r--r-- 1 1000 1000 1937 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f/55d56b96a0912d885be217885402819e041a02\n-r--r--r-- 1 1000 1000 338 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/3f/8dde8bd3668445bdfeb140aca0a7a31a8f548f\n-r--r--r-- 1 1000 1000 52 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f/fb3509601c04251bf040398b8a97bb5241d76a\n-r--r--r-- 1 1000 1000 115 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19/f5f29f0e45cdf93f1c00458c614a5d4f8ace79\n-r--r--r-- 1 1000 1000 642 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/19/7babc6f77d7d35c4fc84a4a9cbdb07b85d8349\n-r--r--r-- 1 1000 1000 3874 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29/58ff6222721fd15d4d16baf9343d11a6c85260\n-r--r--r-- 1 1000 1000 63 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd/b2340cf5decca43f77c0a5b9d81d36d59d206e\n-r--r--r-- 1 1000 1000 404 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/b384d59e499444955932ec9e6ffb109dc1cad9\n-r--r--r-- 1 1000 1000 123 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/17364f474da8fde06ece5d7fa16ec652ba59b6\n-r--r--r-- 1 1000 1000 362 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9/ec0e9335b18a4ce36550ce8a9bc47ae182244e\n-r--r--r-- 1 1000 1000 687 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09/164588361c4ed31ece0c16289b59bc92c31327\n-r--r--r-- 1 1000 1000 453 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4/5733bc43d23be288006c6551015588418cc1b4\n-r--r--r-- 1 1000 1000 366 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34/46d001b7ac77cece12afd66a256f878c4a4826\n-r--r--r-- 1 1000 1000 201 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77/a8859a95a7941bce5b58bad38929236ad43084\n-r--r--r-- 1 1000 1000 108 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28/02506cf677c32e36045c1fc9868de38441f6af\n-r--r--r-- 1 1000 1000 279 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87/5cf4e0f88b44c73ba349235eb6db4432ac9168\n-r--r--r-- 1 1000 1000 1156 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.idx\n-r--r--r-- 1 1000 1000 917 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.pack\n-r--r--r-- 1 1000 1000 64 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.rev\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/remotes\n-rw-r--r-- 1 1000 1000 41 May 12 21:36 /home/bwang56/my-SIMBA/.git/refs/heads/main\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/refs/remotes/origin\n-rw-r--r-- 1 1000 1000 2146 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/motor_controller.v\n-rw-r--r-- 1 1000 1000 533 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/PWM_Generator.v\n-rw-r--r-- 1 1000 1000 1266 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/watchdog.v\n-rw-r--r-- 1 1000 1000 1020 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/Quadrature_Decoder.v\n-rw-r--r-- 1 1000 1000 943 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/motor_controller_signals.vh\n-rw-r--r-- 1 1000 1000 2098 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/cntr_udclr_nb.v\n-rw-r--r-- 1 1000 1000 468 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/H_Bridge_Driver.v\n-rw-r--r-- 1 1000 1000 1327 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/control_signal_decoder.v\ndrwxr-xr-x 4 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/bd/Kria_BD"
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_X0XnIsDxDBRdGFAYfJBPOC": {
+            "tool": {
+              "tool_use_purpose": "Explore the project structure",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Directory",
+                        "path": "/home/bwang56/my-SIMBA",
+                        "depth": 3,
+                        "exclude_patterns": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Text": "User id: 1000\ndrwxr-xr-x 2 1000 1000 4096 May 13 23:43 /home/bwang56/my-SIMBA/pcb\ndrwxr-xr-x 8 1000 1000 4096 May 13 23:42 /home/bwang56/my-SIMBA/.git\n-rw-r--r-- 1 1000 1000 63 May 12 21:36 /home/bwang56/my-SIMBA/README.md\n-rw-r--r-- 1 1000 1000 219850 May 12 18:12 /home/bwang56/my-SIMBA/vivado_explanation.json\ndrwxr-xr-x 3 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado\n-rw-r--r-- 1 1000 1000 190179 May 09 00:44 /home/bwang56/my-SIMBA/arch_diagram.json\n-rw-r--r-- 1 1000 1000 62812 May 08 22:33 /home/bwang56/my-SIMBA/new.txt\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/rover\n-rw-r--r-- 1 1000 1000 5819 May 08 22:33 /home/bwang56/my-SIMBA/README\n-rw-r--r-- 1 1000 1000 64 May 08 22:33 /home/bwang56/my-SIMBA/.gitignore\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:15 /home/bwang56/my-SIMBA/test\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:13 /home/bwang56/my-SIMBA/bitstream\n-rw-r--r-- 1 1000 1000 674 May 07 08:12 /home/bwang56/my-SIMBA/.pre-commit-config.yaml\n-rwxr-xr-x 1 1000 1000 158 May 07 08:12 /home/bwang56/my-SIMBA/setup.sh\n-rw-r--r-- 1 1000 1000 199158 May 13 23:43 /home/bwang56/my-SIMBA/pcb/SIMBA_System_Control_PCB v38.fsch\n-rw-r--r-- 1 1000 1000 96 May 13 23:42 /home/bwang56/my-SIMBA/.git/FETCH_HEAD\n-rw-r--r-- 1 1000 1000 41 May 13 23:42 /home/bwang56/my-SIMBA/.git/ORIG_HEAD\ndrwxr-xr-x 121 1000 1000 4096 May 13 23:42 /home/bwang56/my-SIMBA/.git/objects\n-rw-r--r-- 1 1000 1000 13242 May 12 21:36 /home/bwang56/my-SIMBA/.git/index\n-rw-r--r-- 1 1000 1000 21 May 12 18:12 /home/bwang56/my-SIMBA/.git/COMMIT_EDITMSG\n-rw-r--r-- 1 1000 1000 294 May 07 08:10 /home/bwang56/my-SIMBA/.git/config\n-rw-r--r-- 1 1000 1000 112 May 07 08:10 /home/bwang56/my-SIMBA/.git/packed-refs\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs\ndrwxr-xr-x 5 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs\n-rw-r--r-- 1 1000 1000 21 May 07 08:10 /home/bwang56/my-SIMBA/.git/HEAD\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/info\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks\n-rw-r--r-- 1 1000 1000 73 May 07 08:10 /home/bwang56/my-SIMBA/.git/description\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/branches\ndrwxr-xr-x 4 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1\n-rw-r--r-- 1 1000 1000 14531 May 12 07:43 /home/bwang56/my-SIMBA/vivado/Kria_Constraints.xdc\n-rw-r--r-- 1 1000 1000 5053 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.c\n-rw-r--r-- 1 1000 1000 589 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.cpp\n-rw-r--r-- 1 1000 1000 1345 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.h\n-rw-r--r-- 1 1000 1000 16023 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.c\n-rw-r--r-- 1 1000 1000 286 May 08 22:33 /home/bwang56/my-SIMBA/rover/kalman_wrapper.h\n-rw-r--r-- 1 1000 1000 900 May 08 22:33 /home/bwang56/my-SIMBA/rover/utilities.h\n-rw-r--r-- 1 1000 1000 852 May 08 22:33 /home/bwang56/my-SIMBA/rover/bmi270_port.h\n-rw-r--r-- 1 1000 1000 5120 May 08 22:33 /home/bwang56/my-SIMBA/rover/Main.c\n-rw-r--r-- 1 1000 1000 3842 May 08 22:33 /home/bwang56/my-SIMBA/rover/Quaternion.h\n-rw-r--r-- 1 1000 1000 1580 May 08 22:33 /home/bwang56/my-SIMBA/rover/imu_correction.h\n-rw-r--r-- 1 1000 1000 7999 May 08 22:33 /home/bwang56/my-SIMBA/rover/ESKF.cpp\n-rwxr-xr-x 1 1000 1000 681 May 07 08:16 /home/bwang56/my-SIMBA/rover/Makefile\n-rwxr-xr-x 1 1000 1000 503 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.h\n-rwxr-xr-x 1 1000 1000 3097 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.h\n-rwxr-xr-x 1 1000 1000 43776 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover\n-rwxr-xr-x 1 1000 1000 7979 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.c\n-rwxr-xr-x 1 1000 1000 800 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.h\n-rwxr-xr-x 1 1000 1000 696 May 07 08:12 /home/bwang56/my-SIMBA/rover/steering_motor.h\n-rwxr-xr-x 1 1000 1000 14138 May 07 08:12 /home/bwang56/my-SIMBA/rover/rover.c\n-rwxr-xr-x 1 1000 1000 1866 May 07 08:12 /home/bwang56/my-SIMBA/rover/servo.c\n-rwxr-xr-x 1 1000 1000 1371 May 07 08:12 /home/bwang56/my-SIMBA/rover/plot.py\n-rwxr-xr-x 1 1000 1000 726 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.c\n-rwxr-xr-x 1 1000 1000 735 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.h\n-rwxr-xr-x 1 1000 1000 357 May 07 08:12 /home/bwang56/my-SIMBA/rover/mmio.h\n-rw-r--r-- 1 1000 1000 78816 May 07 08:12 /home/bwang56/my-SIMBA/rover/librover.a\n-rwxr-xr-x 1 1000 1000 1195 May 07 08:12 /home/bwang56/my-SIMBA/rover/motor.c\n-rwxr-xr-x 1 1000 1000 1590 May 07 08:12 /home/bwang56/my-SIMBA/rover/pid.c\n-rw-r--r-- 1 1000 1000 23150 May 07 08:12 /home/bwang56/my-SIMBA/test/out.txt\n-rw-r--r-- 1 1000 1000 155 May 07 08:12 /home/bwang56/my-SIMBA/test/Makefile\n-rwxr-xr-x 1 1000 1000 48096 May 07 08:12 /home/bwang56/my-SIMBA/test/main\n-rw-r--r-- 1 1000 1000 1136 May 07 08:12 /home/bwang56/my-SIMBA/test/main.c\n-rwxr-xr-x 1 1000 1000 76 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/load.py\n-rwxr-xr-x 1 1000 1000 828632 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.hwh\n-rwxr-xr-x 1 1000 1000 7797811 May 07 08:12 /home/bwang56/my-SIMBA/bitstream/Kria_BD_wrapper.bit\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/23\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/86\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/ea\ndrwxr-xr-x 2 1000 1000 4096 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/7a\ndrwxr-xr-x 2 1000 1000 4096 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/e6\ndrwxr-xr-x 2 1000 1000 4096 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/51\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/05\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/48\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c9\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d4\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f1\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/42\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c6\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/13\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/22\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/45\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/56\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c5\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/08\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/58\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/18\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/71\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c7\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/14\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ee\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/64\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9d\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/91\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9c\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/74\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d6\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8f\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ab\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/fd\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/32\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/85\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/12\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/97\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/be\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e8\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a7\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/61\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/50\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d1\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/63\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/4e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ae\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/2e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/94\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cf\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e5\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/79\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f0\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cc\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b0\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5c\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/db\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b6\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ed\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f5\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/bb\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f3\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/62\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7f\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b7\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f9\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a2\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/6a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/43\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0a\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5e\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/98\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3b\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/90\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/00\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/1f\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/dd\ndrwxr-xr-x 2 1000 1000 4096 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/30\ndrwxr-xr-x 2 1000 1000 4096 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/15\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20\ndrwxr-xr-x 2 1000 1000 4096 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/info\n-rw-r--r-- 1 1000 1000 1289 May 12 21:36 /home/bwang56/my-SIMBA/.git/logs/HEAD\ndrwxr-xr-x 4 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/remotes\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/refs/tags\n-rw-r--r-- 1 1000 1000 240 May 07 08:10 /home/bwang56/my-SIMBA/.git/info/exclude\n-rwxr-xr-x 1 1000 1000 896 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/commit-msg.sample\n-rwxr-xr-x 1 1000 1000 416 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-merge-commit.sample\n-rwxr-xr-x 1 1000 1000 189 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/post-update.sample\n-rwxr-xr-x 1 1000 1000 1374 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-push.sample\n-rwxr-xr-x 1 1000 1000 4898 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-rebase.sample\n-rwxr-xr-x 1 1000 1000 3650 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/update.sample\n-rwxr-xr-x 1 1000 1000 2308 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/sendemail-validate.sample\n-rwxr-xr-x 1 1000 1000 544 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-receive.sample\n-rwxr-xr-x 1 1000 1000 424 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-applypatch.sample\n-rwxr-xr-x 1 1000 1000 2783 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/push-to-checkout.sample\n-rwxr-xr-x 1 1000 1000 478 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/applypatch-msg.sample\n-rwxr-xr-x 1 1000 1000 1492 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/prepare-commit-msg.sample\n-rwxr-xr-x 1 1000 1000 4726 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/fsmonitor-watchman.sample\n-rwxr-xr-x 1 1000 1000 1643 May 07 08:10 /home/bwang56/my-SIMBA/.git/hooks/pre-commit.sample\ndrwxr-xr-x 2 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new\ndrwxr-xr-x 3 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/bd\n-r--r--r-- 1 1000 1000 828 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/23/71fbd461865b92b5752637364fecbd5b68ed38\n-r--r--r-- 1 1000 1000 428 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/86/3968993cf82410b13c469559f4627d0de0edac\n-r--r--r-- 1 1000 1000 73 May 12 21:36 /home/bwang56/my-SIMBA/.git/objects/ea/2d124843bc2b966920ffffede360f705041d0e\n-r--r--r-- 1 1000 1000 162 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/ea/693e217dacf11722b521d83c72ac6a455a0a0e\n-r--r--r-- 1 1000 1000 169 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/7a/b4805bcca8cb9196d5153c8437cf1b711a9d2f\n-r--r--r-- 1 1000 1000 3504 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7a/7a56551473163bb6c952eaffec0cf2fda27c7e\n-r--r--r-- 1 1000 1000 429 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/e6/105247822caca245d6bf001bf22b38954e52d8\n-r--r--r-- 1 1000 1000 30097 May 12 18:12 /home/bwang56/my-SIMBA/.git/objects/51/0b0ffd403d06695f5396284d9612ac4b31dc25\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5d/217479b0ea6e56797905ec9c750ea94a29f5de\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/05/43379aa6a78106b6b25608be1ec1a1e110e5d1\n-r--r--r-- 1 1000 1000 2123 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/05/426f9d0d37d787e131cf79ab170470c143b69a\n-r--r--r-- 1 1000 1000 100 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9b/a3df3a5ad3acc74a1692d0104d83940bbf9c38\n-r--r--r-- 1 1000 1000 3506 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9b/b6d1f238ab2d62324e3cae3e68c2bef2b0954b\n-r--r--r-- 1 1000 1000 3610 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/9b/6dda044412f609364e082d8bcc7cbafa27da7f\n-r--r--r-- 1 1000 1000 75 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/48/4c4e736d581639bbe7ec8ca45366c236b1f217\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c9/d3e84f6858c9724cba5d42ac7cdfc5c5caf07d\n-r--r--r-- 1 1000 1000 3504 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c9/46f382d0fd6b106aa56843ab365eaa2fc41710\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d4/b9e6ab8892c1c72e81237bb1103cf6e9e0281f\n-r--r--r-- 1 1000 1000 75 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f1/b7fcff011256fda3c836071702d492db0909d5\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f1/b79fe32f627d7b3450e18b7090675149e7e95c\n-r--r--r-- 1 1000 1000 287 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/f1/9a764cb5def2cfb7e3d00d30001866911d3892\n-r--r--r-- 1 1000 1000 75 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9a/bffb8729a05f13186ee5422823a3afb1b25059\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/42/75cf693c479c8232722332beb1c646636bf709\n-r--r--r-- 1 1000 1000 3504 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/42/b4b41e28d7f45299846855c01a4245ff699f41\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c6/56edf7142a5af176b9a2547a50dd6f9e75e8dc\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/13/95f0da092f0555675302eda892c5c7cb88bc29\n-r--r--r-- 1 1000 1000 66 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/22/44745236a5aa19ac1ee7d9064de4e74b573abf\n-r--r--r-- 1 1000 1000 280 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/22/c00319db0c64f345167e6ae40eb323ce33baa8\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/45/d6f0d4987dfac284fb1a829d2bdc576ffef3f8\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/56/71ac568ffa9e3f5d6061e245ea19f4edd31a30\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3d/bcac8c633531a2bfbb22f83f0a3d4f054d9909\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c5/b05c71b65ca173fcedbe0596fc7e5848ba616c\n-r--r--r-- 1 1000 1000 618 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c5/15101ec4384d13baa98490d8bb74a35b041288\n-r--r--r-- 1 1000 1000 110 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/08/ab78c821a4775111076dd2680d188e0776e1a6\n-r--r--r-- 1 1000 1000 359 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/08/304be748e202272ace4416341cc509bb9d2f86\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/58/b136b057927e82d9a121f8ba107fca4ff32a95\n-r--r--r-- 1 1000 1000 1160 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/58/14d75570e80dc58b7361f4943cb5ea6d5d6794\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/18/f690d54663d7402d30e4e5e5ad3d0b6fad2fc8\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3/50377afee05bcc574412b6f4b253b5eb3ac8fa\n-r--r--r-- 1 1000 1000 3251 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3/ca916a215cee9727ea1a03c55b6fe3df4493d5\n-r--r--r-- 1 1000 1000 551 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b3/c2b557f2ff92031da26a07423ef710b3ef7ba8\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8d/e6c67ea2e2f3e6ef72f643497fec8e9d890905\n-r--r--r-- 1 1000 1000 346 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/8d/7000843d6181d58750b7a139cd1b2b7f26793f\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5a/37ce1e261c75eaaaf3d0d56d7bff54bd7af3e8\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/71/e36cd2333894d61f94da62c972c521ef3e63d4\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c7/da13dbc10af3cf00b21a5cea0fed471fa7c1fb\n-r--r--r-- 1 1000 1000 3901 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/c7/078e0a2ff5774fcd85bbd3bf7b885a1975b99e\n-r--r--r-- 1 1000 1000 358 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/c7/2627d6450e0436fdbcd6662986aaec64dc44bf\n-r--r--r-- 1 1000 1000 70 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0b/7cb18cd6d5a40aaa347f81f8fbb8e9b57577de\n-r--r--r-- 1 1000 1000 316 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/14/2d09189f3b3929331c2ca143a9b4112f237ae8\n-r--r--r-- 1 1000 1000 319 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/14/7d45029d2cc988f21fa4fb7155ff5ca359b178\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ee/ab1d6eab0ed0085a786000a63a48264d8eeff6\n-r--r--r-- 1 1000 1000 251 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ee/a9b94e23091fccf3e4d303e999db2fee1b3f1d\n-r--r--r-- 1 1000 1000 165 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7e/3ab9f09a17284779c06afa75245e7d96b6ec96\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/64/ead9111b6fb2b12ce5253f4737d96bea4c10ed\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9d/f5f9fd6662309b78bfdd109a0c3e6818e1a3a3\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/91/629ea6ee35b4fff73191869a53f922f6675386\n-r--r--r-- 1 1000 1000 76 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/9c/b6a7c2d9b6e82d757ea9fcb8e6c1fd6e61601e\n-r--r--r-- 1 1000 1000 63 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/74/80beeb1f5b17b8d598a01e5986483260abc8bd\n-r--r--r-- 1 1000 1000 70 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d6/21cb07eaddb92ebc7522961816c54742f5dc66\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/8f/3da17c2d9e1eea1fe7f2dac328e9d8431dd223\n-r--r--r-- 1 1000 1000 69 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ab/4e72e8f35802414daab5d85a6646358ce9d741\n-r--r--r-- 1 1000 1000 49 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ab/0d1a7307c2452ef294d2a1868b5284b6734082\n-r--r--r-- 1 1000 1000 1258 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/fd/669e4a61d919ff7ab696e948bc7ad6fe65301b\n-r--r--r-- 1 1000 1000 69 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/fd/3c1076cefafe5619b26cd5a9d5222ebbeb1f9e\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/32/58e1a4609e53cd2107b035e9db9af3fc36da63\n-r--r--r-- 1 1000 1000 70 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/85/5f1490c1129acbfca5c01972aa4cb31e2bda15\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/12/26e5e1b8e7c1624306bfeb3506fa4b1f63862e\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/12/6460c7dba570f3ce5dd9a94120e21b9c73f8f9\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f2/c9290f4e88b3f9043a7529deca7a1e16736885\n-r--r--r-- 1 1000 1000 58 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/97/6c059b982f9ffe0cd9c86e67cc004e8ff8aaba\n-r--r--r-- 1 1000 1000 816 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/97/bf3e1efc3e62233fb61738d05e31e635645eb5\n-r--r--r-- 1 1000 1000 1689 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/97/f1de43a6ba648a8945d1cb1597134e76b618f5\n-r--r--r-- 1 1000 1000 71 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/be/be47ae8f06ebefe04872768aaeb2d4bdc77d95\n-r--r--r-- 1 1000 1000 68 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e8/8f6129e2fed2f387564e8ae1b9bda9795b087d\n-r--r--r-- 1 1000 1000 3502 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e8/20655d97080f88690fda385df410efb9fd1831\n-r--r--r-- 1 1000 1000 76 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e2/d5559c92d8542c12d47b20efb91e818174ef01\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e2/b39f83f7957a1107b4da5893ec26ec9345735b\n-r--r--r-- 1 1000 1000 390 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a7/3413af82c42458ea24d693aa416286b1f462e4\n-r--r--r-- 1 1000 1000 72 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/61/0f0d6ca7ff1c9c91545bb95f80d679e8247784\n-r--r--r-- 1 1000 1000 78 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/50/8413703073f5ddf3e5e7607a6f5fb37498e0ac\n-r--r--r-- 1 1000 1000 77 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/d1/552e8a299dd6e10fe2b1681ec06ccb614649e2\n-r--r--r-- 1 1000 1000 285 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/63/fd8d897b72c35d68b776c4c4899cb97af4c965\n-r--r--r-- 1 1000 1000 749 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/63/e2f5c23f29e7528c33e1c4d1047bf3b554292d\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b2/0e8bfa46855d4f48d3a8c39f90582a09c74d5d\n-r--r--r-- 1 1000 1000 11561 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/4e/b9569948eea4becf7ee159f94162d2846c75dd\n-r--r--r-- 1 1000 1000 541 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/4e/fb27cbcc7690b7ce461a8d84542453ba516da2\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ae/d5f3d4544f36fd2737f994a825a491d1c384d7\n-r--r--r-- 1 1000 1000 541 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/ae/5e0a97cee830f2edb73ab37fcf5b8e053b3a15\n-r--r--r-- 1 1000 1000 3508 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/2e/6ab0f3714c702bc5541cef2c650ebc5fe4b4b5\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/94/c351bbecf4a9bfbdcb19f362b77fd82f0c3a38\n-r--r--r-- 1 1000 1000 2048 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cf/7cd65e151450f928c1e37376e7953988a89f68\n-r--r--r-- 1 1000 1000 1135 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/e5/8b2988da6454f4fcd34258daa8d62c0382667f\n-r--r--r-- 1 1000 1000 3507 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/79/d5fe630e4ab82c184d7ecab8d7cf888706d0b0\n-r--r--r-- 1 1000 1000 1832 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f0/05c04719aecb8b268193825bde42fdb4f55939\n-r--r--r-- 1 1000 1000 3505 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f0/5cc4c473571ff6789b3e41ae451678a43ca69c\n-r--r--r-- 1 1000 1000 2622 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/cc/fc4a8006eca70e5c2e2c5700bf680fa627fb02\n-r--r--r-- 1 1000 1000 3512 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b0/9d4ea4bf24cd8e460bd9c10618430d19dca017\n-r--r--r-- 1 1000 1000 155 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/b0/c90361b23f5d534b4cfb3faa9900d94c2fafad\n-r--r--r-- 1 1000 1000 398 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5c/72431a23ae53f8bc51f0abcc0b9b7737694bd3\n-r--r--r-- 1 1000 1000 6716 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/db/7b70b2b6fdd7ec15a7a72b64f821bff3e9472b\n-r--r--r-- 1 1000 1000 1828 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b6/0f8ea74c55e6509a963eef3ce44c2e1ea42ff3\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ed/5dbf3491287d4094a137f81b4e7142bcddfe27\n-r--r--r-- 1 1000 1000 1134 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/ed/b2b019cb6d8c22e3e2cf1e139907de9dfdf628\n-r--r--r-- 1 1000 1000 18852 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f5/b2d66cafa0292ad9cb532e25a73545298f61e3\n-r--r--r-- 1 1000 1000 3451 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/bb/f7150b23845f9b99d0f099adfe428efc2d42eb\n-r--r--r-- 1 1000 1000 1135 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/bb/9f98928b64c32c19031c564b60ca8505459208\n-r--r--r-- 1 1000 1000 3508 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f3/f280d596d0f3f2d8ce99a032c2acaefb8d5c75\n-r--r--r-- 1 1000 1000 562 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/e007bae173fb27e4e14c88c87e941d9a951f20\n-r--r--r-- 1 1000 1000 84 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f3/f7a2bc3d79380fdbeb17e0e632a253796b98dd\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/62/4aeb317d2e4616c1c8b0845ae63b68ba3e9dad\n-r--r--r-- 1 1000 1000 3507 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7f/e937e21198a83a9a1d87a97d5d225082b214ef\n-r--r--r-- 1 1000 1000 846 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/7b/e29aa752e81cc9350dcfff817d1bc6de1113c0\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/b7/3d51b4096b7a11bb9b252e488d86347fa7be3b\n-r--r--r-- 1 1000 1000 9356 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/f9/2e845d188ef0df779e3ac4bb7c15ffd11c7205\n-r--r--r-- 1 1000 1000 3528 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a2/1815d02aaa52a45e14a7ec2eaf03a3435ee841\n-r--r--r-- 1 1000 1000 9942 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/a2/b5178cf75caf3c7b2c7eebb8a550f68de9fe40\n-r--r--r-- 1 1000 1000 15405 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/6a/2afcf04d4e5adc9430e3ed39818fa31aa9fbc1\n-r--r--r-- 1 1000 1000 155 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6a/fa66b3cb5ebdb8473a59a5f9223f65b79121a5\n-r--r--r-- 1 1000 1000 3506 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/43/3cec6f6d9b00455278c66f2966558a6bb557a9\n-r--r--r-- 1 1000 1000 11144 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3a/73c940e84f745e7132a6b65b3ffccaa542e984\n-r--r--r-- 1 1000 1000 1135 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3a/b5909260d5e26897ef1d363ca546fb50a46569\n-r--r--r-- 1 1000 1000 18502 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3a/e3da6d593358d60df7f791e96b409319ccb18b\n-r--r--r-- 1 1000 1000 3499 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/0a/8e1ab9e60d7b0f4256132ab261cab31a64a513\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/5e/a55a7549bd2f577d8639fa13419213f514cec7\n-r--r--r-- 1 1000 1000 497 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/98/b4c3ea523cacf7eb9ea27545782c49f5dc3cb2\n-r--r--r-- 1 1000 1000 6595 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/3b/500075adae08d9ef25e26ea6a332397ca1f223\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/90/4c9aeb4fd652dfa85f25078654aafb43697ecf\n-r--r--r-- 1 1000 1000 2284 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/603940d49ab8e4ada5500872c2398217c9c94f\n-r--r--r-- 1 1000 1000 492 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/90/f548bfd63859c9a31ab38737d9625ebc54b958\n-r--r--r-- 1 1000 1000 547 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/00/613e219795b8c48393fdd37c4a26c525ad5f3e\n-r--r--r-- 1 1000 1000 1063 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/1f/32a71d722d3af8636d7b82ad2175bfb4376e78\n-r--r--r-- 1 1000 1000 2522 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/1f/34ad8530b51c7b647fb6d29bcd00ad705f074f\n-r--r--r-- 1 1000 1000 1133 May 12 07:44 /home/bwang56/my-SIMBA/.git/objects/dd/5f56836be6b241228c8848934340e0bd5122e1\n-r--r--r-- 1 1000 1000 155 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/30/59615699caa26ac91ad47e3c5c8c04def33f3c\n-r--r--r-- 1 1000 1000 41069 May 09 01:16 /home/bwang56/my-SIMBA/.git/objects/15/93247c8466d06b3f33145f5c12aad1f2b81c21\n-r--r--r-- 1 1000 1000 123 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/3c/cc79f7f462a58f8889119b960c34a73bcba9fe\n-r--r--r-- 1 1000 1000 65 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/e0/34387a1e43c7fcbe19bb2860eda0bead815ea6\n-r--r--r-- 1 1000 1000 67385 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/6b/afdeca106f1b4dc9b97138951d168997b46559\n-r--r--r-- 1 1000 1000 415 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/6b/14001825e88fc22941b4da7538fded87a408eb\n-r--r--r-- 1 1000 1000 201527 May 08 22:34 /home/bwang56/my-SIMBA/.git/objects/7c/ef177c37dacea5a99a7cf7648876ca2b1b5339\n-r--r--r-- 1 1000 1000 318 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/6f/ee5567df7f7ec640574a0ab28c6ee39a7c3110\n-r--r--r-- 1 1000 1000 357 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/a8/396bab1912f26d1be495992358cff7a9d05dc0\n-r--r--r-- 1 1000 1000 1200 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/c0/f991512d8430ffb627ef44f7eb2121563defd6\n-r--r--r-- 1 1000 1000 159 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/95/0bd132c3d578359953e77cb818c4a0837ec6e4\n-r--r--r-- 1 1000 1000 1758 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/24/7e1b65e06aae462dd232229ca08f62244aa179\n-r--r--r-- 1 1000 1000 771 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/2d/4b32dde50e5087e808278249d3c26afb6d5a9a\n-r--r--r-- 1 1000 1000 408 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/20/c1879c4eb9e7ef5c1d47832d0a05f86728f878\n-r--r--r-- 1 1000 1000 1937 May 08 22:33 /home/bwang56/my-SIMBA/.git/objects/3f/55d56b96a0912d885be217885402819e041a02\n-r--r--r-- 1 1000 1000 338 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/3f/8dde8bd3668445bdfeb140aca0a7a31a8f548f\n-r--r--r-- 1 1000 1000 52 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/4f/fb3509601c04251bf040398b8a97bb5241d76a\n-r--r--r-- 1 1000 1000 115 May 07 08:18 /home/bwang56/my-SIMBA/.git/objects/19/f5f29f0e45cdf93f1c00458c614a5d4f8ace79\n-r--r--r-- 1 1000 1000 642 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/19/7babc6f77d7d35c4fc84a4a9cbdb07b85d8349\n-r--r--r-- 1 1000 1000 3874 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/29/58ff6222721fd15d4d16baf9343d11a6c85260\n-r--r--r-- 1 1000 1000 63 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cd/b2340cf5decca43f77c0a5b9d81d36d59d206e\n-r--r--r-- 1 1000 1000 404 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/b384d59e499444955932ec9e6ffb109dc1cad9\n-r--r--r-- 1 1000 1000 123 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/cb/17364f474da8fde06ece5d7fa16ec652ba59b6\n-r--r--r-- 1 1000 1000 362 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/a9/ec0e9335b18a4ce36550ce8a9bc47ae182244e\n-r--r--r-- 1 1000 1000 687 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/09/164588361c4ed31ece0c16289b59bc92c31327\n-r--r--r-- 1 1000 1000 453 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/f4/5733bc43d23be288006c6551015588418cc1b4\n-r--r--r-- 1 1000 1000 366 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/34/46d001b7ac77cece12afd66a256f878c4a4826\n-r--r--r-- 1 1000 1000 201 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/77/a8859a95a7941bce5b58bad38929236ad43084\n-r--r--r-- 1 1000 1000 108 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/28/02506cf677c32e36045c1fc9868de38441f6af\n-r--r--r-- 1 1000 1000 279 May 07 08:17 /home/bwang56/my-SIMBA/.git/objects/87/5cf4e0f88b44c73ba349235eb6db4432ac9168\n-r--r--r-- 1 1000 1000 1156 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.idx\n-r--r--r-- 1 1000 1000 917 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.pack\n-r--r--r-- 1 1000 1000 64 May 07 08:10 /home/bwang56/my-SIMBA/.git/objects/pack/pack-b192edc4e8d8d127a8a19e7b6fac31e8df43550d.rev\ndrwxr-xr-x 2 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/heads\ndrwxr-xr-x 3 1000 1000 4096 May 07 08:10 /home/bwang56/my-SIMBA/.git/logs/refs/remotes\n-rw-r--r-- 1 1000 1000 41 May 12 21:36 /home/bwang56/my-SIMBA/.git/refs/heads/main\ndrwxr-xr-x 2 1000 1000 4096 May 12 21:36 /home/bwang56/my-SIMBA/.git/refs/remotes/origin\n-rw-r--r-- 1 1000 1000 2146 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/motor_controller.v\n-rw-r--r-- 1 1000 1000 533 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/PWM_Generator.v\n-rw-r--r-- 1 1000 1000 1266 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/watchdog.v\n-rw-r--r-- 1 1000 1000 1020 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/Quadrature_Decoder.v\n-rw-r--r-- 1 1000 1000 943 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/motor_controller_signals.vh\n-rw-r--r-- 1 1000 1000 2098 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/cntr_udclr_nb.v\n-rw-r--r-- 1 1000 1000 468 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/H_Bridge_Driver.v\n-rw-r--r-- 1 1000 1000 1327 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/new/control_signal_decoder.v\ndrwxr-xr-x 4 1000 1000 4096 May 12 07:43 /home/bwang56/my-SIMBA/vivado/sources_1/bd/Kria_BD"
+                  }
+                ]
+              }
+            }
+          },
+          "tooluse_AAFpLFTsLNcySFRh34Vlyy": {
+            "tool": {
+              "tool_use_purpose": "Extract components/parts and nets from the schematic",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "grep -o 'part name=\"[^\"]*\" library=\"[^\"]*\" deviceset=\"[^\"]*\" device=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | head -80",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "part name=\"U1\" library=\"SM-K26-XCL2GI\" deviceset=\"SM-K26-XCL2GI\" device=\"\"\npart name=\"S1\" library=\"Switch\" deviceset=\"B3U-X000\" device=\"1000P(M)-B\"\npart name=\"C1\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C2\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C3\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C4\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C5\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C6\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"H1\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"H2\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"H3\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"H4\" library=\"9774050960R\" deviceset=\"9774050960R\" device=\"\"\npart name=\"C7\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C8\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C9\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C10\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C11\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C12\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U2\" library=\"MP5016GQH-Z\" deviceset=\"MP5016GQH-Z\" device=\"\"\npart name=\"C13\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C14\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"IC1\" library=\"IRFHS8342TRPBF\" deviceset=\"IRFHS8342TRPBF\" device=\"\"\npart name=\"C15\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C16\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C17\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C18\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"D1\" library=\"SMAJ16A\" deviceset=\"SMAJ16A\" device=\"\"\npart name=\"U3\" library=\"MP8772GQ-Z\" deviceset=\"MP8772GQ-Z\" device=\"\"\npart name=\"C19\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C20\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C21\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"L1\" library=\"Inductor\" deviceset=\"L\" device=\"CHIP-1206(3216-METRIC)\"\npart name=\"C22\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C23\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C24\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C25\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C26\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"Q1\" library=\"DMN26D0UFB4-7\" deviceset=\"DMN26D0UFB4-7\" device=\"\"\npart name=\"C27\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C28\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C29\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C30\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U4\" library=\"INA260AIPWR\" deviceset=\"INA260AIPWR\" device=\"\"\npart name=\"C31\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U5\" library=\"MP8904DD-LF-Z\" deviceset=\"MP8904DD-LF-Z\" device=\"\"\npart name=\"C32\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C33\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C34\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U6\" library=\"2024-01-21_00-58-50_Library\" deviceset=\"MPM3810AGQB-AEC1-Z\" device=\"QFN2P5X3P0X0P9_MNP\"\npart name=\"C35\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C36\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C37\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U7\" library=\"2024-01-21_00-58-50_Library\" deviceset=\"MPM3810AGQB-AEC1-Z\" device=\"QFN2P5X3P0X0P9_MNP\"\npart name=\"C38\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C39\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C40\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U8\" library=\"MPM3840GQV-Z\" deviceset=\"MPM3840GQV-Z\" device=\"\"\npart name=\"C41\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C42\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C43\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C44\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C45\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U9\" library=\"MPM3840GQV-Z\" deviceset=\"MPM3840GQV-Z\" device=\"\"\npart name=\"C46\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C47\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C48\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C57\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C58\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U10\" library=\"MPM3840GQV-Z\" deviceset=\"MPM3840GQV-Z\" device=\"\"\npart name=\"C49\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C50\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C51\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C59\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C60\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U11\" library=\"2024-01-21_00-58-50_Library\" deviceset=\"MPM3810AGQB-AEC1-Z\" device=\"QFN2P5X3P0X0P9_MNP\"\npart name=\"C52\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C53\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"C54\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\npart name=\"U12\" library=\"MP8904DD-LF-Z\" deviceset=\"MP8904DD-LF-Z\" device=\"\"\npart name=\"C55\" library=\"Capacitor\" deviceset=\"C\" device=\"CHIP-0805(2012-METRIC)\"\n",
+                      "stderr": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "e5d126df-9fcb-4a8d-a226-a2c0fd9368b4",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Now let me grab the remaining parts and also quickly check the rover's key source files to understand the connection:"
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_ag9UKmPvW7lvEUGNVlFFtk",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Get remaining parts and net names from schematic",
+                "command": "grep -o 'part name=\"[^\"]*\" library=\"[^\"]*\" deviceset=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | tail -60 && echo \"---NETS---\" && grep -o '<net name=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | sort -u | head -60"
+              }
+            }
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_Uzd91ozyvgeAmQvKb8mPpC",
+              "name": "read",
+              "input": {
+                "__tool_use_purpose": "Read rover main and rover.h to understand hardware interface",
+                "operations": [
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/rover.h"
+                  },
+                  {
+                    "mode": "Line",
+                    "path": "/home/bwang56/my-SIMBA/rover/Main.c"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "48dd6be6-1679-46bc-9507-623b042b92c8",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_ag9UKmPvW7lvEUGNVlFFtk",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "part name=\"U61\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C264\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U62\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C265\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U63\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C266\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U64\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C267\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U65\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C268\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U66\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C269\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U67\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C270\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U68\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C271\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U69\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C272\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U70\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C273\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U71\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C274\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U72\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C275\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U73\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C276\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"C215\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C216\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C217\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C218\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C219\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C220\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C221\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C222\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C223\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C224\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C225\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C226\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C227\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C228\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C229\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C230\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C231\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C232\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C233\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C234\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C235\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C236\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C237\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C238\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C239\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C240\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C241\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C242\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C243\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C244\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C245\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C246\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C247\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C248\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\n---NETS---\n<net name=\"12V_IN\"\n<net name=\"12V_IN_JACK\"\n<net name=\"12V_IN_SOURCE\"\n<net name=\"5V0_IN\"\n<net name=\"5V0_IN_EN\"\n<net name=\"5V0_IN_FB\"\n<net name=\"5V0_IN_SS\"\n<net name=\"5V0_IN_SW\"\n<net name=\"5V0_IN_VCC\"\n<net name=\"BAT_FUSE\"\n<net name=\"BAT_IN\"\n<net name=\"CC_PL_PGOOD\"\n<net name=\"CC_PS_PGOOD\"\n<net name=\"EEPROM_WC_B\"\n<net name=\"ENC_5V0\"\n<net name=\"FB_UTIL_3V3\"\n<net name=\"FLOAT\"\n<net name=\"FTDI_3V3_FB\"\n<net name=\"FTDI_3V3_PG\"\n<net name=\"FTDI_EEPROM_WC\"\n<net name=\"FTDI_LS_OE_B\"\n<net name=\"FTDI_PS_POR_B\"\n<net name=\"FTDI_PS_POR_B_LS\"\n<net name=\"FTDI_PS_SRST_B\"\n<net name=\"FTDI_PS_SRST_B_LS\"\n<net name=\"FTDI_PWREN_B\"\n<net name=\"FTDI_TCK\"\n<net name=\"FTDI_TDI\"\n<net name=\"FTDI_TDO\"\n<net name=\"FTDI_TMS\"\n<net name=\"FTDI_UARTB_RXD\"\n<net name=\"FTDI_UARTB_TXD\"\n<net name=\"FWUEN_C2M_B\"\n<net name=\"GND\"\n<net name=\"GTH_DP0_C2M_N\"\n<net name=\"GTH_DP0_C2M_P\"\n<net name=\"GTH_DP0_M2C_N\"\n<net name=\"GTH_DP0_M2C_P\"\n<net name=\"GTH_DP1_C2M_N\"\n<net name=\"GTH_DP1_C2M_P\"\n<net name=\"GTH_DP1_M2C_N\"\n<net name=\"GTH_DP1_M2C_P\"\n<net name=\"GTH_DP2_C2M_N\"\n<net name=\"GTH_DP2_C2M_P\"\n<net name=\"GTH_DP2_M2C_N\"\n<net name=\"GTH_DP2_M2C_P\"\n<net name=\"GTH_DP3_C2M_N\"\n<net name=\"GTH_DP3_C2M_P\"\n<net name=\"GTH_DP3_M2C_N\"\n<net name=\"GTH_DP3_M2C_P\"\n<net name=\"GTH_REFCLK0_C2M_N\"\n<net name=\"GTH_REFCLK0_C2M_P\"\n<net name=\"GTH_REFCLK1_C2M_N\"\n<net name=\"GTH_REFCLK1_C2M_P\"\n<net name=\"GTR_DP0_C2M_N\"\n<net name=\"GTR_DP0_C2M_P\"\n<net name=\"GTR_DP0_M2C_N\"\n<net name=\"GTR_DP0_M2C_P\"\n<net name=\"GTR_DP1_C2M_N\"\n<net name=\"GTR_DP1_C2M_P\"\n",
+                    "stderr": ""
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          },
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_Uzd91ozyvgeAmQvKb8mPpC",
+              "content": [
+                {
+                  "kind": "text",
+                  "data": "// Rover Control API\n#ifndef ROVER_H\n#define ROVER_H\n\n/** include to make accessible in library */\n#include \"mmio.h\"\n#include \"motor.h\"\n\n#include <stdlib.h>\n/* Define the Rover's Motors */\n#define MOTOR_REAR_RIGHT_STEER (0x80000000)\n#define RRS (MOTOR_REAR_RIGHT_STEER)\n#define MOTOR_REAR_RIGHT_WHEEL 0x80010000\n#define RRW (MOTOR_REAR_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_RIGHT_STEER 0x80020000\n#define FRS (MOTOR_FRONT_RIGHT_STEER)\n#define MOTOR_FRONT_RIGHT_WHEEL 0x80030000\n#define FRW (MOTOR_FRONT_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_LEFT_STEER 0x80040000\n#define FLS (MOTOR_FRONT_LEFT_STEER)\n#define MOTOR_FRONT_LEFT_WHEEL 0x80050000\n#define FLW (MOTOR_FRONT_LEFT_WHEEL)\n\n#define MOTOR_REAR_LEFT_STEER 0x80060000\n#define RLS (MOTOR_REAR_LEFT_STEER)\n#define MOTOR_REAR_LEFT_WHEEL 0x80070000\n#define RLW (MOTOR_REAR_LEFT_WHEEL)\n\n#define MOTOR_MIDDLE_LEFT_WHEEL 0x80080000\n#define MLW (MOTOR_MIDDLE_LEFT_WHEEL)\n#define MOTOR_MIDDLE_RIGHT_WHEEL 0x80090000\n#define MRW (MOTOR_MIDDLE_RIGHT_WHEEL)\n\n#define MOTOR_WRIST 0x800A0000\n#define MOTOR_BASE 0x800B0000\n#define MOTOR_ELBOW 0x800C0000\n#define MOTOR_CLAW 0x800D0000\n\n#define WATCHDOG_REG 0x80100000\n\n#define ROVER_ROTATE_CLOCKWISE 0\n#define ROVER_ROTATE_COUNTER 1\n\n/*\n#define MOTOR_15 0x800E0000\n#define MOTOR_16 0x800F0000\n#define MOTOR_17 0x80100000\n*/\n\n#define MAX_STEERING_TICKS      300\n\n/* For Motion*/\n#define WHEEL_DIAMETER 124     /* mm diameter of the wheel*/\n/*this is for the 6 wheel motors*/\n#define TICKS_PER_REV_6 12                /*ticks per revolution*/\n#define GEAR_RATIO_6 116\n/*this is for the 4 rotating motors*/\n#define TICKS_PER_REV_4 40                /*ticks per revolution*/\n#define GEAR_RATIO_4 172\n\n#define ROVER_RADIUS (241) /* the radius of the rover for rotation */\n\ntypedef enum {\n    ROVER_CALIBRATE_WAITING,\n    ROVER_CALIBRATE_FR,\n    ROVER_CALIBRATE_RR,\n    ROVER_CALIBRATE_FL,\n    ROVER_CALIBRATE_RL,\n    ROVER_CALIBRATE_READY\n} rover_state_t;\n\n/* API functions */\n// Initializes the rover. Return 0 on success, nonzero on failure\nint rover_init();\nint rover_close();\n// calibration\nvoid rover_calibrate();\nint rover_is_calibrated();\n// Sets the target motor speed and runs it. Return 0 on success, nonzero on\n// failur\nint motor_set_speed(off_t motor_addr, int speed);\nint64_t motor_get_position(off_t motor_addr);\n// Rover control. Return 0 on success, nonzero on failure\n/* Convert encoder ticks to distance\n * long ticks: the number of encoder ticks\n * Return the distance in mm\n **/\nlong ticks_to_distance(long ticks);\nint distance_to_ticks(int distance);\nint rover_move_x(int distance, double speed);\n//int rover_rotate(int dir, int angle);\nvoid rover_stop();\nvoid rover_forward(int speed);\nvoid rover_reverse(int speed);\n\nvoid rover_pointTurn_CW(int speed);\nvoid rover_pointTurn_CCW(int speed);\n\nvoid rover_steer_forward();\nvoid rover_steer_right(int angle);\nvoid rover_steer_left(int angle);\nvoid rover_steer_point();\n\n// Return a status that if the rover is currently moving or not\nint check_rover_done();\n/* for isr */\nint isr_init();\nvoid rover_isr();\nint isr_attach_function(void (*fun)());\n\n#endif"
+                },
+                {
+                  "kind": "text",
+                  "data": "// TEST MMIO GPIO CONTROL\n#include <math.h>\n#include <signal.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <unistd.h>\n#include <fcntl.h>\n#include <sys/mman.h>\n#include <unistd.h>\n\n\n#include \"rover.h\"\n#include \"servo.h\"\n#include \"imu_correction.h\"\n#include \"kalman_wrapper.h\"\n#include \"bmi270_port.h\"\n\n\n// globals\n#define DEFAULT_MOTOR_SPEED 128\nstatic bool done = false;\n\n\nvoid sigint_handler(int signum) {\n  (void)signum;\n  printf(\"SIGINT caught\\n\");\n  done = true;\n}\n\n\n\n\n// ------------- added some wrapper functions for simba movement ------------------------\nstatic void simba_forward(int speed){\n \n  imu_correction_set_motor_state(true);\n  imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n  rover_forward(speed);\n}\n\n\n// static void simba_reverse(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n//   rover_reverse(speed);\n// }\n\n\nstatic void simba_stop(void){\n\n\n  imu_correction_set_motor_state(false);\n  imu_correction_clear_heading_reference();\n  rover_stop();\n}\n\n\n// static void simba_point_turn_cw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CW(speed);\n// }\n\n\n// static void simba_point_turn_ccw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CCW(speed);\n// }\n// --------------------------------------------------------------------------\n\n\nint main() {\n  // Configure signal handler\n  signal(SIGINT, sigint_handler);\n\n\n  // opening the fd and checking for error\n  int fd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n  if (fd < 0) {\n      perror(\"open /dev/mem\");\n      return 1;\n  }\n\n\n  // base address in memory of the IMU\n  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);\n\n\n  // checking the return type    \n  if (iic_base == MAP_FAILED) {\n      perror(\"mmap\");\n      return 1;\n  }\n\n\n  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)\n  struct bmi2_dev dev = {0};    // bosch device struct\n\n\n  // resets and then enables\n  axi_iic_init();\n\n\n  // IMU init\n  int8_t rslt = bmi270_kria_init(&ctx, &dev);\n  if (rslt != BMI2_OK){\n    printf(\"BMI270 init failed: %d\\n\", rslt);\n    return 1;\n  }\n  printf(\"BMI270 init result: %d\\n\", rslt);\n\n\n\n\n  // Initialize rover\n  if (rover_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n  if (isr_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n\n\n  // initialize KF\n  struct bmi2_sens_axes_data acc, gyr;\n  rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);\n  if (rslt == BMI2_OK){\n    float ax = (float)(acc.x / (32768.0f / 4.0f));\n    float ay = (float)(acc.y / (32768.0f / 4.0f));\n    float az = (float)(acc.z / (32768.0f / 4.0f));\n    kalman_init(ax, ay, -az);\n  }\n  else {\n    printf(\"Initial IMU KF read failed\\n\");\n    return 1;\n  }\n  // initialize IMU correction system\n  if (imu_correction_init(&dev) != 0){\n    printf(\"IMU correction init failed\\n\");\n    return 1;\n  }\n\n\n  // testing\n  // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, 1000);\n  //rover_move_x(10000, 128);\n\n\n  printf(\"All systems have passed initialization!\\n\");\n\n\n  // start moving forward at the default speed\n  simba_forward(DEFAULT_MOTOR_SPEED);\n\n\n  // infinite loop\n  while (done == false) {\n\n\n    // apply imu correction\n    int update_result = imu_correction_update(&dev);\n\n\n    // if there is an error in the return from imu_correction_update()\n    if (update_result != 0){\n      if (imu_correction_is_fault()){\n        printf(\"There is a fault, stopping\\n\");\n        simba_stop();\n        done = true;\n        continue;\n      }\n    }\n\n\n    // check terrain. If there is an issue, handle it\n    if (imu_correction_is_critical() || imu_correction_is_warning()){\n      imu_correction_handle_terrain(imu_correction_get_map());\n    }\n\n\n    // want to check motion\n    int check_motion_res = imu_correction_check_motion();\n    if (check_motion_res != 0){\n     \n      // check stalled flag\n      if (imu_correction_is_stall()){\n        printf(\"Stall has been detected, attempting to correct\\n\");\n        // recovery is already being corrected in imu_correction_check_motion()\n        simba_forward(DEFAULT_MOTOR_SPEED);\n      }\n\n\n      // check unintended motion flag\n      if (imu_correction_is_unintended_motion()){\n        printf(\"Unintended motion has been detected, going to stop rover\\n\");\n        done = true;\n        continue;\n      }\n    }\n\n\n    // apply correction and then wait 333ms\n    imu_correction_apply();\n    bmi270_delay_us(333000, NULL);\n  }\n\n\n  // want to stop the rover after while loop\n  simba_stop();\n\n\n  // unmap the iic and close the fd\n  munmap((void*)iic_base, MAP_SIZE);\n  close(fd);\n\n\n  // Close Rover\n  if (rover_close() != 0) {\n    printf(\"failed to close rover\\n\");\n    return -1;\n  }\n\n\n  return 0;\n}"
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_ag9UKmPvW7lvEUGNVlFFtk": {
+            "tool": {
+              "tool_use_purpose": "Get remaining parts and net names from schematic",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "grep -o 'part name=\"[^\"]*\" library=\"[^\"]*\" deviceset=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | tail -60 && echo \"---NETS---\" && grep -o '<net name=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | sort -u | head -60",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "part name=\"U61\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C264\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U62\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C265\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U63\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C266\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U64\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C267\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U65\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C268\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U66\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C269\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U67\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C270\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U68\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C271\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U69\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C272\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U70\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C273\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U71\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C274\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U72\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C275\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"U73\" library=\"LSF0102DQER\" deviceset=\"LSF0102DQER\"\npart name=\"C276\" library=\"Capacitor\" deviceset=\"C\"\npart name=\"C215\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C216\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C217\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C218\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C219\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C220\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C221\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C222\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C223\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C224\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C225\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C226\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C227\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C228\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C229\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C230\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C231\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C232\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C233\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C234\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C235\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C236\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C237\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C238\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C239\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C240\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C241\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C242\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C243\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C244\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C245\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C246\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C247\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\npart name=\"C248\" library=\"microbuilder\" deviceset=\"CAP_CERAMIC\"\n---NETS---\n<net name=\"12V_IN\"\n<net name=\"12V_IN_JACK\"\n<net name=\"12V_IN_SOURCE\"\n<net name=\"5V0_IN\"\n<net name=\"5V0_IN_EN\"\n<net name=\"5V0_IN_FB\"\n<net name=\"5V0_IN_SS\"\n<net name=\"5V0_IN_SW\"\n<net name=\"5V0_IN_VCC\"\n<net name=\"BAT_FUSE\"\n<net name=\"BAT_IN\"\n<net name=\"CC_PL_PGOOD\"\n<net name=\"CC_PS_PGOOD\"\n<net name=\"EEPROM_WC_B\"\n<net name=\"ENC_5V0\"\n<net name=\"FB_UTIL_3V3\"\n<net name=\"FLOAT\"\n<net name=\"FTDI_3V3_FB\"\n<net name=\"FTDI_3V3_PG\"\n<net name=\"FTDI_EEPROM_WC\"\n<net name=\"FTDI_LS_OE_B\"\n<net name=\"FTDI_PS_POR_B\"\n<net name=\"FTDI_PS_POR_B_LS\"\n<net name=\"FTDI_PS_SRST_B\"\n<net name=\"FTDI_PS_SRST_B_LS\"\n<net name=\"FTDI_PWREN_B\"\n<net name=\"FTDI_TCK\"\n<net name=\"FTDI_TDI\"\n<net name=\"FTDI_TDO\"\n<net name=\"FTDI_TMS\"\n<net name=\"FTDI_UARTB_RXD\"\n<net name=\"FTDI_UARTB_TXD\"\n<net name=\"FWUEN_C2M_B\"\n<net name=\"GND\"\n<net name=\"GTH_DP0_C2M_N\"\n<net name=\"GTH_DP0_C2M_P\"\n<net name=\"GTH_DP0_M2C_N\"\n<net name=\"GTH_DP0_M2C_P\"\n<net name=\"GTH_DP1_C2M_N\"\n<net name=\"GTH_DP1_C2M_P\"\n<net name=\"GTH_DP1_M2C_N\"\n<net name=\"GTH_DP1_M2C_P\"\n<net name=\"GTH_DP2_C2M_N\"\n<net name=\"GTH_DP2_C2M_P\"\n<net name=\"GTH_DP2_M2C_N\"\n<net name=\"GTH_DP2_M2C_P\"\n<net name=\"GTH_DP3_C2M_N\"\n<net name=\"GTH_DP3_C2M_P\"\n<net name=\"GTH_DP3_M2C_N\"\n<net name=\"GTH_DP3_M2C_P\"\n<net name=\"GTH_REFCLK0_C2M_N\"\n<net name=\"GTH_REFCLK0_C2M_P\"\n<net name=\"GTH_REFCLK1_C2M_N\"\n<net name=\"GTH_REFCLK1_C2M_P\"\n<net name=\"GTR_DP0_C2M_N\"\n<net name=\"GTR_DP0_C2M_P\"\n<net name=\"GTR_DP0_M2C_N\"\n<net name=\"GTR_DP0_M2C_P\"\n<net name=\"GTR_DP1_C2M_N\"\n<net name=\"GTR_DP1_C2M_P\"\n",
+                      "stderr": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "tooluse_Uzd91ozyvgeAmQvKb8mPpC": {
+            "tool": {
+              "tool_use_purpose": "Read rover main and rover.h to understand hardware interface",
+              "kind": {
+                "BuiltIn": {
+                  "FileRead": {
+                    "operations": [
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/rover.h",
+                        "limit": null,
+                        "offset": null
+                      },
+                      {
+                        "mode": "Line",
+                        "path": "/home/bwang56/my-SIMBA/rover/Main.c",
+                        "limit": null,
+                        "offset": null
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Text": "// Rover Control API\n#ifndef ROVER_H\n#define ROVER_H\n\n/** include to make accessible in library */\n#include \"mmio.h\"\n#include \"motor.h\"\n\n#include <stdlib.h>\n/* Define the Rover's Motors */\n#define MOTOR_REAR_RIGHT_STEER (0x80000000)\n#define RRS (MOTOR_REAR_RIGHT_STEER)\n#define MOTOR_REAR_RIGHT_WHEEL 0x80010000\n#define RRW (MOTOR_REAR_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_RIGHT_STEER 0x80020000\n#define FRS (MOTOR_FRONT_RIGHT_STEER)\n#define MOTOR_FRONT_RIGHT_WHEEL 0x80030000\n#define FRW (MOTOR_FRONT_RIGHT_WHEEL)\n\n#define MOTOR_FRONT_LEFT_STEER 0x80040000\n#define FLS (MOTOR_FRONT_LEFT_STEER)\n#define MOTOR_FRONT_LEFT_WHEEL 0x80050000\n#define FLW (MOTOR_FRONT_LEFT_WHEEL)\n\n#define MOTOR_REAR_LEFT_STEER 0x80060000\n#define RLS (MOTOR_REAR_LEFT_STEER)\n#define MOTOR_REAR_LEFT_WHEEL 0x80070000\n#define RLW (MOTOR_REAR_LEFT_WHEEL)\n\n#define MOTOR_MIDDLE_LEFT_WHEEL 0x80080000\n#define MLW (MOTOR_MIDDLE_LEFT_WHEEL)\n#define MOTOR_MIDDLE_RIGHT_WHEEL 0x80090000\n#define MRW (MOTOR_MIDDLE_RIGHT_WHEEL)\n\n#define MOTOR_WRIST 0x800A0000\n#define MOTOR_BASE 0x800B0000\n#define MOTOR_ELBOW 0x800C0000\n#define MOTOR_CLAW 0x800D0000\n\n#define WATCHDOG_REG 0x80100000\n\n#define ROVER_ROTATE_CLOCKWISE 0\n#define ROVER_ROTATE_COUNTER 1\n\n/*\n#define MOTOR_15 0x800E0000\n#define MOTOR_16 0x800F0000\n#define MOTOR_17 0x80100000\n*/\n\n#define MAX_STEERING_TICKS      300\n\n/* For Motion*/\n#define WHEEL_DIAMETER 124     /* mm diameter of the wheel*/\n/*this is for the 6 wheel motors*/\n#define TICKS_PER_REV_6 12                /*ticks per revolution*/\n#define GEAR_RATIO_6 116\n/*this is for the 4 rotating motors*/\n#define TICKS_PER_REV_4 40                /*ticks per revolution*/\n#define GEAR_RATIO_4 172\n\n#define ROVER_RADIUS (241) /* the radius of the rover for rotation */\n\ntypedef enum {\n    ROVER_CALIBRATE_WAITING,\n    ROVER_CALIBRATE_FR,\n    ROVER_CALIBRATE_RR,\n    ROVER_CALIBRATE_FL,\n    ROVER_CALIBRATE_RL,\n    ROVER_CALIBRATE_READY\n} rover_state_t;\n\n/* API functions */\n// Initializes the rover. Return 0 on success, nonzero on failure\nint rover_init();\nint rover_close();\n// calibration\nvoid rover_calibrate();\nint rover_is_calibrated();\n// Sets the target motor speed and runs it. Return 0 on success, nonzero on\n// failur\nint motor_set_speed(off_t motor_addr, int speed);\nint64_t motor_get_position(off_t motor_addr);\n// Rover control. Return 0 on success, nonzero on failure\n/* Convert encoder ticks to distance\n * long ticks: the number of encoder ticks\n * Return the distance in mm\n **/\nlong ticks_to_distance(long ticks);\nint distance_to_ticks(int distance);\nint rover_move_x(int distance, double speed);\n//int rover_rotate(int dir, int angle);\nvoid rover_stop();\nvoid rover_forward(int speed);\nvoid rover_reverse(int speed);\n\nvoid rover_pointTurn_CW(int speed);\nvoid rover_pointTurn_CCW(int speed);\n\nvoid rover_steer_forward();\nvoid rover_steer_right(int angle);\nvoid rover_steer_left(int angle);\nvoid rover_steer_point();\n\n// Return a status that if the rover is currently moving or not\nint check_rover_done();\n/* for isr */\nint isr_init();\nvoid rover_isr();\nint isr_attach_function(void (*fun)());\n\n#endif"
+                  },
+                  {
+                    "Text": "// TEST MMIO GPIO CONTROL\n#include <math.h>\n#include <signal.h>\n#include <stdbool.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <unistd.h>\n#include <fcntl.h>\n#include <sys/mman.h>\n#include <unistd.h>\n\n\n#include \"rover.h\"\n#include \"servo.h\"\n#include \"imu_correction.h\"\n#include \"kalman_wrapper.h\"\n#include \"bmi270_port.h\"\n\n\n// globals\n#define DEFAULT_MOTOR_SPEED 128\nstatic bool done = false;\n\n\nvoid sigint_handler(int signum) {\n  (void)signum;\n  printf(\"SIGINT caught\\n\");\n  done = true;\n}\n\n\n\n\n// ------------- added some wrapper functions for simba movement ------------------------\nstatic void simba_forward(int speed){\n \n  imu_correction_set_motor_state(true);\n  imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n  rover_forward(speed);\n}\n\n\n// static void simba_reverse(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving\n//   rover_reverse(speed);\n// }\n\n\nstatic void simba_stop(void){\n\n\n  imu_correction_set_motor_state(false);\n  imu_correction_clear_heading_reference();\n  rover_stop();\n}\n\n\n// static void simba_point_turn_cw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CW(speed);\n// }\n\n\n// static void simba_point_turn_ccw(int speed){\n\n\n//   imu_correction_set_motor_state(true);\n//   imu_correction_clear_heading_reference();\n//   rover_pointTurn_CCW(speed);\n// }\n// --------------------------------------------------------------------------\n\n\nint main() {\n  // Configure signal handler\n  signal(SIGINT, sigint_handler);\n\n\n  // opening the fd and checking for error\n  int fd = open(\"/dev/mem\", O_RDWR | O_SYNC);\n  if (fd < 0) {\n      perror(\"open /dev/mem\");\n      return 1;\n  }\n\n\n  // base address in memory of the IMU\n  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);\n\n\n  // checking the return type    \n  if (iic_base == MAP_FAILED) {\n      perror(\"mmap\");\n      return 1;\n  }\n\n\n  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)\n  struct bmi2_dev dev = {0};    // bosch device struct\n\n\n  // resets and then enables\n  axi_iic_init();\n\n\n  // IMU init\n  int8_t rslt = bmi270_kria_init(&ctx, &dev);\n  if (rslt != BMI2_OK){\n    printf(\"BMI270 init failed: %d\\n\", rslt);\n    return 1;\n  }\n  printf(\"BMI270 init result: %d\\n\", rslt);\n\n\n\n\n  // Initialize rover\n  if (rover_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n  if (isr_init() != 0) {\n    printf(\"failed to initialize rover\\n\");\n    return -1;\n  }\n\n\n  // initialize KF\n  struct bmi2_sens_axes_data acc, gyr;\n  rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);\n  if (rslt == BMI2_OK){\n    float ax = (float)(acc.x / (32768.0f / 4.0f));\n    float ay = (float)(acc.y / (32768.0f / 4.0f));\n    float az = (float)(acc.z / (32768.0f / 4.0f));\n    kalman_init(ax, ay, -az);\n  }\n  else {\n    printf(\"Initial IMU KF read failed\\n\");\n    return 1;\n  }\n  // initialize IMU correction system\n  if (imu_correction_init(&dev) != 0){\n    printf(\"IMU correction init failed\\n\");\n    return 1;\n  }\n\n\n  // testing\n  // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, 1000);\n  //rover_move_x(10000, 128);\n\n\n  printf(\"All systems have passed initialization!\\n\");\n\n\n  // start moving forward at the default speed\n  simba_forward(DEFAULT_MOTOR_SPEED);\n\n\n  // infinite loop\n  while (done == false) {\n\n\n    // apply imu correction\n    int update_result = imu_correction_update(&dev);\n\n\n    // if there is an error in the return from imu_correction_update()\n    if (update_result != 0){\n      if (imu_correction_is_fault()){\n        printf(\"There is a fault, stopping\\n\");\n        simba_stop();\n        done = true;\n        continue;\n      }\n    }\n\n\n    // check terrain. If there is an issue, handle it\n    if (imu_correction_is_critical() || imu_correction_is_warning()){\n      imu_correction_handle_terrain(imu_correction_get_map());\n    }\n\n\n    // want to check motion\n    int check_motion_res = imu_correction_check_motion();\n    if (check_motion_res != 0){\n     \n      // check stalled flag\n      if (imu_correction_is_stall()){\n        printf(\"Stall has been detected, attempting to correct\\n\");\n        // recovery is already being corrected in imu_correction_check_motion()\n        simba_forward(DEFAULT_MOTOR_SPEED);\n      }\n\n\n      // check unintended motion flag\n      if (imu_correction_is_unintended_motion()){\n        printf(\"Unintended motion has been detected, going to stop rover\\n\");\n        done = true;\n        continue;\n      }\n    }\n\n\n    // apply correction and then wait 333ms\n    imu_correction_apply();\n    bmi270_delay_us(333000, NULL);\n  }\n\n\n  // want to stop the rover after while loop\n  simba_stop();\n\n\n  // unmap the iic and close the fd\n  munmap((void*)iic_base, MAP_SIZE);\n  close(fd);\n\n\n  // Close Rover\n  if (rover_close() != 0) {\n    printf(\"failed to close rover\\n\");\n    return -1;\n  }\n\n\n  return 0;\n}"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "4baa8ce1-5362-4ca7-baf5-f8c42549bfb7",
+        "content": [
+          {
+            "kind": "text",
+            "data": ""
+          },
+          {
+            "kind": "toolUse",
+            "data": {
+              "toolUseId": "tooluse_DHrKSFk9wr99LzqcxhhevV",
+              "name": "shell",
+              "input": {
+                "__tool_use_purpose": "Get more nets - motor, encoder, IMU, I2C related",
+                "command": "grep -o '<net name=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | sort -u | grep -iE \"motor|enc|imu|i2c|spi|uart|pwm|kria|som|3v3|1v8|5v|12v|bat|h_bridge|steer|wheel|jtag|ftdi\""
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "ToolResults",
+      "data": {
+        "message_id": "aa0a14fc-7b3d-4880-ab5f-e2c72cd8b791",
+        "content": [
+          {
+            "kind": "toolResult",
+            "data": {
+              "toolUseId": "tooluse_DHrKSFk9wr99LzqcxhhevV",
+              "content": [
+                {
+                  "kind": "json",
+                  "data": {
+                    "exit_status": "exit status: 0",
+                    "stdout": "<net name=\"12V_IN\"\n<net name=\"12V_IN_JACK\"\n<net name=\"12V_IN_SOURCE\"\n<net name=\"5V0_IN\"\n<net name=\"5V0_IN_EN\"\n<net name=\"5V0_IN_FB\"\n<net name=\"5V0_IN_SS\"\n<net name=\"5V0_IN_SW\"\n<net name=\"5V0_IN_VCC\"\n<net name=\"BAT_FUSE\"\n<net name=\"BAT_IN\"\n<net name=\"ENC_5V0\"\n<net name=\"FB_UTIL_3V3\"\n<net name=\"FTDI_3V3_FB\"\n<net name=\"FTDI_3V3_PG\"\n<net name=\"FTDI_EEPROM_WC\"\n<net name=\"FTDI_LS_OE_B\"\n<net name=\"FTDI_PS_POR_B\"\n<net name=\"FTDI_PS_POR_B_LS\"\n<net name=\"FTDI_PS_SRST_B\"\n<net name=\"FTDI_PS_SRST_B_LS\"\n<net name=\"FTDI_PWREN_B\"\n<net name=\"FTDI_TCK\"\n<net name=\"FTDI_TDI\"\n<net name=\"FTDI_TDO\"\n<net name=\"FTDI_TMS\"\n<net name=\"FTDI_UARTB_RXD\"\n<net name=\"FTDI_UARTB_TXD\"\n<net name=\"I2C_SCK_LS\"\n<net name=\"I2C_SDA_LS\"\n<net name=\"JTAG_TCK_C2M\"\n<net name=\"JTAG_TDI_C2M\"\n<net name=\"JTAG_TDO_M2C\"\n<net name=\"JTAG_TMS_C2M\"\n<net name=\"JTAG_VCCO_ON\"\n<net name=\"MIO24_I2C_SCK\"\n<net name=\"MIO25_I2C_SDA\"\n<net name=\"PL_1V8\"\n<net name=\"PL_1V8_FB\"\n<net name=\"PL_1V8_MODE\"\n<net name=\"PL_1V8_RAMP\"\n<net name=\"PL_1V8_SW\"\n<net name=\"PL_3V3\"\n<net name=\"PL_3V3_FB\"\n<net name=\"PL_3V3_MODE\"\n<net name=\"PL_3V3_RAMP\"\n<net name=\"PL_3V3_SW\"\n<net name=\"PMOD_3V3\"\n<net name=\"PS_1V8\"\n<net name=\"PS_1V8_FB\"\n<net name=\"PS_3V3\"\n<net name=\"PS_3V3_FB\"\n<net name=\"PS_3V3_MODE\"\n<net name=\"PS_3V3_RAMP\"\n<net name=\"PS_3V3_SW\"\n<net name=\"SOM240_1_C45\"\n<net name=\"SOM240_1_D46\"\n<net name=\"SOM_5V0\"\n<net name=\"USB0_HUB_I2C_SCK\"\n<net name=\"USB0_HUB_I2C_SDA\"\n<net name=\"USB1_HUB_I2C_SCK\"\n<net name=\"USB1_HUB_I2C_SDA\"\n<net name=\"USB_JTAG_DM_N\"\n<net name=\"USB_JTAG_DM_P\"\n<net name=\"USB_JTAG_FLTR\"\n<net name=\"USB_JTAG_VBUS\"\n<net name=\"USB_JTAG_VCORE\"\n<net name=\"USB_JTAG_VPHY\"\n<net name=\"USB_JTAG_VPLL\"\n<net name=\"UTIL_3V3\"\n<net name=\"VCC_BATT\"\n<net name=\"VMOTOR\"\n",
+                    "stderr": ""
+                  }
+                }
+              ],
+              "status": "success"
+            }
+          }
+        ],
+        "results": {
+          "tooluse_DHrKSFk9wr99LzqcxhhevV": {
+            "tool": {
+              "tool_use_purpose": "Get more nets - motor, encoder, IMU, I2C related",
+              "kind": {
+                "BuiltIn": {
+                  "ExecuteCmd": {
+                    "command": "grep -o '<net name=\"[^\"]*\"' \"/tmp/fsch_extract/Schematic Document Asset[Active]/electron.BlobParts/ExtFile.f6c91c06-1409-4acd-a3e0-c93a3d4222d2.sch\" | sort -u | grep -iE \"motor|enc|imu|i2c|spi|uart|pwm|kria|som|3v3|1v8|5v|12v|bat|h_bridge|steer|wheel|jtag|ftdi\"",
+                    "working_dir": null
+                  }
+                }
+              }
+            },
+            "result": {
+              "Success": {
+                "items": [
+                  {
+                    "Json": {
+                      "exit_status": "exit status: 0",
+                      "stdout": "<net name=\"12V_IN\"\n<net name=\"12V_IN_JACK\"\n<net name=\"12V_IN_SOURCE\"\n<net name=\"5V0_IN\"\n<net name=\"5V0_IN_EN\"\n<net name=\"5V0_IN_FB\"\n<net name=\"5V0_IN_SS\"\n<net name=\"5V0_IN_SW\"\n<net name=\"5V0_IN_VCC\"\n<net name=\"BAT_FUSE\"\n<net name=\"BAT_IN\"\n<net name=\"ENC_5V0\"\n<net name=\"FB_UTIL_3V3\"\n<net name=\"FTDI_3V3_FB\"\n<net name=\"FTDI_3V3_PG\"\n<net name=\"FTDI_EEPROM_WC\"\n<net name=\"FTDI_LS_OE_B\"\n<net name=\"FTDI_PS_POR_B\"\n<net name=\"FTDI_PS_POR_B_LS\"\n<net name=\"FTDI_PS_SRST_B\"\n<net name=\"FTDI_PS_SRST_B_LS\"\n<net name=\"FTDI_PWREN_B\"\n<net name=\"FTDI_TCK\"\n<net name=\"FTDI_TDI\"\n<net name=\"FTDI_TDO\"\n<net name=\"FTDI_TMS\"\n<net name=\"FTDI_UARTB_RXD\"\n<net name=\"FTDI_UARTB_TXD\"\n<net name=\"I2C_SCK_LS\"\n<net name=\"I2C_SDA_LS\"\n<net name=\"JTAG_TCK_C2M\"\n<net name=\"JTAG_TDI_C2M\"\n<net name=\"JTAG_TDO_M2C\"\n<net name=\"JTAG_TMS_C2M\"\n<net name=\"JTAG_VCCO_ON\"\n<net name=\"MIO24_I2C_SCK\"\n<net name=\"MIO25_I2C_SDA\"\n<net name=\"PL_1V8\"\n<net name=\"PL_1V8_FB\"\n<net name=\"PL_1V8_MODE\"\n<net name=\"PL_1V8_RAMP\"\n<net name=\"PL_1V8_SW\"\n<net name=\"PL_3V3\"\n<net name=\"PL_3V3_FB\"\n<net name=\"PL_3V3_MODE\"\n<net name=\"PL_3V3_RAMP\"\n<net name=\"PL_3V3_SW\"\n<net name=\"PMOD_3V3\"\n<net name=\"PS_1V8\"\n<net name=\"PS_1V8_FB\"\n<net name=\"PS_3V3\"\n<net name=\"PS_3V3_FB\"\n<net name=\"PS_3V3_MODE\"\n<net name=\"PS_3V3_RAMP\"\n<net name=\"PS_3V3_SW\"\n<net name=\"SOM240_1_C45\"\n<net name=\"SOM240_1_D46\"\n<net name=\"SOM_5V0\"\n<net name=\"USB0_HUB_I2C_SCK\"\n<net name=\"USB0_HUB_I2C_SDA\"\n<net name=\"USB1_HUB_I2C_SCK\"\n<net name=\"USB1_HUB_I2C_SDA\"\n<net name=\"USB_JTAG_DM_N\"\n<net name=\"USB_JTAG_DM_P\"\n<net name=\"USB_JTAG_FLTR\"\n<net name=\"USB_JTAG_VBUS\"\n<net name=\"USB_JTAG_VCORE\"\n<net name=\"USB_JTAG_VPHY\"\n<net name=\"USB_JTAG_VPLL\"\n<net name=\"UTIL_3V3\"\n<net name=\"VCC_BATT\"\n<net name=\"VMOTOR\"\n",
+                      "stderr": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "version": "v1",
+      "kind": "AssistantMessage",
+      "data": {
+        "message_id": "b47881e8-d87f-4eb3-baec-70b2327dadec",
+        "content": [
+          {
+            "kind": "text",
+            "data": "Now I have a complete picture. Here's the full breakdown:\n\n---\n\n## PCB Schematic: SIMBA System Control PCB v38\n\n### What's on the board\n\n**Central compute: AMD Kria SOM (U1 — SM-K26-XCL2GI)**\nThe Kria K26 SOM is the brain. It runs the Linux OS, the rover C code (`rover/`), and the Vivado FPGA fabric (`vivado/`). The PCB is essentially a carrier board for this module.\n\n**Power system** — the bulk of the schematic:\n- `BAT_IN` / `VCC_BATT` / `12V_IN`: battery input rail\n- `MP5016GQH-Z` (U2): power protection/load switch with fuse (`BAT_FUSE`)\n- `IRFHS8342TRPBF` (IC1): MOSFET for power switching\n- `SMAJ16A` (D1): 16V TVS diode for battery transient protection\n- `MP8772GQ-Z` (U3): step-down converter → `VMOTOR` (motor drive rail)\n- `MPM3840GQV-Z` (U8, U9, U10): 4A buck converters → `PS_3V3`, `PL_3V3`, `PL_1V8` (Kria PS and PL supply rails)\n- `MPM3810AGQB` (U6, U7, U11): 1A buck converters → `PS_1V8`, `UTIL_3V3`, `PMOD_3V3`, `ENC_5V0` (encoder power)\n- `MP8904DD-LF-Z` (U5, U12): LDO regulators → `FTDI_3V3`, `5V0_IN`\n- `INA260AIPWR` (U4): I²C power monitor (current/voltage sensing on the battery rail)\n\n**Interfaces to the rover hardware:**\n- `VMOTOR` net: the motor drive voltage rail — this feeds the H-bridge drivers in the FPGA fabric (`H_Bridge_Driver.v`) that actually spin the 10 motors defined in `rover.h`\n- `ENC_5V0`: dedicated 5V supply for the quadrature encoders — these feed back into `Quadrature_Decoder.v` in the FPGA, which is how `motor_get_position()` works\n- `MIO24_I2C_SCK` / `MIO25_I2C_SDA`: PS-side I²C — this is the bus the BMI270 IMU sits on, accessed in `bmi270_port.c` via `axi_iic_init()` and used by the Kalman filter / `imu_correction` system in `Main.c`\n- `I2C_SCK_LS` / `I2C_SDA_LS`: level-shifted I²C (via `LSF0102DQER` translators U61–U73) — bridges 1.8V Kria logic to 3.3V peripherals\n- `FTDI_TCK/TDI/TDO/TMS` + `FTDI_UARTB_RXD/TXD`: JTAG and UART via FTDI chip — used for programming/debugging the Kria and loading the bitstream (`bitstream/Kria_BD_wrapper.bit`)\n- `GTH_DP*` / `GTR_DP*`: high-speed serial lanes on the SOM connector — likely for camera or high-bandwidth peripherals\n- `SOM240_1_*`: SOM connector signals carrying PL GPIO to the FPGA fabric (PWM outputs, encoder inputs, H-bridge control signals)\n\n**Other:**\n- `H1–H4` (9774050960R): M5 standoff mounting holes\n- `S1` (B3U-X000): tactile reset button\n- `DMN26D0UFB4-7` (Q1): small MOSFET, likely for enable/power sequencing logic\n- `EEPROM_WC_B` / `FTDI_EEPROM_WC`: write-control for the FTDI EEPROM (stores USB config)\n\n---\n\n### How it connects to the rest of the project\n\nThe PCB is the physical hardware layer that everything else depends on:\n\n- **`rover/` C code** talks to motor controllers and encoders via MMIO at addresses like `0x80000000`–`0x800D0000` (defined in `rover.h`). Those addresses map to AXI-lite registers in the FPGA fabric, which drives signals that ultimately come out of SOM connector pins on this PCB → to the motor H-bridges powered by `VMOTOR`.\n\n- **`vivado/` FPGA design** (`motor_controller.v`, `H_Bridge_Driver.v`, `Quadrature_Decoder.v`, `PWM_Generator.v`) implements the real-time motor control logic. The PCB routes the SOM's PL I/O pins to the physical motor connectors and encoder headers, with `ENC_5V0` powering the encoders.\n\n- **IMU (`bmi270_port.c`, `imu_correction.c`, `ESKF.cpp`)** communicates over the `MIO24/25` I²C bus on this PCB. The level shifters (U61–U73) ensure the 1.8V Kria MIO signals are translated to 3.3V for the BMI270.\n\n- **`bitstream/Kria_BD_wrapper.bit`** is loaded onto the Kria's PL via JTAG, which goes through the FTDI chip on this PCB.\n\nIn short: the PCB is the carrier board that powers the Kria, routes its I/O to motors/encoders/IMU, and handles power regulation from battery to all the different voltage domains the system needs."
+          }
+        ]
+      }
+    }
+  ]
+}
