@@ -2,7 +2,7 @@ venv
 # *.bit
 *.bin
 # *.hwh
-*.o
+# *.o
 librover.a
 rover/rover
 test/main
