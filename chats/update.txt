@@ -1,0 +1,2554 @@
+Main.c:
+
+// TEST MMIO GPIO CONTROL
+#include <math.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+// #include <unistd.h>
+
+
+#include "rover.h"
+#include "servo.h"
+#include "imu_correction.h"
+#include "kalman_wrapper.h"
+#include "bmi270_port.h"
+
+
+// globals
+// #define DEFAULT_MOTOR_SPEED 128
+static bool done = false;
+
+
+void sigint_handler(int signum) {
+  (void)signum;
+  printf("SIGINT caught\n");
+  done = true;
+}
+
+
+
+
+// ------------- added some wrapper functions for simba movement ------------------------
+static void simba_forward(int speed){
+ 
+  // imu_correction_set_motor_state(true);
+  imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving
+  rover_forward(speed);    
+}
+
+
+// static void simba_reverse(int speed){
+
+
+//   imu_correction_set_motor_state(true);
+//   imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving
+//   rover_reverse(speed);
+// }
+
+
+static void simba_stop(void){
+
+
+  // imu_correction_set_motor_state(false);
+  imu_correction_clear_heading_reference();
+  //rover_stop(); //unexpected behavior from this function atm
+  motor_set_speed(FRW, 0);
+  motor_set_speed(RRW, 0);
+  motor_set_speed(FLW, 0);
+  motor_set_speed(RLW, 0);
+  motor_set_speed(MRW, 0);
+  motor_set_speed(MLW, 0);
+}
+
+
+// static void simba_point_turn_cw(int speed){
+
+
+//   imu_correction_set_motor_state(true);
+//   imu_correction_clear_heading_reference();
+//   rover_pointTurn_CW(speed);
+// }
+
+
+// static void simba_point_turn_ccw(int speed){
+
+
+//   imu_correction_set_motor_state(true);
+//   imu_correction_clear_heading_reference();
+//   rover_pointTurn_CCW(speed);
+// }
+// --------------------------------------------------------------------------
+
+
+int main() {
+  // Configure signal handler
+  signal(SIGINT, sigint_handler);
+
+
+  // opening the fd and checking for error
+  int fd = open("/dev/mem", O_RDWR | O_SYNC);
+  if (fd < 0) {
+      perror("open /dev/mem");
+      return 1;
+  }
+
+
+  // base address in memory of the IMU
+  iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);
+
+
+  // checking the return type    
+  if (iic_base == MAP_FAILED) {
+      perror("mmap");
+      return 1;
+  }
+
+
+  bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)
+  struct bmi2_dev dev = {0};    // bosch device struct
+
+
+  // resets and then enables
+  axi_iic_init();
+
+
+  // IMU init
+  int8_t rslt = bmi270_kria_init(&ctx, &dev);
+  if (rslt != BMI2_OK){
+    printf("BMI270 init failed: %d\n", rslt);
+    return 1;
+  }
+  printf("BMI270 init result: %d\n", rslt);
+
+
+
+
+  // Initialize rover
+  if (rover_init() != 0) {
+    printf("failed to initialize rover\n");
+    return -1;
+  }
+  if (isr_init() != 0) {
+    printf("failed to initialize rover\n");
+    return -1;
+  }
+
+
+  // // initialize KF
+  // struct bmi2_sens_axes_data acc, gyr;
+  // rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+  // if (rslt == BMI2_OK){
+  //   float ax = (float)(acc.x / (32768.0f / 4.0f));
+  //   float ay = (float)(acc.y / (32768.0f / 4.0f));
+  //   float az = (float)(acc.z / (32768.0f / 4.0f));
+
+
+  //   // check for valid first reading — if all zeros, read again
+  //   if (fabsf(az) < 0.1f){
+  //       printf("First IMU read returned zeros, waiting for valid sample\n");
+  //       bmi270_delay_us(50000, NULL);
+  //       rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+  //       ax = (float)(acc.x / (32768.0f / 4.0f));
+  //       ay = (float)(acc.y / (32768.0f / 4.0f));
+  //       az = (float)(acc.z / (32768.0f / 4.0f));
+  //   }
+   
+  //   printf("Kalman init with ax=%.3f ay=%.3f az=%.3f\n", ax, ay, az);
+  //   kalman_init(ax, ay, -az);
+  // }
+  // else {
+  //   printf("Initial IMU KF read failed\n");
+  //   return 1;
+  // }
+
+
+  // keep reading until we get a valid first sample
+  struct bmi2_sens_axes_data acc, gyr;
+  float ax_init = 0.0f, ay_init = 0.0f, az_init = 0.0f;
+  int attempts = 0;
+  while (fabsf(az_init) < 0.5f && attempts < 50){
+      bmi270_delay_us(20000, NULL);   // wait 20ms between attempts
+      rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+      if (rslt == BMI2_OK){
+          ax_init = (float)(acc.x / (32768.0f / 4.0f));
+          ay_init = (float)(acc.y / (32768.0f / 4.0f));
+          az_init = (float)(acc.z / (32768.0f / 4.0f));
+          printf("Attempt %d: ax=%.3f ay=%.3f az=%.3f\n", attempts, ax_init, ay_init, az_init);
+      }
+      attempts++;
+  }
+
+
+  if (fabsf(az_init) < 0.5f){
+      printf("Failed to get valid IMU reading after %d attempts\n", attempts);
+      return 1;
+  }
+
+
+  printf("Kalman init with ax=%.3f ay=%.3f az=%.3f\n", ax_init, ay_init, az_init);
+  kalman_init(ax_init, ay_init, -az_init);
+
+
+  // initialize IMU correction system
+  if (imu_correction_init(&dev) != 0){
+    printf("IMU correction init failed\n");
+    return 1;
+  }
+
+
+  // testing
+  // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, 1000);
+  //rover_move_x(10000, 128);
+
+
+  printf("All systems have passed initialization!\n");
+
+
+  // start moving forward at the default speed
+  simba_forward(DEFAULT_MOTOR_SPEED);
+
+
+  // before the loop, record start time
+  struct timespec loop_start;
+  clock_gettime(CLOCK_MONOTONIC, &loop_start);
+  int64_t loop_start_us = (int64_t)loop_start.tv_sec * 1000000LL + loop_start.tv_nsec / 1000LL;
+  int64_t test_duration_us = 5000000LL;  // 5 seconds
+
+
+  // infinite loop
+  while (done == false) {
+
+
+    // inside the loop, check elapsed time
+    struct timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    int64_t now_us = (int64_t)now.tv_sec * 1000000LL + now.tv_nsec / 1000LL;
+    if (now_us - loop_start_us > test_duration_us){
+        printf("Test duration reached, stopping\n");
+        done = true;
+        continue;
+    }
+
+
+    // apply imu correction
+    int update_result = imu_correction_update(&dev);
+
+
+    // if there is an error in the return from imu_correction_update()
+    if (update_result != 0){
+      if (imu_correction_is_fault()){
+        printf("There is a fault, stopping\n");
+        simba_stop();
+        done = true;
+        continue;
+      }
+    }
+
+
+    // check terrain. If there is an issue, handle it
+    if (imu_correction_is_critical() || imu_correction_is_warning()){
+      imu_correction_handle_terrain(imu_correction_get_map());
+    }
+
+
+    // want to check motion
+    int check_motion_res = imu_correction_check_motion();
+    if (check_motion_res != 0){
+     
+      // check stalled flag
+      if (imu_correction_is_stall()){
+        printf("Stall has been detected, attempting to correct\n");
+        // recovery is already being corrected in imu_correction_check_motion()
+        simba_forward(DEFAULT_MOTOR_SPEED);
+      }
+
+
+      // check unintended motion flag
+      if (imu_correction_is_unintended_motion()){
+        printf("Unintended motion has been detected, going to stop rover\n");
+        done = true;
+        continue;
+      }
+    }
+
+
+    // want to see what IMU is receiving and what the wheel encoders are reading
+    int64_t frw_pos = motor_get_position(MOTOR_FRONT_RIGHT_WHEEL);
+    int64_t flw_pos = motor_get_position(MOTOR_MIDDLE_LEFT_WHEEL);
+    printf("ENCODERS | FRW: %ld | MLW: %ld\n", frw_pos, flw_pos);
+
+
+    // apply correction and then wait 333ms
+    imu_correction_apply();
+    bmi270_delay_us(333000, NULL);
+  }
+
+
+  // want to stop the rover after while loop
+  simba_stop();
+
+
+  // unmap the iic and close the fd
+  munmap((void*)iic_base, MAP_SIZE);
+  close(fd);
+
+
+  // Close Rover
+  if (rover_close() != 0) {
+    printf("failed to close rover\n");
+    return -1;
+  }
+
+
+  return 0;
+}
+
+
+
+Bmi270_port.c:
+
+// #include <pthread.h>
+// #include <unistd.h>
+
+
+#include "bmi270_port.h"
+
+
+
+
+volatile uint32_t *iic_base;                // actual definition of the global pointer to the mmap'd AXI IIC base address
+extern const uint8_t bmi270_config_file[];  //  forward declaration (telling the compiler that this array exists somewhere)
+
+
+// takes a register offset and value and writes it to the AXI IIC controller
+// steps byte by byte to the correct register, then casts to volatile uint32_t* to do a 32-bit write as required by the AXI bus.
+void iic_write(uint32_t offset, uint32_t val) {
+    *((volatile uint32_t*)((uint8_t*)iic_base + offset)) = val;
+}
+
+
+// same as iic_write but it returns the 32-bit register value instead of writing.
+uint32_t iic_read(uint32_t offset) {
+    return *((volatile uint32_t*)((uint8_t*)iic_base + offset));
+}
+
+
+// delay function
+void bmi270_delay_us(uint32_t period, void *intf_ptr){
+
+
+    (void)intf_ptr;
+    struct timespec ts = {0, period * 1000};
+    nanosleep(&ts, NULL);
+}
+
+
+// Resets and enables the controller once at startup before any transactions begin
+void axi_iic_init(void) {
+    iic_write(REG_SOFTR, 0xA);      // reset the AXI IIC controller
+    bmi270_delay_us(50000, NULL);
+    iic_write(REG_CR, 0x1);         // writes 1 to enable the control register
+    bmi270_delay_us(10000, NULL);
+}
+
+
+void bmi270_read_reg(uint8_t reg, uint8_t addr, uint8_t *data, uint32_t data_len) {
+   
+    // START + address + write
+    iic_write(REG_TX_FIFO, 0x100 | (addr << 1));    
+    bmi270_delay_us(100, NULL);
+   
+    // Register address
+    iic_write(REG_TX_FIFO, reg);
+    bmi270_delay_us(100, NULL);
+   
+    // Repeated START + address + read
+    iic_write(REG_TX_FIFO, 0x100 | (addr << 1) | 1);
+    bmi270_delay_us(100, NULL);
+   
+    // STOP + read data_len bytes
+    iic_write(REG_TX_FIFO, 0x200 | data_len);
+    bmi270_delay_us(100, NULL);
+
+
+    // loop through and write data to data array
+    for (uint32_t i = 0; i < data_len; i++){
+        uint32_t timeout = 1000;
+        while ((iic_read(REG_SR) & 0x40) && timeout--);
+        data[i] = iic_read(REG_RX_FIFO) & 0xFF;     // mask with 0xFF because you only want to write the byte to the index (it is a uint8_t)
+    }
+}
+
+
+
+
+// might change the return type
+void bmi270_write_reg(uint8_t addr, uint8_t reg,const uint8_t* data, uint32_t data_len) {
+   
+    // START + address + write
+    iic_write(REG_TX_FIFO, 0x100 | (addr << 1));
+    bmi270_delay_us(100, NULL);
+
+
+    // Register address
+    iic_write(REG_TX_FIFO, reg);
+    bmi270_delay_us(100, NULL);
+
+
+    // loop through and send data
+    for (uint32_t i = 0; i < data_len; i++){
+        if ((data_len - 1) == i){
+           
+            // STOP
+            iic_write(REG_TX_FIFO, 0x200 | data[i]);
+            bmi270_delay_us(500, NULL);
+        }
+        else{
+
+
+            // not the last, write data
+            iic_write(REG_TX_FIFO, data[i]);
+            bmi270_delay_us(100, NULL);
+        }
+    }
+}
+
+
+int8_t bmi2_i2c_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr){
+
+
+    bmi270_i2c_ctx_t *ctx = (bmi270_i2c_ctx_t*)intf_ptr;
+    uint8_t dev_addr = ctx->addr;
+    bmi270_read_reg(reg_addr, dev_addr, data, len);
+    return 0;   // BMI2_OK
+}
+
+
+int8_t bmi2_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr){
+
+
+    bmi270_i2c_ctx_t *ctx = (bmi270_i2c_ctx_t*)intf_ptr;
+    uint8_t dev_addr = ctx->addr;
+    bmi270_write_reg(dev_addr, reg_addr, data, len);
+   
+    return 0;   // BMI2_OK
+}
+
+
+int8_t bmi270_kria_init(bmi270_i2c_ctx_t *ctx, struct bmi2_dev *dev) {
+    if (!ctx || !dev) return BMI2_E_INVALID_INPUT;
+
+
+    // Hook interface (calls the functions)
+    dev->intf = BMI2_I2C_INTF;
+    dev->read = bmi2_i2c_read;
+    dev->write = bmi2_i2c_write;
+    dev->delay_us = bmi270_delay_us;
+    dev->intf_ptr = ctx;
+    dev->read_write_len = 32;   // safe default (Bosch uses it for burst transfers)
+    dev->config_file_ptr = bmi270_config_file;
+    dev->config_size = 8192;        // can make it a macro later
+
+
+    // 1) Bosch init
+    printf("Starting bmi270_init...\n");
+    fflush(stdout);
+    int8_t rslt = bmi270_init(dev);
+    // printf("bmi270_init returned: %d\n", rslt);
+    // fflush(stdout);
+    if (rslt != BMI2_OK) return rslt;
+
+
+    // 2) Enable accel + gyro
+    uint8_t sens_list[2] = { BMI2_ACCEL, BMI2_GYRO };
+    rslt = bmi2_sensor_enable(sens_list, 2, dev);
+    if (rslt != BMI2_OK) return rslt;
+
+
+    // 3) Configure accel + gyro (ODR/range/bw)
+    struct bmi2_sens_config cfg[2];
+
+
+    cfg[0].type = BMI2_ACCEL;
+    cfg[1].type = BMI2_GYRO;
+
+
+    rslt = bmi2_get_sensor_config(cfg, 2, dev);
+    if (rslt != BMI2_OK) return rslt;
+
+
+    // Accel config
+    cfg[0].cfg.acc.odr = BMI2_ACC_ODR_100HZ;
+    cfg[0].cfg.acc.range = BMI2_ACC_RANGE_4G;
+    cfg[0].cfg.acc.bwp = BMI2_ACC_OSR2_AVG2;     // bandwidth / filter
+    cfg[0].cfg.acc.filter_perf = BMI2_PERF_OPT_MODE;
+
+
+    // Gyro config
+    cfg[1].cfg.gyr.odr = BMI2_GYR_ODR_100HZ;
+    cfg[1].cfg.gyr.range = BMI2_GYR_RANGE_2000;
+    cfg[1].cfg.gyr.bwp = BMI2_GYR_OSR2_MODE;     // bandwidth / filter
+    cfg[1].cfg.gyr.filter_perf = BMI2_GYR_OSR4_MODE;
+
+
+    rslt = bmi2_set_sensor_config(cfg, 2, dev);
+    if (rslt != BMI2_OK) return rslt;
+
+
+    // Give it a moment to start producing samples
+    bmi270_delay_us(20000, NULL);
+
+
+    return BMI2_OK;
+}
+
+
+int8_t bmi270_kria_read_ag(struct bmi2_dev *dev, struct bmi2_sens_axes_data *acc, struct bmi2_sens_axes_data *gyr) {
+    struct bmi2_sens_data sens = {0};
+
+
+    int8_t rslt = bmi2_get_sensor_data(&sens, dev);
+    if (rslt != BMI2_OK) return rslt;
+
+
+    if (acc) *acc = sens.acc;
+    if (gyr) *gyr = sens.gyr;
+
+
+    return BMI2_OK;
+}
+
+
+
+
+
+Bmi270_port.h:
+
+#pragma once
+
+
+#include <errno.h>     // to look at return codes
+#include "bmi2.h"      // from Bosch driver (given to us)
+#include "bmi270.h"    // from Bosch driver (given to us)
+#include <time.h>
+
+
+
+
+// defines
+#define AXI_IIC_BASE 0x800e0000     // physical memory address of the AXI IIC controller on the Kria's programmable logic
+#define MAP_SIZE     0x10000        // size of memory to map ~64KB
+
+
+#define REG_SOFTR    0x40           // offset from the base address to the AXI IIC soft reset register
+#define REG_CR       0x100          // offset to the control register (writing 1 enables the AXI IIC controller)
+#define REG_SR       0x104          // offset to the status register
+#define REG_TX_FIFO  0x108          // offset to the transmit FIFO (write I2C transactions here)
+#define REG_RX_FIFO  0x10C          // offset to the receive FIFO (can read incoming data from here)
+
+
+extern volatile uint32_t *iic_base; // pointer to the mmap'd AXI IIC base address
+
+
+// context struct that holds hardware-specific info for the IMU
+typedef struct {
+    uint8_t port;      // can get rid of probably (used for the ESP)
+    uint8_t addr;      // 7-bit I2C address (0x68)
+} bmi270_i2c_ctx_t;
+
+
+int8_t bmi270_kria_init(bmi270_i2c_ctx_t *ctx, struct bmi2_dev *dev);   // Initialize device + enable accel+gyro + set configs
+int8_t bmi270_kria_read_ag(struct bmi2_dev *dev, struct bmi2_sens_axes_data *acc, struct bmi2_sens_axes_data *gyr); // Read accel+gyro
+
+
+void bmi270_read_reg(uint8_t reg, uint8_t addr, uint8_t *data, uint32_t data_len);          // low level MMIO read function (Sends a write-then-read I2C transaction through the AXI IIC registers)
+void bmi270_write_reg(uint8_t addr, uint8_t reg, const uint8_t *data, uint32_t data_len);   // low level MMIO write function (Sends a write I2C transaction with the register address)
+void bmi270_delay_us(uint32_t period, void* intf_ptr);      // delay function
+void axi_iic_init(void);    // declaration for the one-time AXI IIC controller initialization ()
+// int8_t bmi2_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr);
+// int8_t bmi2_i2c_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr);
+
+
+
+ESKF.cpp:
+
+// got all this code from github: https://github.com/hobbeshunter/IMU_EKF/tree/master/src
+
+
+// removed all the code relating to a mag for the IMU (only using a 6-axis IMU, not a 9-axis)
+
+
+#ifndef ESKF_IMPL
+#define ESKF_IMPL
+
+
+#include "ESKF.h"
+#include "utilities.h"
+
+
+// #include <Eigen/LU>
+#include <eigen3/Eigen/LU>
+// #include <Wire.h>
+
+
+#ifndef SGN
+#define SGN(X) ((X > 0) - (X < 0))
+#endif
+
+
+#ifndef RAD_TO_DEG
+#define RAD_TO_DEG (180.0 / M_PI)
+#endif
+
+
+#ifndef DEG_TO_RAD
+#define DEG_TO_RAD (M_PI / 180.0)
+#endif
+
+
+#ifndef MS2_TO_G
+#define MS2_TO_G (1.0 / 9.81)
+#endif
+
+
+#ifndef G_TO_MS2
+#define G_TO_MS2 (9.81)
+#endif
+
+
+namespace IMU_EKF
+{
+
+
+template <typename precision>
+ESKF<precision>::ESKF()
+{
+    init();
+}
+
+
+// Sets all matrices to their starting values — zeroes the state, sets identity matrices, loads the hardcoded Q/R noise values.
+template <typename precision>
+void ESKF<precision>::init()
+{
+    qref_ = Quaternion<precision>();
+    x_.setZero();
+    P_.setIdentity();
+    Q_.setIdentity();
+    // TODO don't hardcode this
+    Q_(0, 0) = 0.05;
+    Q_(1, 1) = 0.05;
+    Q_(2, 2) = 0.05;
+    Q_(3, 3) = 0.05;
+    Q_(4, 4) = 0.05;
+    Q_(5, 5) = 0.05;
+    Q_(6, 6) = 0.025;
+    Q_(7, 7) = 0.025;
+    Q_(8, 8) = 0.025;
+    Q_(9, 9) = 0.025;
+    Q_(10, 10) = 0.025;
+    Q_(11, 11) = 0.025;
+    Q_(12, 12) = 0.01;
+    Q_(13, 13) = 0.01;
+    Q_(14, 14) = 0.01;
+
+
+    R_Gyr_.setIdentity();
+    R_Gyr_(0, 0) = 0.0000045494 * DEG_TO_RAD;
+    R_Gyr_(1, 1) = 0.0000039704 * DEG_TO_RAD;
+    R_Gyr_(2, 2) = 0.0000093844 * DEG_TO_RAD;
+
+
+    R_Acc_.setIdentity();
+    R_Acc_(0, 0) = 0.0141615383 * G_TO_MS2;
+    R_Acc_(1, 1) = 0.0164647549 * G_TO_MS2;
+    R_Acc_(2, 2) = 0.0100094303 * G_TO_MS2;
+
+
+    // R_Mag_.setIdentity();
+    // R_Mag_(0, 0) = 0.00004;
+    // R_Mag_(1, 1) = 0.00004;
+    // R_Mag_(2, 2) = 0.00004;
+}
+
+
+// uses first accelerometer reading to compute the actual starting roll and pitch. Call this instead of relying on the plain constructor.
+template <typename precision>
+void ESKF<precision>::initWithAcc(const float ax, const float ay, const float az)
+{
+    init();
+
+
+    // see https://cache.freescale.com/files/sensors/doc/app_note/AN3461.pdf
+    // rotation sequence R = Rx * Ry * Rz
+    // eq. 38
+    precision roll = std::atan2(ay, SGN(-az) * std::sqrt(az * az + 0.01 * ax * ax));
+    // eq. 37
+    precision pitch = std::atan(-ax / std::sqrt(ay * ay + az * az));
+
+
+    precision sr05 = std::sin(0.5 * roll);
+    precision cr05 = std::cos(0.5 * roll);
+    precision sp05 = std::sin(0.5 * pitch);
+    precision cp05 = std::cos(0.5 * pitch);
+    qref_ = Quaternion<precision>(sr05, 0, 0, cr05) * Quaternion<precision>(0, sp05, 0, cp05);
+}
+
+
+// called every loop iteration
+// dt is the time in seconds since the last call.
+// Advances the filter's internal state forward in time using the motion model — it's what causes the filter to "drift" slightly between corrections.
+template <typename precision>
+void ESKF<precision>::predict(precision dt)
+{
+    // eq. 23
+    Quaternion<precision> angular_velocity_quat(x_[12], x_[13], x_[14], 0);
+    qref_ += dt * ((0.5 * angular_velocity_quat) * qref_);
+    qref_.normalize();
+
+
+    Eigen::Matrix<precision, 9, 9> A;
+    A.setIdentity();
+    A(0, 3) = dt;
+    A(0, 6) = dt * dt * 0.5;
+    A(1, 4) = dt;
+    A(1, 7) = dt * dt * 0.5;
+    A(2, 5) = dt;
+    A(2, 8) = dt * dt * 0.5;
+    A(3, 6) = dt;
+    A(4, 7) = dt;
+    A(4, 8) = dt;
+
+
+    x_.segment(0, 9) = A * x_.segment(0, 9);
+    P_.topLeftCorner(9, 9) = A * P_.topLeftCorner(9, 9) * A.transpose() + dt * Q_.topLeftCorner(9, 9);
+
+
+    // eq. 38
+    Eigen::Matrix<precision, 3, 1> angular_velocity = x_.segment(12, 3);
+    Eigen::Matrix<precision, 3, 1> error = x_.segment(9, 3);
+    Eigen::Matrix<precision, 6, 6> Jac = Eigen::Matrix<precision, 6, 6>::Zero();
+    Jac.topLeftCorner(3, 3) = toCrossMatrix<precision>(error);
+    Jac.topRightCorner(3, 3) = -toCrossMatrix<precision>(angular_velocity);
+    // eq. 39
+    Eigen::Matrix<precision, 6, 6> G = Eigen::Matrix<precision, 6, 6>::Identity();
+    G.bottomRightCorner(3, 3) *= -1;
+
+
+    // eq. 33 adpated
+    P_.bottomRightCorner(6, 6) = Jac * P_.bottomRightCorner(6, 6) * Jac.transpose() + G * dt * Q_.bottomRightCorner(6, 6) * G.transpose();
+}
+
+
+// Feeds a gyroscope reading into the filter to correct angular velocity. Takes degrees per second.
+template <typename precision>
+void ESKF<precision>::correctGyr(const float gx, const float gy, const float gz)
+{
+    // z
+    Eigen::Matrix<precision, MEASSUREMENT_GYR_SIZE, 1> z;
+    z << gx * DEG_TO_RAD, gy * DEG_TO_RAD, gz * DEG_TO_RAD;
+
+
+    // Kalman Gain
+    // K = P * H' (H * P * H' + V * R * V')^-
+    // H = eye(3)
+    Eigen::Matrix<precision, 3, MEASSUREMENT_GYR_SIZE> K;
+    K = P_.bottomRightCorner(3, 3) * (P_.bottomRightCorner(3, 3) + R_Gyr_).inverse();
+
+
+    // x = x + K * (z - H * x)
+    x_.segment(12, 3) += K * (z - x_.segment(12, 3));
+
+
+    // P = (I - KH)P
+    Eigen::Matrix<precision, 3, 3> IKH = Eigen::Matrix<precision, 3, 3>::Identity();
+    IKH -= K;
+
+
+    P_.bottomRightCorner(3, 3) = IKH * P_.bottomRightCorner(3, 3);
+}
+
+
+// Feeds an accelerometer reading to correct tilt (roll/pitch). Takes values in g's — the filter converts them internally to m/s²
+template <typename precision>
+void ESKF<precision>::correctAcc(const float ax, const float ay, const float az)
+{
+    // z
+    Eigen::Matrix<precision, MEASSUREMENT_ACC_SIZE, 1> z;
+    z << ax * G_TO_MS2, ay * G_TO_MS2, az * G_TO_MS2;
+
+
+    Eigen::Matrix<precision, 3, 1> gravity;
+    gravity << 0.0, 0.0, -9.81;
+
+
+    if (std::abs(z.norm() - 9.81) < 0.7)
+    {
+        // set acc to zero
+        // z
+        Eigen::Matrix<precision, 3, 1> z_acc = Eigen::Matrix<precision, 3, 1>::Zero();
+
+
+        // Kalman Gain
+        // K = P * H' (H * P * H' + V * R * V')^-
+        // H = eye(3)
+        Eigen::Matrix<precision, 3, 3> K_acc;
+        K_acc = P_.block(6, 6, 3, 3) * (P_.block(6, 6, 3, 3) + R_Acc_).inverse();
+
+
+        // x = x + K * (z - H * x)
+        x_.segment(6, 3) += K_acc * (z_acc - x_.segment(6, 3));
+
+
+        // P = (I - KH)P
+        Eigen::Matrix<precision, 3, 3> IKH = Eigen::Matrix<precision, 3, 3>::Identity();
+        IKH -= K_acc;
+
+
+        P_.block(6, 6, 3, 3) = IKH * P_.block(6, 6, 3, 3);
+
+
+        // correct tilt
+        Eigen::Matrix<precision, 3, 1> vi = gravity;
+
+
+        // eq. 42
+        Eigen::Matrix<precision, 3, 1> error = x_.segment(9, 3);
+        // Eigen::Matrix<precision, 3, 3> Aa = toRotationMatrix<precision>(error);
+        Eigen::Matrix<precision, 3, 3> Aq = qref_.toRotationMatrix();
+        Eigen::Matrix<precision, 3, 1> vb_pred = Aq * vi;
+
+
+        // H
+        // eq. 44
+        Eigen::Matrix<precision, 3, 3> Ha = toCrossMatrix<precision>(vb_pred);
+
+
+        // eq. 46
+        Eigen::Matrix<precision, 3, 3> K;
+        K = P_.block(9, 9, 3, 3) * Ha.transpose() * (Ha * P_.block(9, 9, 3, 3) * Ha.transpose() + R_Acc_).inverse();
+
+
+        // eq. 47
+        // h = vb_pred
+        x_.segment(9, 3) += K * (z - vb_pred - Ha * error);
+
+
+        // eq. 48
+        P_.block(9, 9, 3, 3) -= K * Ha * P_.block(9, 9, 3, 3);
+    }
+    else
+    {
+        Eigen::Matrix<precision, 3, 1> vi = gravity + x_.segment(6, 3);
+
+
+        // eq. 42
+        Eigen::Matrix<precision, 3, 1> error = x_.segment(9, 3);
+        Eigen::Matrix<precision, 3, 3> Aa = toRotationMatrix<precision>(error);
+        Eigen::Matrix<precision, 3, 3> Aq = qref_.toRotationMatrix();
+        Eigen::Matrix<precision, 3, 1> vb_pred = Aq * vi;
+
+
+        // H
+        // eq. 44
+        Eigen::Matrix<precision, 3, 6> H;
+        Eigen::Matrix<precision, 3, 3> Ha = toCrossMatrix<precision>(vb_pred);
+        H.topLeftCorner(3, 3) = Aa * Aq;
+        H.bottomRightCorner(3, 3) = Ha;
+
+
+        // eq. 46
+        Eigen::Matrix<precision, 6, 3> K;
+        K = P_.block(6, 6, 6, 6) * H.transpose() * (H * P_.block(6, 6, 6, 6) * H.transpose() + R_Acc_).inverse();
+
+
+        // eq. 47
+        // h = v_bred
+        x_.segment(6, 6) += K * (z - vb_pred - Ha * error);
+
+
+        // eq. 48
+        P_.block(6, 6, 6, 6) -= K * H * P_.block(6, 6, 6, 6);
+    }
+}
+
+
+// Called after corrections to fold the orientation error back into the reference quaternion and zero out the error state
+// Must call this every loop after your corrections or the filter accumulates error.
+template <typename precision>
+void ESKF<precision>::reset()
+{
+    // eq. 21
+    qref_ = Quaternion<precision>(x_(9), x_(10), x_(11), 2.0) * qref_;
+    // eq. 22
+    qref_.normalize();
+    x_(9) = 0.0;
+    x_(10) = 0.0;
+    x_(11) = 0.0;
+}
+
+
+// Returns the full raw 15-element state vector (probably won't use this directly)
+template <typename precision>
+Eigen::Matrix<precision, STATE_SIZE, 1> ESKF<precision>::getState() const
+{
+    return x_;
+}
+
+
+// gives roll, pitch, and yaw in radians after the filter runs. Note yaw will drift without a magnetometer since there's nothing to correct it.
+template <typename precision>
+void ESKF<precision>::getAttitude(float &roll, float &pitch, float &yaw) const
+{
+    Eigen::Matrix<precision, 3, 1> angles = qref_.toEulerAngles();
+    roll = angles(0);
+    pitch = angles(1);
+    yaw = angles(2);
+}
+
+
+// Alternative output — same orientation but as a quaternion instead of Euler angles.
+template <typename precision>
+Quaternion<precision> ESKF<precision>::getAttitude() const
+{
+    return qref_;
+}
+
+
+// Returns the filter's estimated linear acceleration (gravity removed). Useful if you need motion detection.
+template <typename precision>
+void ESKF<precision>::getAcceleration(float &x, float &y, float &z) const
+{
+    x = x_(6);
+    y = x_(7);
+    z = x_(8);
+}
+} // namespace IMU_EKF
+
+
+#endif // ESKF_IMPL
+
+
+
+ESKF.h:
+
+#pragma once        // only compile once
+
+
+// headers needed
+#include <stdint.h>
+// #include <Eigen.h>
+#include <eigen3/Eigen/Dense>
+#include "Quaternion.h"
+
+
+// there are 15 positions to track (3 position + 3 velocity + 3 acceleration + 3 orientation error + 3 angular velocity.)
+#define STATE_SIZE 15
+
+
+// Both gyro and accel give 3 values each (x, y, z)
+#define MEASSUREMENT_GYR_SIZE 3
+#define MEASSUREMENT_ACC_SIZE 3
+// #define MEASSUREMENT_MAG_SIZE 3
+
+
+// named scope
+namespace IMU_EKF
+{
+
+
+template <typename precision>   // precision is a place holder for float or double
+class ESKF
+{
+public:
+    ESKF();     // calls init
+    void init();    
+    void initWithAcc(const float ax, const float ay, const float az);  
+    void predict(precision dt);
+    void correctGyr(const float gx, const float gy, const float gz);
+    void correctAcc(const float ax, const float ay, const float az);
+    void reset();
+
+
+    Eigen::Matrix<precision, STATE_SIZE, 1> getState() const;
+    void getAttitude(float &roll, float &pitch, float &yaw) const;
+    Quaternion<precision> getAttitude() const;
+    void getAcceleration(float &x, float &y, float &z) const;
+
+
+private:
+    Eigen::Matrix<precision, STATE_SIZE, 1> x_;                                        // The state vector — a 15x1 column of floats holding all the values the filter is currently estimating.
+    Quaternion<precision> qref_;                                                       // The reference orientation quaternion — the filter's best current estimate of which way the IMU is pointing.
+    Eigen::Matrix<precision, STATE_SIZE, STATE_SIZE> P_;                               // The covariance matrix — a 15x15 matrix tracking how uncertain the filter is about each part of the state. Starts as identity and evolves over time.
+    Eigen::Matrix<precision, STATE_SIZE, STATE_SIZE> Q_;                               // Process noise matrix — the hardcoded tuning values. How much uncertainty to add each predict step.  
+    Eigen::Matrix<precision, MEASSUREMENT_GYR_SIZE, MEASSUREMENT_GYR_SIZE> R_Gyr_;     // Measurement noise matrices — 3x3 each. How much the filter trusts the gyro and accel readings respectively. Also hardcoded tuning values.
+    Eigen::Matrix<precision, MEASSUREMENT_ACC_SIZE, MEASSUREMENT_ACC_SIZE> R_Acc_;     // Measurement noise matrices — 3x3 each. How much the filter trusts the gyro and accel readings respectively. Also hardcoded tuning values.
+};
+} // namespace IMU_EKF
+
+
+// ugly but necessary
+// to get templates working
+#include "ESKF.cpp"
+
+
+
+
+/*
+
+
+The loop in your `main.c` will essentially be:
+```
+initWithAcc(ax, ay, az)      // once at startup
+loop:
+    predict(dt)
+    correctGyr(gx, gy, gz)
+    correctAcc(ax, ay, az)
+    reset()
+    getAttitude(roll, pitch, yaw)
+
+
+
+
+*/
+
+
+
+Imu_correction.c:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <time.h>
+#include <math.h>
+
+
+// #include "bmi270_port.h"
+// #include "kalman_wrapper.h"
+#include "imu_correction.h"
+#include "rover.h"
+
+
+// #include "bmi2.h"
+// #include "bmi270.h"
+
+
+// --------------------------- globals -------------------------------
+#define NUM_SAMPLES 100
+
+
+// can change these values later based on testing
+#define BRAKE_SPEED                 (64/2)    // this is the breaking speed (can change later based on tuning from testing)
+#define TERRAIN_SLOW_SPEED          (64/2)
+#define TERRAIN_MODERATE_SPEED      (48/2)
+#define TERRAIN_MIN_SPEED           (32/2)
+
+
+// thresholds
+#define STALL_MAG_THRESHOLD                  1.08f      // can change to 1.05 later (need to tune based on testing)
+#define MOTION_MAG_THRESHOLD                 1.18f      // can change to 1.15 later (need to tune based on testing)
+#define STALL_TIME_THRESHOLD_US              500000     // threshold for stall time
+#define UNINTENDED_MOTION_TIME_THRESHOLD_US  200000     // sliding needs a faster repsonse
+#define ENCODER_DELTA_THRESHOLD              10         // can change later
+
+
+// deadband, weight, max correction limits [imu_correction_apply()]
+#define YAW_ERROR_DEADBAND 0.5f        // placeholder value, adjust as needed
+#define GYRO_RATE_DEADBAND 2.0f        // placeholder value, adjust as needed
+#define YAW_WEIGHT         0.7f        // plac0eholder weight, adjust as needed
+#define RATE_WEIGHT        0.3f        // placeholder weight, adjust as needed.
+#define MAX_CORRECTION     10.0f       // placeholder max correction, adjust as needed.
+
+
+// type variables
+static float yaw_reference = 0.0f;
+static float yaw_error = 0.0f;
+static float gyr_z_bias = 0.0f;
+static float gyro_z_rate_corrected = 0.0f;
+static int64_t start_dt = 0;
+static double mag_accel = 0.0;
+static float ax = 0.0f;     // decided to only look at sliding in the ax direction because we care if braking is forward or backward along the rover's primary axis of travel
+
+
+// added roll and pitch offsets because the rover favors one side more than the other because of the arm
+static float roll_offset = 0.00f;
+static float pitch_offset = 0.00f;
+
+
+static mapping_t map;
+
+
+// flags for motion correction
+static bool ready_flag = false;
+// static bool terrain_flag = false;
+static bool warning_flag = false;
+static bool critical_flag = false;
+static bool fault_flag = false;
+
+
+// used for imu_correction_check_motion()
+// static bool motor_running = false;
+static bool unintended_motion_flag = false;
+static bool stall_flag = false;
+
+
+// -------------------------------------------------------------------
+
+
+
+
+typedef struct {
+    float heading_reference;
+    float heading_error_accum;
+    float last_correction;
+    bool active;
+} imu_correction_state;
+
+
+static imu_correction_state correction_state;
+
+
+
+
+// ------------------------ Getter Functions ----------------------------
+bool imu_correction_is_fault(void){
+    return fault_flag;
+}
+
+
+bool imu_correction_is_critical(void){
+    return critical_flag;
+}
+
+
+bool imu_correction_is_warning(void){
+    return warning_flag;
+}
+
+
+bool imu_correction_is_stall(void){
+    return stall_flag;
+}
+
+
+bool imu_correction_is_unintended_motion(void){
+    return unintended_motion_flag;
+}
+
+
+const mapping_t* imu_correction_get_map(void){
+    return &map;
+}
+// ------------------------------------------------------------------------
+
+
+// function to set the flag of the motor (check to see if its running or not)
+// void imu_correction_set_motor_state(bool running) {
+//     motor_running = running;
+// }
+
+
+// function for calculating mag acceleration based on ax, ay, az, and dt
+static double magnitude_acceleration(float ax, float ay, float az){
+    return sqrt((double)((ax*ax) + (ay*ay) + (az*az)));
+}
+
+
+// Functionality for getting the pitch and roll
+static void get_direction_and_speed(float roll, float pitch, double mag_acceleration, mapping_t *map){
+   
+    // converting to degrees
+    float roll_deg = roll * (180 / M_PI);
+    float pitch_deg = pitch * (180 / M_PI);
+
+
+    if (pitch_deg < 0.0f){
+        map->pitch_dir = FORWARDS;
+    }
+    else if (pitch_deg > 0.0f){
+        map->pitch_dir = BACKWARDS;
+    }
+    else {
+        map->pitch_dir = PITCH_DEADZONE;
+    }
+
+
+    if (roll_deg < 0.f){
+        map->roll_dir = LEFT;
+    }
+    else if (roll_deg > 0.0f){
+        map->roll_dir = RIGHT;
+    }
+    else {
+        map->roll_dir = ROLL_DEADZONE;
+    }
+   
+
+
+    // getting absolute value
+    float abs_roll_deg = fabsf(roll_deg);
+    float abs_pitch_deg = fabsf(pitch_deg);
+
+
+    float tilt_angle_deg = ((abs_pitch_deg > abs_roll_deg) ? abs_pitch_deg : abs_roll_deg);
+    map->tilt_angle_deg = tilt_angle_deg;
+
+
+    // TODO: need to change the speed to make sense, whenever the IMU is not moving, it should show that it is stopped
+    // checking for tilt speed and setting type in mapping_t struct
+    if (tilt_angle_deg < 10.00){
+        map->tilt = NONE;
+    }
+    else if (tilt_angle_deg < 20.00){
+        map->tilt = LOW;
+    }
+    else if (tilt_angle_deg < 35.00){
+        map->tilt = MODERATE;
+    }
+    else {
+        map->tilt = HIGH;
+    }
+
+
+    // checking the motion
+    if (mag_acceleration <= 1.05 ){
+        map->motion_speed = STOPPED;
+    }
+    else if (mag_acceleration > 1.05 && mag_acceleration <= 1.20){
+        map->motion_speed = SLOW;
+    }
+    else if (mag_acceleration > 1.20 && mag_acceleration <= 1.40){
+        map->motion_speed = MED;
+    }
+    else {
+        map->motion_speed = FAST;
+    }
+}
+
+
+static void new_set_all_motor_speeds(int speed){
+
+
+    motor_set_speed(FRW, -speed);
+    motor_set_speed(FLW, speed);
+    motor_set_speed(MRW, -speed);
+    motor_set_speed(MLW, speed);
+    motor_set_speed(RRW, -speed);
+    motor_set_speed(RLW, speed);
+}
+
+
+static void new_rover_stop(void){
+    motor_set_speed(FRW, 0);
+    motor_set_speed(FLW, 0);
+    motor_set_speed(MRW, 0);
+    motor_set_speed(MLW, 0);
+    motor_set_speed(RRW, 0);
+    motor_set_speed(RLW, 0);
+}
+
+
+// // for printing to the terminal (can get rid of later if needed)
+// static void direction_and_speed_to_string(char **pitch_dir, char **roll_dir, char **tilt_speed, char **motion_speed, mapping_t map){
+
+
+//     // for writing to dir char**
+//     if (map.roll_dir == ROLL_DEADZONE){
+//         *roll_dir = "Deadzone";
+//     }
+//     else if (map.roll_dir == LEFT){
+//         *roll_dir = "Left";
+//     }
+//     else if (map.roll_dir == RIGHT){
+//         *roll_dir = "Right";
+//     }
+
+
+//     if (map.pitch_dir == PITCH_DEADZONE){
+//         *pitch_dir = "Deadzone";
+//     }
+//     else if (map.pitch_dir == FORWARDS){
+//         *pitch_dir = "Forwards";
+//     }
+//     else {
+//         *pitch_dir = "Backwards";
+//     }
+   
+   
+//     // for writing to speed char**
+//     if (map.tilt == NONE){
+//         *tilt_speed = "None";
+//     }
+//     else if (map.tilt == LOW){
+//         *tilt_speed = "Low";
+//     }
+//     else if (map.tilt == MODERATE){
+//         *tilt_speed = "Moderate";
+//     }  
+//     else {
+//         *tilt_speed = "High";
+//     }
+
+
+
+
+//     // for writing to speed char**
+//     if (map.motion_speed == STOPPED){
+//         *motion_speed = "Stopped";
+//     }
+//     else if (map.motion_speed == SLOW){
+//         *motion_speed = "Slow";
+//     }
+//     else if (map.motion_speed == MED){
+//         *motion_speed = "Medium";
+//     }  
+//     else {
+//         *motion_speed = "Fast";
+//     }
+// }
+
+
+
+
+
+
+void imu_correction_set_heading_reference(){
+    float roll, pitch, yaw;
+    kalman_get_attitude(&roll, &pitch, &yaw);
+
+
+    // DEBUG
+    printf("SET_HEADING | roll: %.3f pitch: %.3f yaw: %.3f\n", roll, pitch, yaw);
+
+
+    // store heading reference
+    correction_state.heading_reference = yaw;
+    yaw_reference = yaw;
+   
+    // reset correction state
+    correction_state.heading_error_accum = 0.0f;
+    correction_state.last_correction = 0.0f;
+
+
+    // state active
+    correction_state.active = true;
+}
+
+
+void imu_correction_clear_heading_reference(){
+    // state inactive
+    correction_state.active = false;
+
+
+    // reset heading reference to zero
+    correction_state.heading_reference = 0.0f;
+
+
+    // reset correction state
+    correction_state.heading_error_accum = 0.0f;
+    correction_state.last_correction = 0.0f;
+}
+
+
+
+
+
+
+// IMU correction init code:
+// runs once at startup before any movment commands are sent
+int imu_correction_init(struct bmi2_dev* dev){
+
+
+    // time init code
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    start_dt = (int64_t)ts.tv_sec * 1000000LL + ts.tv_nsec / 1000LL;
+    int64_t end_dt;
+    float delta_dt;
+
+
+    // IMU axis vars
+    // float ay, az;
+    float gx, gy, gz;
+
+
+    int8_t rslt;
+
+
+    int i = 0;
+    for (; i < NUM_SAMPLES; i++){
+
+
+        // get time variables for loop iteration
+        struct timespec ts_end;
+        clock_gettime(CLOCK_MONOTONIC, &ts_end);
+        end_dt = (int64_t)ts_end.tv_sec * 1000000LL + ts_end.tv_nsec / 1000LL;
+        delta_dt = (float) (end_dt - start_dt) / 1000000.0f;
+
+
+        // getting accel and gyr
+        struct bmi2_sens_axes_data acc, gyr;
+        rslt = bmi270_kria_read_ag(dev, &acc, &gyr);
+
+
+        // check result of reading the registers on IMU
+        if (rslt == BMI2_OK){
+
+
+            // converting acceleration to g's
+            ax = (float) (acc.x / (32768.0f / 4.0f));
+            float ay = (float) (acc.y / (32768.0f / 4.0f));
+            float az = (float) (acc.z / (32768.0f / 4.0f));
+
+
+            // converting gyr data to degrees per second (dps)
+            gx = (float) (gyr.x / (32768.0f / 2000.0f));
+            gy = (float) (gyr.y / (32768.0f / 2000.0f));
+            gz = (float) (gyr.z / (32768.0f / 2000.0f));
+            gyr_z_bias += (float) (gyr.z / (32768.0f / 2000.0f));        // converting to dps
+
+
+            if (i == 0 || i == 49 || i == 99){
+                float r, p, yw;
+                kalman_get_attitude(&r, &p, &yw);
+                printf("INIT sample %d | roll: %.3f pitch: %.3f yaw: %.3f dt: %.6f\n", i, r, p, yw, delta_dt);
+            }
+
+
+            // update the kalman filter with data from IMU
+            // kalman_update(ax, ay, -az, gx, gy, gz, delta_dt);       // negating az (was weird on the esp)
+            if (delta_dt <= 0.0f || delta_dt > 1.0f){
+                printf("WARNING: bad delta_dt in init: %.6f, skipping kalman_update\n", delta_dt);
+                start_dt = end_dt;
+                continue;
+            }
+            kalman_update(ax, ay, -az, gx, gy, gz, delta_dt);
+            bmi270_delay_us(3333, NULL);                                  // small delay (3.33 ms)
+        }
+        else {
+            printf("The result of bmi270_kria_read_ag() was not BMI2_OK\n");
+            return -1;      // might want to change and get rid of?
+        }
+
+
+        // reassign the start time
+        start_dt = end_dt;
+    }
+
+
+    // average the gyro_z bias data out (needs to be a global reference)
+    gyr_z_bias /= i;
+
+
+    // want to get the attitude so we can update the yaw_reference, roll and pitch offsets global variable
+    float roll, pitch, yaw;
+    kalman_get_attitude(&roll, &pitch, &yaw);
+    printf("INIT END | roll: %.3f pitch: %.3f yaw: %.3f\n", roll, pitch, yaw);
+    yaw_reference = yaw;
+    roll_offset = roll;
+    pitch_offset = pitch;
+
+
+    // set the ready flag to true and return
+    ready_flag = true;
+    return 0;
+}
+
+
+// static void set_all_motor_speeds(int speed){
+
+
+//     // set all the motors based on the speed parameter
+//     motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, speed);
+//     motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, speed);
+//     motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, speed);
+//     motor_set_speed(MOTOR_REAR_LEFT_WHEEL, speed);
+//     motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, speed);
+//     motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, speed);
+// }
+
+
+// function that gets called on every tick, either attached to the ISR or called from your main loop at a consistent rate.
+int imu_correction_update(struct bmi2_dev* dev){
+
+
+    // check to see if we are ready (if not the init was unsuccessful)
+    if (ready_flag == false){
+
+
+        printf("ready flag is not set in imu_correction_update()\n");
+        return -1;
+    }
+
+
+    // reset all flags
+    warning_flag = false;
+    critical_flag = false;
+    // terrain_flag = false;
+
+
+    // computing the variables for time (start, end, and delta)
+    struct timespec ts_end;
+    clock_gettime(CLOCK_MONOTONIC, &ts_end);
+    int64_t end_dt = (int64_t)ts_end.tv_sec * 1000000LL + ts_end.tv_nsec / 1000LL;
+    float delta_dt = (float) (end_dt - start_dt) / 1000000.0f;
+    start_dt = end_dt;
+
+
+    // -------------- Read the latest roll, pitch, yaw, and gyro Z from the ESKF shared state -----------------
+    // float ay, az;
+    // float gx, gy, gz;
+
+
+    // get data for
+    struct bmi2_sens_axes_data acc, gyr;
+    int8_t rslt = bmi270_kria_read_ag(dev, &acc, &gyr);
+
+
+    // checking result of reading the registers
+    if (rslt == BMI2_OK){
+
+
+        // converting acceleration to g's
+        ax = (float) (acc.x / (32768.0f / 4.0f));       // this one is global
+        float ay = (float) (acc.y / (32768.0f / 4.0f));
+        float az = (float) (acc.z / (32768.0f / 4.0f));
+
+
+        // converting gyr data to degrees per second (dps)
+        float gx = (float) (gyr.x / (32768.0f / 2000.0f));
+        float gy = (float) (gyr.y / (32768.0f / 2000.0f));
+        float gz = (float) (gyr.z / (32768.0f / 2000.0f));
+
+
+        // ----------------- check if there is movement ----------------------
+        // update the kalman filter
+        // kalman_update(ax, ay, -az, gx, gy, gz, delta_dt);       // negating az (was weird on the esp)
+        // float delta_dt = (float)(end_dt - start_dt) / 1000000.0f;
+        start_dt = end_dt;
+
+
+        if (delta_dt <= 0.0f || delta_dt > 1.0f){
+            printf("WARNING: bad delta_dt in update: %.6f\n", delta_dt);
+            return 0;
+        }
+        kalman_update(ax, ay, -az, gx, gy, gz, delta_dt);
+
+
+        // get roll, pitch, and yaw
+        float roll, pitch, yaw;
+        kalman_get_attitude(&roll, &pitch, &yaw);
+
+
+        // subtraction the offsets from the roll and pitch
+        roll = roll - roll_offset;
+        pitch = pitch - pitch_offset;
+
+
+        // calculating the distance moved (global variable)
+        mag_accel = magnitude_acceleration(ax, ay, az);
+
+
+        // getting the mapping of roll and pitch
+        get_direction_and_speed(roll, pitch, mag_accel, &map);
+
+
+
+
+        // checking to see if the rover is stopped
+        if (map.motion_speed == STOPPED){
+           
+            // Compute the current yaw error as the difference between the stored heading reference and the current yaw
+            yaw_error = yaw - yaw_reference;
+
+
+            // Compute the gyro Z rotation rate error after bias subtraction
+            gyro_z_rate_corrected = gz - gyr_z_bias;
+            return 0;
+        }
+
+
+        // check if rover exceeds threshold for tilt
+        switch (map.tilt){
+
+
+            case NONE:
+                // terrain is ok, proceed with heading correction
+                break;
+
+
+            case LOW:
+                // set the warning flag, disable heading correction, keep moving
+                warning_flag = true;
+                return 0;
+
+
+            case MODERATE:
+
+
+                // set critical flag, slow down significantly
+                critical_flag = true;
+                new_set_all_motor_speeds(TERRAIN_SLOW_SPEED);
+                // motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, TERRAIN_SLOW_SPEED);
+                // motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, TERRAIN_SLOW_SPEED);
+                // motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, TERRAIN_SLOW_SPEED);
+                // motor_set_speed(MOTOR_REAR_LEFT_WHEEL, TERRAIN_SLOW_SPEED);
+                // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, TERRAIN_SLOW_SPEED);
+                // motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, TERRAIN_SLOW_SPEED);
+                return 0;
+
+
+            case HIGH:
+
+
+                // call rover_stop(), set fault flag, return early
+                fault_flag = true;
+                new_rover_stop();          
+                // rover_stop();    // can't call rover_stop() (does not work)
+                return -1;
+
+
+            default:
+
+
+                // set fault flag, print error message, call rover_stop()
+                fault_flag = true;
+                printf("In default case statement for imu_correction_update()\n");
+                new_rover_stop();           // untested
+                // rover_stop();    // can't call rover_stop() (does not work)
+                return -1;
+        }
+
+
+
+
+        // Compute the current yaw error as the difference between the stored heading reference and the current yaw
+        yaw_error = yaw - yaw_reference;
+
+
+        // Compute the gyro Z rotation rate error after bias subtraction
+        gyro_z_rate_corrected = gz - gyr_z_bias;
+    }
+    else {
+
+
+        // if there was an error reading from the IMU, set the fault flag
+        printf("There was an error reading from bmi270_kria_read_ag() in imu_correction_update()\n");
+        new_rover_stop();
+        // rover_stop();    // can't call rover_stop() (does not work)
+
+
+        fault_flag = true;
+        return -1;
+    }
+
+
+    return 0;
+}
+
+
+// NOTE: going to need to tune the values
+int imu_correction_handle_terrain(const mapping_t* map){
+
+
+    // check roll first (are we moving?)
+    if (map->roll_dir != ROLL_DEADZONE){
+
+
+        // if the tilt angle is high there is an issue (maybe)
+        if (map->tilt == HIGH){
+            // maybe want to stop the rover?
+            fault_flag = true;
+            new_rover_stop();
+            // rover_stop();    // can't call rover_stop() (does not work)
+            return -1;
+        }
+        else if (map->tilt == MODERATE){    // could be fine, slow down
+
+
+            // slow down all six wheels (using linear interpolation)
+            float fraction = (map->tilt_angle_deg - 20.0f) / (35.0f - 20.0f);
+            int speed = (int) ((float)DEFAULT_MOTOR_SPEED + (TERRAIN_MODERATE_SPEED - (float)DEFAULT_MOTOR_SPEED) * fraction);
+           
+            new_set_all_motor_speeds(speed);
+
+
+            // motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_REAR_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, speed);
+
+
+            // also look into the straightening logic?
+            // am unable to use this function because the calibration does not work...
+            // rover_steer_forward();  
+        }
+        else if (map->tilt == LOW){     // this is OK
+
+
+            // minor speed reduction using linear interpolation
+            float fraction = (map->tilt_angle_deg - 10.0f) / (20.0f - 10.0f);
+            int speed = (int) ((float)DEFAULT_MOTOR_SPEED + (TERRAIN_SLOW_SPEED - (float)DEFAULT_MOTOR_SPEED) * fraction);
+            new_set_all_motor_speeds(speed);          
+            // motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_REAR_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, speed);
+        }
+        else {
+            printf("Unexpected combination\n");
+            fault_flag = true;
+            return -1;
+        }
+    }
+
+
+    // checking the pitch now
+    else if (map->pitch_dir != PITCH_DEADZONE){
+
+
+        if (map->tilt == HIGH){
+            // motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, TERRAIN_MIN_SPEED);
+            // motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, TERRAIN_MIN_SPEED);
+            // motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, TERRAIN_MIN_SPEED);
+            // motor_set_speed(MOTOR_REAR_LEFT_WHEEL, TERRAIN_MIN_SPEED);
+            // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, TERRAIN_MIN_SPEED);
+            // motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, TERRAIN_MIN_SPEED);
+
+
+            new_set_all_motor_speeds(TERRAIN_MIN_SPEED);
+        }
+        else if (map->tilt == MODERATE){
+           
+            // slow down all six wheels            
+            float fraction = (map->tilt_angle_deg - 20.0f) / (35.0f - 20.0f);
+            int speed = (int) ((float)DEFAULT_MOTOR_SPEED + (TERRAIN_MODERATE_SPEED - (float)DEFAULT_MOTOR_SPEED) * fraction);
+           
+            new_set_all_motor_speeds(speed);
+            // motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_REAR_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, speed);
+
+
+        }
+        else if (map->tilt == LOW){
+
+
+            // minor speed reduction using linear interpolation
+            float fraction = (map->tilt_angle_deg - 10.0f) / (20.0f - 10.0f);
+            int speed = (int) ((float)DEFAULT_MOTOR_SPEED + (TERRAIN_SLOW_SPEED - (float)DEFAULT_MOTOR_SPEED) * fraction);
+
+
+            new_set_all_motor_speeds(speed);
+            // motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, speed);
+            // motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_REAR_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, speed);
+            // motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, speed);
+        }
+        else {
+            printf("Unexpected combination\n");
+            fault_flag = true;
+            return -1;
+        }
+
+
+    }
+    else {
+        // both pitch and roll are in a deadzone (function should not be called)
+        printf("Warning: Pitch and Roll are in a deadzone (flat land), should not be called\n");
+        fault_flag = true;
+        return -1;
+    }
+
+
+
+
+    // need to
+    float roll, pitch, yaw;
+    kalman_get_attitude(&roll, &pitch, &yaw);
+    yaw_reference = yaw;
+
+
+    return 0;
+}
+
+
+// imu_correction_apply helper function
+static float clamp(float val, float min, float max){
+    if (val < min) return min;
+    if (val > max) return max;
+    return val;
+}
+
+
+int imu_correction_apply(){
+    if (!correction_state.active){
+        // no correction applied
+        return 0;
+    }
+    // read error and rate from Kalman filter
+    float yaw_err = yaw_error;
+    float gyro_z_rate_err = gyro_z_rate_corrected;
+
+
+    if ((fabsf(yaw_err) < YAW_ERROR_DEADBAND) && (fabsf(gyro_z_rate_err) < GYRO_RATE_DEADBAND)) {
+        // within deadband, no correction applied
+        correction_state.last_correction = 0;
+        return 0;
+    }
+
+
+    // start with RATE_WEIGHT higher than YAW_WEIGHT
+    float weighted_correction = yaw_err * YAW_WEIGHT + gyro_z_rate_err * RATE_WEIGHT;
+    // clamp correction to max limits. MAX_CORRECTION should be small faction of the commanded speed
+    weighted_correction = clamp(weighted_correction, -MAX_CORRECTION, MAX_CORRECTION);
+    printf("IMU CORRECTION | YAW_ERR: %.3f | GYRO_Z: %.3f | CORRECTION: %.3f\n", yaw_err, gyro_z_rate_err, weighted_correction);
+
+
+    // Determine which side to bias based on the sign of the error
+    if (weighted_correction > 0){
+        // rover drifting right — slow left side to correct back toward straight
+        // e.g. left_motor_speed - fabsf(weighted_correction);
+        motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+        motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+        motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+        // reduced speed on the right motors
+        motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, DEFAULT_MOTOR_SPEED - abs((int)weighted_correction));
+        motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, DEFAULT_MOTOR_SPEED - abs((int)weighted_correction));
+        motor_set_speed(MOTOR_REAR_LEFT_WHEEL, DEFAULT_MOTOR_SPEED - abs((int)weighted_correction));
+    }
+    else if (weighted_correction < 0){
+        // rover drifting left — slow right side to correct back toward straight
+        // e.g. right_motor_speed - fabsf(weighted_correction);
+        motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
+        motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
+        motor_set_speed(MOTOR_REAR_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
+        // reduced speed on the right motors
+        motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -(DEFAULT_MOTOR_SPEED - abs((int)weighted_correction)));
+        motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -(DEFAULT_MOTOR_SPEED - abs((int)weighted_correction)));
+        motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -(DEFAULT_MOTOR_SPEED - abs((int)weighted_correction)));
+    }    
+    correction_state.last_correction = weighted_correction;
+    return 1; // correction applied
+}
+
+
+
+
+// cross-checks what the motors are doing against what the IMU says is happening
+int imu_correction_check_motion(){
+
+
+    // check to see if the system is ready to operate or not
+    if (ready_flag == false){
+        return -1;      // return early (not ready)
+    }
+
+
+    // setting static variables
+    static int64_t stall_start_us = 0;
+    static int64_t unintended_motion_start_us = 0;
+
+
+    // to store the position read from wheel encoders
+    static int64_t prev_pos_frw = 0;
+    static int64_t prev_pos_flw = 0;
+    static int64_t prev_pos_mrw = 0;
+    static int64_t prev_pos_mlw = 0;
+    static int64_t prev_pos_rrw = 0;
+    static int64_t prev_pos_rlw = 0;
+
+
+    // flag for first call
+    static bool first_call = true;
+
+
+    // want to get the current time for comparisons
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    int64_t current_us = (int64_t) ts.tv_sec * 1000000LL + ts.tv_nsec / 1000LL;
+
+
+    // get motor positions on each wheel:
+    int64_t curr_frw = motor_get_position(MOTOR_FRONT_RIGHT_WHEEL);
+    int64_t curr_flw = motor_get_position(MOTOR_FRONT_LEFT_WHEEL);
+    int64_t curr_mrw = motor_get_position(MOTOR_MIDDLE_RIGHT_WHEEL);
+    int64_t curr_mlw = motor_get_position(MOTOR_MIDDLE_LEFT_WHEEL);
+    int64_t curr_rrw = motor_get_position(MOTOR_REAR_RIGHT_WHEEL);
+    int64_t curr_rlw = motor_get_position(MOTOR_REAR_LEFT_WHEEL);
+
+
+    // guard for first time the function is called
+    if (first_call){
+        first_call = false;
+        prev_pos_frw = curr_frw;
+        prev_pos_flw = curr_flw;
+        prev_pos_mrw = curr_mrw;
+        prev_pos_mlw = curr_mlw;
+        prev_pos_rrw = curr_rrw;
+        prev_pos_rlw = curr_rlw;
+        return 0;
+    }
+
+
+    // compute the delta in curr - prev
+    int64_t delta_frw = curr_frw - prev_pos_frw;
+    int64_t delta_flw = curr_flw - prev_pos_flw;
+    int64_t delta_mrw = curr_mrw - prev_pos_mrw;
+    int64_t delta_mlw = curr_mlw - prev_pos_mlw;
+    int64_t delta_rrw = curr_rrw - prev_pos_rrw;
+    int64_t delta_rlw = curr_rlw - prev_pos_rlw;
+
+
+    // overall wheel estimate
+    int64_t avg_wheel_dist = (delta_frw + delta_flw + delta_mrw + delta_mlw + delta_rrw + delta_rlw) / 6;
+    int64_t avg_wheel_delta = llabs(avg_wheel_dist);
+
+
+    // update the prev wheels
+    prev_pos_frw = curr_frw;
+    prev_pos_flw = curr_flw;
+    prev_pos_mrw = curr_mrw;
+    prev_pos_mlw = curr_mlw;
+    prev_pos_rrw = curr_rrw;
+    prev_pos_rlw = curr_rlw;
+
+
+    // if the rover is moving
+    if (avg_wheel_delta > ENCODER_DELTA_THRESHOLD){
+
+
+        // want to check what the IMU is reading
+        if (mag_accel < STALL_MAG_THRESHOLD){
+
+
+            if (stall_start_us == 0){
+                // record the current time stamp into stall_start_us
+                stall_start_us = current_us;
+                // motion is being monitored (hits return 0 at the bottom)
+            }
+            else {
+
+
+                // compute the elapsed time
+                int64_t elapsed_time = current_us - stall_start_us;
+
+
+                // check to see if the elapsed time exceeds the threshold
+                if (elapsed_time > STALL_TIME_THRESHOLD_US){
+                    // trigger stall response
+                    stall_flag = true;
+                    // rover_reverse(BRAKE_SPEED);
+                    new_set_all_motor_speeds(-BRAKE_SPEED);
+                   
+                    // wait 200ms and then stop
+                    bmi270_delay_us(200000, NULL);    
+                    new_rover_stop();
+                    // rover_stop();    // can't call rover_stop() (does not work)
+                    stall_start_us = 0;
+                    return -1;
+                }
+            }
+        }
+        else {
+            // rover is moving as it is supposed to, reset stall_start_us
+            stall_start_us = 0;
+        }
+    }
+    else {
+
+
+        // motor is not running, check to see what the IMU is reading
+        if (mag_accel > MOTION_MAG_THRESHOLD){
+            // rover is supposed to be stopped but the rover is moving
+            if (unintended_motion_start_us == 0){
+                // record the current time stamp into stall_start_us
+                unintended_motion_start_us = current_us;
+            }
+            else {
+                int64_t elapsed_time = current_us - unintended_motion_start_us;
+                if (elapsed_time > UNINTENDED_MOTION_TIME_THRESHOLD_US){
+                    // trigger uintended motion response
+                    unintended_motion_flag = true;
+
+
+                    // if we are moving forward
+                    if (ax > 0.0f){
+
+
+                        // rover_reverse(BRAKE_SPEED);
+                        new_set_all_motor_speeds(-BRAKE_SPEED);
+                       
+                        // wait 200ms and then stop
+                        bmi270_delay_us(200000, NULL);    
+                        new_rover_stop();
+                        // rover_stop();    // can't call rover_stop() (does not work)
+                    }
+                    else {
+
+
+                        // rover_forward(BRAKE_SPEED);
+                        new_set_all_motor_speeds(BRAKE_SPEED);
+                       
+                        // wait 200ms and then stop
+                        bmi270_delay_us(200000, NULL);    
+                        new_rover_stop();
+                        // rover_stop();    // can't call rover_stop() (does not work)
+                    }
+
+
+                    unintended_motion_start_us = 0;
+                    return -1;
+                }
+            }
+        }
+        else {
+            unintended_motion_start_us = 0;
+            // rover is correctly stopped, no unintended motion
+        }
+    }
+   
+    return 0;
+}
+
+
+
+
+
+
+// // main controls all the IMU implementation for now
+// int main() {
+
+
+//     // opening the fd and checking for error
+//     int fd = open("/dev/mem", O_RDWR | O_SYNC);
+//     if (fd < 0) {
+//         perror("open /dev/mem");
+//         return 1;
+//     }
+
+
+//     // base address in memory of the IMU
+//     iic_base = (volatile uint32_t*)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, AXI_IIC_BASE);
+
+
+//     // checking the return type    
+//     if (iic_base == MAP_FAILED) {
+//         perror("mmap");
+//         return 1;
+//     }
+
+
+//     // resets and then enables
+//     axi_iic_init();
+
+
+//     // vars to initialize the imu
+//     bmi270_i2c_ctx_t ctx = { .port = 0, .addr = 0x68};   // context struct - holds HW specific info (how do I configure this?)
+//     struct bmi2_dev dev = {0};    // bosch device struct
+
+
+//     // calling the init function
+//     int8_t rslt = bmi270_kria_init(&ctx, &dev);
+//     printf("BMI270 init result: %d\n", rslt);       // later change this to an if statement
+
+
+//     // checking the chip_id from the register (code for bmi270_read_reg in the port layer) - will get rid of later, using it as a check rn
+//     uint8_t chip_id;
+//     bmi270_read_reg(0x00, 0x68, &chip_id, 1);
+//     printf("BMI270 Chip ID: 0x%02X (expected 0x24)\n", chip_id);
+
+
+//     // need to move the code from the ESP (the drivers) to read the registers here
+//     float ax, ay, az;
+//     float gx, gy, gz;
+   
+//     // for Kalman Filter
+//     float roll, pitch, yaw;
+//     struct timespec ts;
+//     clock_gettime(CLOCK_MONOTONIC, &ts);
+//     start_dt = (int64_t)ts.tv_sec * 1000000LL + ts.tv_nsec / 1000LL;
+//     int64_t end_dt;
+//     float delta_dt;
+//     bool init_flag_acc = true;
+
+
+//     // read data from the IMU here (six registers are going to be accessed accel x,y,z and gyr x,y,z)
+//     // probably going to be a while loop
+//     bool flag = true;
+//     while(flag){
+
+
+       
+//         // print the data from the registers
+//         struct bmi2_sens_axes_data acc, gyr;
+//         rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+
+
+//         if (rslt == BMI2_OK){
+
+
+//             // converting acceleration to g's
+//             ax = (float) (acc.x / (32768.0f / 4.0f));
+//             ay = (float) (acc.y / (32768.0f / 4.0f));
+//             az = (float) (acc.z / (32768.0f / 4.0f));
+
+
+//             // converting gyr data to degrees per second (dps)
+//             gx = (float) (gyr.x / (32768.0f / 2000.0f));
+//             gy = (float) (gyr.y / (32768.0f / 2000.0f));
+//             gz = (float) (gyr.z / (32768.0f / 2000.0f));
+
+
+//             printf("ACC: x=%.2fg y=%.2fg z=%.2fg | GYR: x=%.2fdps y=%.2fdps z=%.2fdps\n", ax, ay, az, gx, gy, gz);
+
+
+//             if (init_flag_acc && fabsf(az) > 0.1f){
+//                 kalman_init(ax, ay, -az);       // negating az (for some reason the filter reads upside down - can chnage later)
+//                 init_flag_acc = false;
+//             }
+//             else if (!init_flag_acc){
+
+
+//                 delta_dt = (float) (end_dt - start_dt) / 1000000.0f;
+//                 kalman_update(ax, ay, -az, gx, gy, gz, delta_dt);       // negating az (was weird on the esp)
+//                 kalman_get_attitude(&roll, &pitch, &yaw);
+
+
+//                 // calculating the distance moved
+//                 double mag_dist = magnitude_distance(ax, ay, az, delta_dt);
+
+
+//                 // getting the mapping of roll and pitch
+//                 mapping_t map = {};
+//                 get_direction_and_speed(roll, pitch,mag_dist, &map);
+
+
+//                 // converting the roll, pitch, and speed to something printable
+//                 char* pitch_dir;
+//                 char* roll_dir;
+//                 char* motion_speed;
+//                 char* tilt_angle;
+//                 direction_and_speed_to_string(&pitch_dir, &roll_dir, &tilt_angle, &motion_speed, map);
+
+
+//                 // print statements
+//                 printf("FILTERED: PITCH: %f deg | ROLL: %f deg\n", pitch * (180.0f / M_PI), roll * (180.0f / M_PI));
+//                 printf("COMMAND: PITCH: %s | ROLL: %s | TILT_ANGLE: %s | MOTION_SPEED: %s\n", pitch_dir, roll_dir, tilt_angle, motion_speed);
+//             }
+
+
+//         }
+//         else {
+//             printf("the result was not BMI2_OK, it was %d", rslt);
+//             flag = false;   // stop reading data (for now)
+//         }
+
+
+//         // adding a small 10ms delay (for now)
+//         bmi270_delay_us(333000, NULL);
+//         start_dt = end_dt;
+//     }
+
+
+//     // on close
+//     munmap((void*)iic_base, MAP_SIZE);
+//     close(fd);
+//     return 0;
+// }
+
+
+
+
+
+
+
+Imu_correction.h:
+
+#ifndef IMU_CORRECTION_H
+#define IMU_CORRECTION_H
+
+
+
+
+#include <stdbool.h>
+#include <stdint.h>
+
+
+// check to see if you need any of these
+#include "bmi270_port.h"
+#include "kalman_wrapper.h"
+#include "bmi2.h"
+#include "bmi270.h"
+
+
+#define DEFAULT_MOTOR_SPEED         (128/2)     // can change this later
+
+
+// ------------------------ Kalman Movement Implementation ---------------------------
+// (these are the upper bounds other than fast, will act as a lower bound instead) - vals are in degrees
+typedef enum {
+    STOPPED,
+    SLOW,
+    MED,
+    FAST
+} SPEED;
+
+
+typedef enum {
+    NONE,
+    LOW,
+    MODERATE,
+    HIGH
+} TILT_ANGLE;
+
+
+typedef enum {
+    PITCH_DEADZONE,
+    FORWARDS,
+    BACKWARDS
+} PITCH_DIRECTION;
+
+
+typedef enum {
+    ROLL_DEADZONE,
+    LEFT,
+    RIGHT
+} ROLL_DIRECTION;
+
+
+typedef struct {
+    TILT_ANGLE tilt;
+    SPEED motion_speed;
+    PITCH_DIRECTION pitch_dir;
+    ROLL_DIRECTION roll_dir;
+    float tilt_angle_deg;
+} mapping_t;
+// -------------------------------------------------------------------
+
+
+// getter functions
+bool imu_correction_is_fault(void);
+bool imu_correction_is_critical(void);
+bool imu_correction_is_warning(void);
+bool imu_correction_is_stall(void);
+bool imu_correction_is_unintended_motion(void);
+const mapping_t* imu_correction_get_map(void);
+
+
+// init and update
+int imu_correction_init(struct bmi2_dev* dev);
+int imu_correction_update(struct bmi2_dev* dev);
+
+
+// heading reference management
+void imu_correction_set_heading_reference(void);
+void imu_correction_clear_heading_reference(void);
+
+
+// motor state
+// void imu_correction_set_motor_state(bool running);
+
+
+// terrain handler
+int imu_correction_handle_terrain(const mapping_t* map);
+
+
+// motion check
+int imu_correction_check_motion(void);
+
+
+// correction application
+int imu_correction_apply(void);
+
+
+#endif
+
+
+
+
+Kalman_wrapper.c:
+
+#include "ESKF.h"
+
+
+static IMU_EKF::ESKF<float>* filter = nullptr;
+
+
+extern "C" {
+
+
+    // function for init
+    void kalman_init(float ax, float ay, float az){
+        filter = new IMU_EKF::ESKF<float>();
+        filter->initWithAcc(ax, ay, az);
+    }
+
+
+    // function for update
+    void kalman_update(float ax, float ay, float az, float gx, float gy, float gz, float dt){
+
+
+        filter->predict(dt);
+        filter->correctAcc(ax, ay, az);
+        filter->correctGyr(gx, gy, gz);
+        filter->reset();
+    }
+
+
+
+
+    // function for attitude
+    void kalman_get_attitude(float *roll, float *pitch, float *yaw){
+
+
+        filter->getAttitude(*roll, *pitch,  *yaw);
+    }
+
+
+}
+
+
+
+
+
+
+Kalman_wrapper.h:
+
+#pragma once
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+
+
+void kalman_init(float ax, float ay, float az);
+void kalman_update(float ax, float ay, float az, float gx, float gy, float gz, float dt);
+void kalman_get_attitude(float *roll, float *pitch, float *yaw);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+
+
+Quaternion.h:
+
+#pragma once
+
+
+#include <stdint.h>
+// #include <Eigen.h>
+#include <eigen3/Eigen/Dense>
+#include "utilities.h"
+
+
+namespace IMU_EKF
+{
+
+
+enum QuaternionIndex
+{
+    v1,
+    v2,
+    v3,
+    w
+};
+
+
+template <typename precision>
+class Quaternion
+{
+public:
+    Quaternion() : v1_(0), v2_(0), v3_(0), w_(1){};
+    Quaternion(precision v1, precision v2, precision v3, precision w) : v1_(v1), v2_(v2), v3_(v3), w_(w){};
+
+
+    precision operator[](QuaternionIndex idx) const
+    {
+        switch (idx)
+        {
+        case v1:
+            return v1_;
+        case v2:
+            return v2_;
+        case v3:
+            return v3_;
+        case w:
+            return w_;
+        default:
+            return v1_;
+        }
+    }
+
+
+    Quaternion<precision> &operator+=(const Quaternion<precision> r)
+    {
+        v1_ += r[v1];
+        v2_ += r[v2];
+        v3_ += r[v3];
+        w_ += r[w];
+
+
+        return *this;
+    }
+
+
+    Eigen::Matrix<precision, 3, 1> vec() const
+    {
+        Eigen::Matrix<precision, 3, 1> vec;
+        vec << v1, v2, v3;
+        return vec;
+    }
+
+
+    Eigen::Matrix<precision, 3, 3> toRotationMatrix() const
+    {
+        Eigen::Matrix<precision, 3, 3> rotationMatrix;
+        // eq. 4
+        // rotationMatrix = (w_ * w_ - v1_ * v1_ - v2_ * v2_ - v3_ * v3_) * Eigen::Matrix<precision, 3, 3>::Identity() - 2 * w_ * toCrossMatrix<precision>(vec()) + 2 * vec() * vec().transpose();
+        // from https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+        rotationMatrix << 1.0 - 2.0 * v2_ * v2_ - 2.0 * v3_ * v3_, 2.0 * v1_ * v2_ - 2.0 * v3_ * w_, 2.0 * v1_ * v3_ + 2.0 * v2_ * w_,
+            2.0 * v1_ * v2_ + 2.0 * v3_ * w_, 1.0 - 2.0 * v1_ * v1_ - 2.0 * v3_ * v3_, 2.0 * v2_ * v3_ - 2.0 * v1_ * w_,
+            2.0 * v1_ * v3_ - 2.0 * v2_ * w_, 2.0 * v2_ * v3_ + 2.0 * v1_ * w_, 1.0 - 2.0 * v1_ * v1_ - 2.0 * v2_ * v2_;
+        return rotationMatrix.transpose();
+    }
+
+
+    Eigen::Matrix<precision, 3, 1> toEulerAngles() const
+    {
+        Eigen::Matrix<precision, 3, 1> angles;
+        // from https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+        // rotation sequence R = Rx * Ry * Rz
+        // roll (x-axis rotation)
+        precision sinr_cosp = 2 * (v2_ * v3_ - w_ * v1_);
+        precision cosr_cosp = 1 - 2 * (v1_ * v1_ + v2_ * v2_);
+        angles[0] = std::atan2(sinr_cosp, cosr_cosp);
+
+
+        // pitch (y-axis rotation)
+        precision sinp = -2 * (w_ * v2_ + v3_ * v1_);
+        if (std::abs(sinp) >= 1)
+            angles[1] = std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+        else
+            angles[1] = std::asin(sinp);
+
+
+        // yaw (z-axis rotation)
+        precision siny_cosp = 2 * (v1_ * v2_ - w_ * v3_);
+        precision cosy_cosp = 1 - 2 * (v2_ * v2_ + v3_ * v3_);
+        angles[2] = std::atan2(siny_cosp, cosy_cosp);
+
+
+        return angles;
+    }
+
+
+    void normalize()
+    {
+        precision norm = sqrt(v1_ * v1_ + v2_ * v2_ + v3_ * v3_ + w_ * w_);
+        if (std::abs(norm) > 1e-8)
+        {
+            v1_ /= norm;
+            v2_ /= norm;
+            v3_ /= norm;
+            w_ /= norm;
+        }
+    }
+
+
+protected:
+    precision v1_;
+    precision v2_;
+    precision v3_;
+    precision w_;
+};
+
+
+template <typename precision>
+Quaternion<precision> operator*(const Quaternion<precision> &l, const Quaternion<precision> &r)
+{
+    // eq. 6
+    precision nv1 = l[w] * r[v1] + r[w] * l[v1] - l[v2] * r[v3] + l[v3] * r[v2];
+    precision nv2 = l[w] * r[v2] + r[w] * l[v2] - l[v3] * r[v1] + l[v1] * r[v3];
+    precision nv3 = l[w] * r[v3] + r[w] * l[v3] - l[v1] * r[v2] + l[v2] * r[v1];
+    precision nw = l[w] * r[w] - l[v1] * r[v1] - l[v2] * r[v2] - l[v3] * r[v3];
+    return Quaternion<precision>(nv1, nv2, nv3, nw);
+}
+
+
+inline Quaternion<float> operator*(float l, const Quaternion<float> &r)
+{
+    return Quaternion<float>(r[v1] * l, r[v2] * l, r[v3] * l, r[w] * l);
+}
+
+
+inline Quaternion<double> operator*(double l, const Quaternion<double> &r)
+{
+    return Quaternion<double>(r[v1] * l, r[v2] * l, r[v3] * l, r[w] * l);
+}
+
+
+template <typename precision>
+Quaternion<precision> operator+(const Quaternion<precision> &l, const Quaternion<precision> &r)
+{
+    return Quaternion<precision>(l[v1] * r[v1], l[v2] * r[v2], l[v3] * r[v3], l[w] * r[w]);
+}
+} // namespace IMU_EKF
+
+
+
+Utilities.h:
+
+
+
+#pragma once
+
+
+// #include <Eigen.h>
+#include <eigen3/Eigen/Dense>
+namespace IMU_EKF
+{
+template <typename precision, typename Derived>
+Eigen::Matrix<precision, 3, 3> toCrossMatrix(const Eigen::DenseBase<Derived> &v)
+{
+    Eigen::Matrix<precision, 3, 3> crossMatrix;
+    // eq. 5
+    crossMatrix << 0.0, -v(2), v(1), v(2), 0.0, -v(0), -v(1), v(0), 0.0;
+    return crossMatrix;
+}
+
+
+template <typename precision, typename Derived>
+Eigen::Matrix<precision, 3, 3> toRotationMatrix(const Eigen::MatrixBase<Derived> &v)
+{
+    Eigen::Matrix<precision, 3, 3> rotationMatrix;
+    // eq. 20
+    precision norm_sqr = v(0) * v(0) + v(1) * v(1) + v(2) * v(2);
+    Eigen::Matrix<precision, 3, 3> vvT = v * v.transpose();
+    rotationMatrix = Eigen::Matrix<precision, 3, 3>::Identity() - toCrossMatrix<precision>(v) - 0.5 * (norm_sqr * Eigen::Matrix<precision, 3, 3>::Identity() - vvT);
+    return rotationMatrix;
+}
+} // namespace IMU_EKF
+
+All the other files that were added were bosch drivers and they are too long to put in this doc.

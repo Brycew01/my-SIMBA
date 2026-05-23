@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-#include <unistd.h>
+// #include <unistd.h>
 
 
 #include "rover.h"
@@ -18,7 +18,7 @@
 
 
 // globals
-#define DEFAULT_MOTOR_SPEED 128
+// #define DEFAULT_MOTOR_SPEED 128
 static bool done = false;
 
 
@@ -34,9 +34,9 @@ void sigint_handler(int signum) {
 // ------------- added some wrapper functions for simba movement ------------------------
 static void simba_forward(int speed){
  
-  imu_correction_set_motor_state(true);
+  // imu_correction_set_motor_state(true);
   imu_correction_set_heading_reference();   // gets a snapshot of yaw as the reference to maintain during straight driving
-  rover_forward(speed);
+  rover_forward(speed);    
 }
 
 
@@ -52,9 +52,15 @@ static void simba_forward(int speed){
 static void simba_stop(void){
 
 
-  imu_correction_set_motor_state(false);
+  // imu_correction_set_motor_state(false);
   imu_correction_clear_heading_reference();
-  rover_stop();
+  //rover_stop(); //unexpected behavior from this function atm
+  motor_set_speed(FRW, 0);
+  motor_set_speed(RRW, 0);
+  motor_set_speed(FLW, 0);
+  motor_set_speed(RLW, 0);
+  motor_set_speed(MRW, 0);
+  motor_set_speed(MLW, 0);
 }
 
 
@@ -131,19 +137,61 @@ int main() {
   }
 
 
-  // initialize KF
+  // // initialize KF
+  // struct bmi2_sens_axes_data acc, gyr;
+  // rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+  // if (rslt == BMI2_OK){
+  //   float ax = (float)(acc.x / (32768.0f / 4.0f));
+  //   float ay = (float)(acc.y / (32768.0f / 4.0f));
+  //   float az = (float)(acc.z / (32768.0f / 4.0f));
+
+
+  //   // check for valid first reading — if all zeros, read again
+  //   if (fabsf(az) < 0.1f){
+  //       printf("First IMU read returned zeros, waiting for valid sample\n");
+  //       bmi270_delay_us(50000, NULL);
+  //       rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+  //       ax = (float)(acc.x / (32768.0f / 4.0f));
+  //       ay = (float)(acc.y / (32768.0f / 4.0f));
+  //       az = (float)(acc.z / (32768.0f / 4.0f));
+  //   }
+   
+  //   printf("Kalman init with ax=%.3f ay=%.3f az=%.3f\n", ax, ay, az);
+  //   kalman_init(ax, ay, -az);
+  // }
+  // else {
+  //   printf("Initial IMU KF read failed\n");
+  //   return 1;
+  // }
+
+
+  // keep reading until we get a valid first sample
   struct bmi2_sens_axes_data acc, gyr;
-  rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
-  if (rslt == BMI2_OK){
-    float ax = (float)(acc.x / (32768.0f / 4.0f));
-    float ay = (float)(acc.y / (32768.0f / 4.0f));
-    float az = (float)(acc.z / (32768.0f / 4.0f));
-    kalman_init(ax, ay, -az);
+  float ax_init = 0.0f, ay_init = 0.0f, az_init = 0.0f;
+  int attempts = 0;
+  while (fabsf(az_init) < 0.5f && attempts < 50){
+      bmi270_delay_us(20000, NULL);   // wait 20ms between attempts
+      rslt = bmi270_kria_read_ag(&dev, &acc, &gyr);
+      if (rslt == BMI2_OK){
+          ax_init = (float)(acc.x / (32768.0f / 4.0f));
+          ay_init = (float)(acc.y / (32768.0f / 4.0f));
+          az_init = (float)(acc.z / (32768.0f / 4.0f));
+          printf("Attempt %d: ax=%.3f ay=%.3f az=%.3f\n", attempts, ax_init, ay_init, az_init);
+      }
+      attempts++;
   }
-  else {
-    printf("Initial IMU KF read failed\n");
-    return 1;
+
+
+  if (fabsf(az_init) < 0.5f){
+      printf("Failed to get valid IMU reading after %d attempts\n", attempts);
+      return 1;
   }
+
+
+  printf("Kalman init with ax=%.3f ay=%.3f az=%.3f\n", ax_init, ay_init, az_init);
+  kalman_init(ax_init, ay_init, -az_init);
+
+
   // initialize IMU correction system
   if (imu_correction_init(&dev) != 0){
     printf("IMU correction init failed\n");
@@ -163,8 +211,25 @@ int main() {
   simba_forward(DEFAULT_MOTOR_SPEED);
 
 
+  // before the loop, record start time
+  struct timespec loop_start;
+  clock_gettime(CLOCK_MONOTONIC, &loop_start);
+  int64_t loop_start_us = (int64_t)loop_start.tv_sec * 1000000LL + loop_start.tv_nsec / 1000LL;
+  int64_t test_duration_us = 5000000LL;  // 5 seconds
+
+
   // infinite loop
   while (done == false) {
+
+    // inside the loop, check elapsed time
+    struct timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    int64_t now_us = (int64_t)now.tv_sec * 1000000LL + now.tv_nsec / 1000LL;
+    if (now_us - loop_start_us > test_duration_us){
+        printf("Test duration reached, stopping\n");
+        done = true;
+        continue;
+    }
 
 
     // apply imu correction
@@ -211,6 +276,13 @@ int main() {
 
     // apply correction and then wait 333ms
     imu_correction_apply();
+
+    // want to see what IMU is receiving and what the wheel encoders are reading
+    int64_t frw_pos = motor_get_position(MOTOR_FRONT_RIGHT_WHEEL);
+    int64_t flw_pos = motor_get_position(MOTOR_MIDDLE_LEFT_WHEEL);
+    printf("ENCODERS | FRW: %ld | MLW: %ld\n", frw_pos, flw_pos);
+
+
     bmi270_delay_us(333000, NULL);
   }
 

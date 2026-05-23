@@ -11,6 +11,7 @@
 
 
 // ------------------------ Kalman Movement Implementation ---------------------------
+#define DEFAULT_MOTOR_SPEED         (128/2)     // can change this later
 typedef enum {
     STOPPED,
     SLOW,
@@ -63,7 +64,7 @@ void imu_correction_set_heading_reference(void);
 void imu_correction_clear_heading_reference(void);
 
 // motor state
-void imu_correction_set_motor_state(bool running);
+// void imu_correction_set_motor_state(bool running);
 
 // terrain handler
 int imu_correction_handle_terrain(const mapping_t* map);
