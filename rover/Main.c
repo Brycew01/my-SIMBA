@@ -215,7 +215,7 @@ int main() {
   struct timespec loop_start;
   clock_gettime(CLOCK_MONOTONIC, &loop_start);
   int64_t loop_start_us = (int64_t)loop_start.tv_sec * 1000000LL + loop_start.tv_nsec / 1000LL;
-  int64_t test_duration_us = 5000000LL;  // 5 seconds
+  int64_t test_duration_us = 15000000LL;  // 5 seconds
 
 
   // infinite loop
@@ -274,16 +274,14 @@ int main() {
     }
 
 
-    // apply correction and then wait 333ms
-    imu_correction_apply();
-
     // want to see what IMU is receiving and what the wheel encoders are reading
     int64_t frw_pos = motor_get_position(MOTOR_FRONT_RIGHT_WHEEL);
     int64_t flw_pos = motor_get_position(MOTOR_MIDDLE_LEFT_WHEEL);
     printf("ENCODERS | FRW: %ld | MLW: %ld\n", frw_pos, flw_pos);
 
-
-    bmi270_delay_us(333000, NULL);
+    // apply correction and then wait 100ms
+    imu_correction_apply();
+    bmi270_delay_us(20000, NULL); // changed from 100ms to 50ms (can tune value later)
   }
 
 
@@ -295,13 +293,4 @@ int main() {
   munmap((void*)iic_base, MAP_SIZE);
   close(fd);
 
-
-  // Close Rover
-  if (rover_close() != 0) {
-    printf("failed to close rover\n");
-    return -1;
-  }
-
-
-  return 0;
 }

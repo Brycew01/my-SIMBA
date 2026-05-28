@@ -13,10 +13,11 @@
 // --------------------------- globals -------------------------------
 #define NUM_SAMPLES 100
 
-#define BRAKE_SPEED                 (64/2)    // this is the breaking speed (can change later based on tuning from testing)
-#define TERRAIN_SLOW_SPEED          (64/2)
-#define TERRAIN_MODERATE_SPEED      (48/2)
-#define TERRAIN_MIN_SPEED           (32/2)
+#define BRAKE_SPEED                 (96/2)    // this is the breaking speed (can change later based on tuning from testing)
+#define TERRAIN_SLOW_SPEED          (96/2)
+#define TERRAIN_MODERATE_SPEED      (64/2)
+#define TERRAIN_MIN_SPEED           (48/2)
+#define MAX_SPEED                   192
 
 // thresholds
 #define STALL_MAG_THRESHOLD                  1.08f      // can change to 1.05 later (need to tune based on testing)
@@ -27,10 +28,18 @@
 
 // deadband, weight, max correction limits
 #define YAW_ERROR_DEADBAND 0.5f        // placeholder value, adjust as needed
-#define GYRO_RATE_DEADBAND 2.0f        // placeholder value, adjust as needed
-#define YAW_WEIGHT         0.7f        // placeholder weight, adjust as needed
-#define RATE_WEIGHT        0.3f        // placeholder weight, adjust as needed.
-#define MAX_CORRECTION     10.0f       // placeholder max correction, adjust as needed.
+#define GYRO_RATE_DEADBAND 1.5f        // placeholder value, adjust as needed
+#define YAW_WEIGHT         0.5f        // plac0eholder weight, adjust as needed
+#define RATE_WEIGHT        0.5f        // placeholder weight, adjust as needed.
+#define MAX_CORRECTION     20.0f       // placeholder max correction, adjust as needed.
+
+// for integral term in imu_correction_appy()
+#define INTEGRAL_WEIGHT        0.2f    // tune this
+#define INTEGRAL_CLAMP         10.0f   // prevents windup
+
+// type variables
+#define YAW_MOVEMENT_ERROR_THRESHOLD         0.015      // tune this
+#define YAW_MOVEMENT_THRESHOLD               (YAW_MOVEMENT_ERROR_THRESHOLD/2)
 
 // type variables
 static float yaw_reference = 0.0f;
@@ -39,7 +48,8 @@ static float gyr_z_bias = 0.0f;
 static float gyro_z_rate_corrected = 0.0f;
 static int64_t start_dt = 0;
 static double mag_accel = 0.0;
-static float ax = 0.0f;
+static float ax = 0.0f;     // decided to only look at sliding in the ax direction because we care if braking is forward or backward along the rover's primary axis of travel
+static float yaw_error_integral = 0.0f;     // integral term for yawa error
 
 
 // added roll and pitch offsets because the rover favors one side more than the other because of the arm
@@ -172,9 +182,8 @@ static void get_direction_and_speed(float roll, float pitch, double mag_accelera
 
 static void new_set_all_motor_speeds(int speed){
 
-
     motor_set_speed(FRW, -speed);
-    motor_set_speed(FLW, speed);
+    // motor_set_speed(FLW, speed);
     motor_set_speed(MRW, -speed);
     motor_set_speed(MLW, speed);
     motor_set_speed(RRW, -speed);
@@ -217,6 +226,7 @@ void imu_correction_clear_heading_reference(){
     correction_state.heading_reference = 0.0f;
     correction_state.heading_error_accum = 0.0f;
     correction_state.last_correction = 0.0f;
+    yaw_error_integral = 0.0f;
 }
 
 
@@ -562,34 +572,61 @@ int imu_correction_apply(){
         return 0;
     }
 
-    float weighted_correction = yaw_err * YAW_WEIGHT + gyro_z_rate_err * RATE_WEIGHT;
-    weighted_correction = clamp(weighted_correction, -MAX_CORRECTION, MAX_CORRECTION);
+    // added integral term, let's see how this works
+    yaw_error_integral += yaw_error * 0.1f;
+    yaw_error_integral = clamp(yaw_error_integral, -INTEGRAL_CLAMP, INTEGRAL_CLAMP);  // trying to prevent windup
 
-    printf("IMU CORRECTION | YAW_ERR: %.3f | GYRO_Z: %.3f | CORRECTION: %.3f\n", yaw_err, gyro_z_rate_err, weighted_correction);
+    // start with RATE_WEIGHT higher than YAW_WEIGHT
+    float weighted_correction = yaw_err * YAW_WEIGHT + gyro_z_rate_err * RATE_WEIGHT + yaw_error_integral * INTEGRAL_WEIGHT;
 
-    if (weighted_correction > 0){
-        // rover drifting right — slow left side to correct back toward straight
-        motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
-        motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
-        motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
-        // reduced speed on the right motors
-        motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, DEFAULT_MOTOR_SPEED - abs((int)weighted_correction));
-        motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, DEFAULT_MOTOR_SPEED - abs((int)weighted_correction));
-        motor_set_speed(MOTOR_REAR_LEFT_WHEEL, DEFAULT_MOTOR_SPEED - abs((int)weighted_correction));
+    // computing dynamic max based on error magnitude
+    float dynamic_max = fminf(fabsf(yaw_err) * 50.0f + fabsf(gyro_z_rate_err) * 5.0f, 30.0f);
+
+    // clamp correction to max limits: dynamic_max 
+    weighted_correction = clamp(weighted_correction, -dynamic_max, dynamic_max);
+
+    // boosted speed
+    int boosted_speed = DEFAULT_MOTOR_SPEED + abs((int) weighted_correction);
+    boosted_speed = (boosted_speed > MAX_SPEED) ? MAX_SPEED : boosted_speed;
+
+    printf("IMU CORRECTION | YAW_ERR: %.3f | GYRO_Z: %.3f | INTEGRAL: %.3f | CORRECTION: %.3f | DYNAMIC MAX: %f | BOOSTED_SPEED: %d\n", yaw_err, gyro_z_rate_err, yaw_error_integral, weighted_correction, dynamic_max, boosted_speed);
+
+    if (fabsf(yaw_err) > YAW_MOVEMENT_ERROR_THRESHOLD){
+
+        if (yaw_err < 0){
+            // drifted right — stop right side, drive left side to rotate back
+            motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -TERRAIN_MIN_SPEED);
+            motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -TERRAIN_MIN_SPEED);
+            motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -TERRAIN_MIN_SPEED);
+            motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
+            motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
+            motor_set_speed(MOTOR_REAR_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
+            printf("stopping right side\n");
+        }
+        else {
+            // drifted left — stop left side, drive right side to rotate back
+            motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, TERRAIN_MIN_SPEED);
+            motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, TERRAIN_MIN_SPEED);
+            motor_set_speed(MOTOR_REAR_LEFT_WHEEL, TERRAIN_MIN_SPEED);
+            motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+            motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+            motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+            printf("stopping left side\n");
+        }
     }
-    else if (weighted_correction < 0){
-        // rover drifting left — slow right side to correct back toward straight
+    else {
+
         motor_set_speed(MOTOR_FRONT_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
         motor_set_speed(MOTOR_MIDDLE_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
         motor_set_speed(MOTOR_REAR_LEFT_WHEEL, DEFAULT_MOTOR_SPEED);
-        // reduced speed on the right motors
-        motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -(DEFAULT_MOTOR_SPEED - abs((int)weighted_correction)));
-        motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -(DEFAULT_MOTOR_SPEED - abs((int)weighted_correction)));
-        motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -(DEFAULT_MOTOR_SPEED - abs((int)weighted_correction)));
+        motor_set_speed(MOTOR_FRONT_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+        motor_set_speed(MOTOR_MIDDLE_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+        motor_set_speed(MOTOR_REAR_RIGHT_WHEEL, -DEFAULT_MOTOR_SPEED);
+        printf("going straight default\n");
     }
 
     correction_state.last_correction = weighted_correction;
-    return 1;
+    return 1; // correction applied
 }
 
 
@@ -604,7 +641,7 @@ int imu_correction_check_motion(){
 
     // to store the position read from wheel encoders
     static int64_t prev_pos_frw = 0;
-    static int64_t prev_pos_flw = 0;
+    // static int64_t prev_pos_flw = 0;
     static int64_t prev_pos_mrw = 0;
     static int64_t prev_pos_mlw = 0;
     static int64_t prev_pos_rrw = 0;
@@ -620,7 +657,7 @@ int imu_correction_check_motion(){
 
     // get motor positions on each wheel:
     int64_t curr_frw = motor_get_position(MOTOR_FRONT_RIGHT_WHEEL);
-    int64_t curr_flw = motor_get_position(MOTOR_FRONT_LEFT_WHEEL);
+    // int64_t curr_flw = motor_get_position(MOTOR_FRONT_LEFT_WHEEL);
     int64_t curr_mrw = motor_get_position(MOTOR_MIDDLE_RIGHT_WHEEL);
     int64_t curr_mlw = motor_get_position(MOTOR_MIDDLE_LEFT_WHEEL);
     int64_t curr_rrw = motor_get_position(MOTOR_REAR_RIGHT_WHEEL);
@@ -630,7 +667,7 @@ int imu_correction_check_motion(){
     if (first_call){
         first_call = false;
         prev_pos_frw = curr_frw;
-        prev_pos_flw = curr_flw;
+        // prev_pos_flw = curr_flw;
         prev_pos_mrw = curr_mrw;
         prev_pos_mlw = curr_mlw;
         prev_pos_rrw = curr_rrw;
@@ -640,19 +677,20 @@ int imu_correction_check_motion(){
 
     // compute the delta in curr - prev
     int64_t delta_frw = curr_frw - prev_pos_frw;
-    int64_t delta_flw = curr_flw - prev_pos_flw;
+    // int64_t delta_flw = curr_flw - prev_pos_flw;
     int64_t delta_mrw = curr_mrw - prev_pos_mrw;
     int64_t delta_mlw = curr_mlw - prev_pos_mlw;
     int64_t delta_rrw = curr_rrw - prev_pos_rrw;
     int64_t delta_rlw = curr_rlw - prev_pos_rlw;
 
     // overall wheel estimate
-    int64_t avg_wheel_dist = (delta_frw + delta_flw + delta_mrw + delta_mlw + delta_rrw + delta_rlw) / 6;
+    // took out + delta_flw
+    int64_t avg_wheel_dist = (delta_frw + delta_mrw + delta_mlw + delta_rrw + delta_rlw) / 5;
     int64_t avg_wheel_delta = llabs(avg_wheel_dist);
 
     // update the prev wheels
     prev_pos_frw = curr_frw;
-    prev_pos_flw = curr_flw;
+    // prev_pos_flw = curr_flw;
     prev_pos_mrw = curr_mrw;
     prev_pos_mlw = curr_mlw;
     prev_pos_rrw = curr_rrw;
